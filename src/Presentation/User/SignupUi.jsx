@@ -1,5 +1,33 @@
 import React, { useState } from "react";
 import DataLogic from "../../Container/DataLogic";
+import {formattribute} from '../User/LoginUi'
+
+
+export  const attribute=[
+  ...formattribute,
+  {
+    
+    label: "Name : ",
+    type: "text",
+    name: "name",
+    placeholder: "Enter name",
+    errorMsg: "Name should be 3-16 character and shouldn't include any special character",
+    pattern:"^[A-Za-z0-9]{3,16}$",
+    required:true,
+  },
+  {
+   
+    label: "Role : ",
+    type: "text",
+    name: "role",
+    placeholder: "student/teacher",
+    required:true,
+    errorMsg: "Role should be either student or teacher ",
+    pattern:"^student|teacher$",
+   
+  },
+]
+
 const SignupUI = () => {
   const [values, setValues] = useState({
     name: "",
@@ -7,12 +35,13 @@ const SignupUI = () => {
     password: "",
     role: "",
   });
+ 
 
   return (
     <div>
       {
         <div>
-          <DataLogic value="Signup" api="/users/SignUp" setValues={setValues} values={values} obj="signUp" />
+          <DataLogic text="Signup" api="/users/SignUp" attribute={attribute} setValues={setValues} values={values} obj="signUp" />
         </div>
       }
     </div>

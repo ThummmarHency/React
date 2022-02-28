@@ -12,3 +12,13 @@
 input:invalid[focused="true"] ~ .errorMsg{
   display:block;
 }
+.sidebar{
+  border: 1px solid black;
+  width: 20%;
+  height: 100vh;
+}
+.renderData{
+  margin-left: 23%;
+  margin-top: -58%;
+  background-color: white;
+}

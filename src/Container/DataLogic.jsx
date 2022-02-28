@@ -1,11 +1,9 @@
 import React from 'react'
 import axios from "axios";
-import CustomInput from '../Shared/CustomInput';
-import CustomButton from "../Shared/CustomButton";
-import attribute from "../Shared/Reuse";
 import {useNavigate} from 'react-router-dom'
+import FormView from '../Presentation/User/FormView';
 
-const LoginLogic = ({value,api,setValues,values,obj}) => {
+const DataLogic = ({text,api,setValues,values,attribute}) => {
   let naviGate = useNavigate();
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -27,21 +25,9 @@ const LoginLogic = ({value,api,setValues,values,obj}) => {
 
   return (
     <div>
-        <form onSubmit={handleSubmit}>
-            {attribute.map((input) => {
-              return (input.login  === obj || input.signup === obj || input.forgotpwd === obj || input.newpassword===obj) ? (
-                <CustomInput
-                  key={input.id}
-                  {...input}
-                  value={values[input.name]}
-                  onChange={onChange}
-                />
-              ) : null;
-            })}
-            {<CustomButton type="submit" value={value} />}
-          </form>
+       <FormView handleSubmit={handleSubmit} attribute={attribute} values={values} onChange={onChange} text={text}/>
     </div>
   )
 }
 
-export default LoginLogic
+export default React.memo(DataLogic)
