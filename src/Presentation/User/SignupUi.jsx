@@ -13,7 +13,6 @@ export  const attribute=[
     placeholder: "Enter name",
     errorMsg: "Name should be 3-16 character and shouldn't include any special character",
     pattern:"^[A-Za-z0-9]{3,16}$",
-    required:true,
   },
   {
    
@@ -21,7 +20,6 @@ export  const attribute=[
     type: "text",
     name: "role",
     placeholder: "student/teacher",
-    required:true,
     errorMsg: "Role should be either student or teacher ",
     pattern:"^student|teacher$",
    
@@ -41,7 +39,7 @@ const SignupUI = () => {
     <div>
       {
         <div>
-          <DataLogic text="Signup" api="/users/SignUp" attribute={attribute} setValues={setValues} values={values} obj="signUp" />
+          <DataLogic text="Signup" api="/users/SignUp" attribute={attribute} setValues={setValues} values={values}  />
         </div>
       }
     </div>

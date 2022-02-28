@@ -1,18 +1,32 @@
-import React from 'react'
-import { Link,Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const Navbar = () => {
+  let naviGate = useNavigate();
+
+  useEffect(() => {
+    localStorage.getItem("isAuthenticated") && naviGate("../dashboard")
+
+  }, []);
+
   return (
     <div>
-       
-          <Link to="login">Login</Link>   
-          <Link to="Signup">Signup</Link> 
-          <Link to="login">Logout</Link> 
-          <hr />    
-          <Outlet/>
-         
-    </div>
-  )
-}
+      {localStorage.getItem("isAuthenticated") ? (
+        <>
+          <Link to="logout">Logout</Link>
 
-export default  Navbar
+        </>
+      ) : (
+        <>
+          <Link to="login">Login</Link> &nbsp;&nbsp;
+          <Link to="signup">SignUp</Link> &nbsp;&nbsp;
+        </>
+      )}
+      <hr />
+      <Outlet />
+    </div>
+  );
+};
+
+export default  Navbar;

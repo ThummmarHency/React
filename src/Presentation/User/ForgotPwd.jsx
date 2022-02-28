@@ -12,7 +12,7 @@ const ForgotPwd = () => {
   
   return (
     <div>
-      <Datalogic text="Send" api="/users/ForgotPassword" attribute={attribute} setValues={setValues} values={values} obj="forgotPwd"/>
+      <Datalogic text="Send" api="/users/ForgotPassword" attribute={attribute} setValues={setValues} values={values} />
 
     </div>
   )

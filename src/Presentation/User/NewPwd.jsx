@@ -10,7 +10,6 @@ export const attribute =[
     type: "password",
     name: "ConfirmPassword",
     placeholder: "Enter Confirm Password",
-    required:true,
     errorMsg: "password Not match",
     pattern:"^[A-Za-z0-9]{3,16}$"
   },
@@ -27,7 +26,7 @@ const Newpwd = () => {
  
   return (
     <div> 
-      <DataLogic text="Set" attribute={attribute} api={`/users/ForgotPassword/Verify?=${token}`} setValues={setValues} values={values} obj="newPassword"/>
+      <DataLogic text="Set" attribute={attribute} api={`/users/ForgotPassword/Verify?=${token}`} setValues={setValues} values={values}/>
     </div>
   )
 }

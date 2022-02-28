@@ -2,7 +2,7 @@ import React from "react";
 import CustomInput from "../../Shared/CustomInput";
 import CustomButton from "../../Shared/CustomButton";
 
-const FormView = ({ handleSubmit, attribute, values, onChange, text }) => {
+const FormView = ({ handleSubmit, attribute,error, values, onChange, text }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -11,6 +11,7 @@ const FormView = ({ handleSubmit, attribute, values, onChange, text }) => {
             <CustomInput
               key={index}
               {...input}
+              Requirefield={error}
               value={values[input.name]}
               onChange={onChange}
             />
