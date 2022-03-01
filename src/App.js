@@ -14,6 +14,7 @@ import VerifyData from "./Presentation/Teacher/VerifyData";
 import ViewData from "./Presentation/Teacher/ViewData";
 import ProtectedRoute from "./Container/ProtectedRoute";
 import CreateExam from "./Presentation/Teacher/CreateExam";
+import Question from "./Presentation/Teacher/Question";
 
 function App() {
   return (
@@ -47,12 +48,6 @@ function App() {
 
             <Route
               exact
-              path="newPassword"
-              element={<ProtectedRoute Com={NewPwd} />}
-            />
-
-            <Route
-              exact
               path="dashboard"
               element={<ProtectedRoute Com={DashBoard} />}
             >
@@ -60,9 +55,16 @@ function App() {
               <Route exact path="verifieddata" element={<ProtectedRoute Com={VerifyData} />} />
               <Route exact path="viewData" element={<ProtectedRoute Com={ViewData} />} />
               <Route exact path="createexam" element={<ProtectedRoute Com={CreateExam} />} />
+              <Route exact path="Question" element={<ProtectedRoute Com={Question} />} />
             </Route>
 
           </Route>
+          <Route
+              exact
+              path="newPassword"
+              element={<NewPwd/>}
+            />
+
             <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

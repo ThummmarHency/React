@@ -61,25 +61,28 @@ const ViewData = () => {
           </thead>
           <tbody>
             {resultData ? (
-              resultData.Result === [] ? (
-                resultData.Result.map((element) => {
-                  return (
-                    <>
-                      <tr key={element._id}>
-                        <td>{element._id}</td>
-                        <td>{element.subjectName}</td>
-                        <td>{element.score}</td>
-                        <td>{element.rank}</td>
-                        <td>{element.resultStatus}</td>
-                      </tr>
-                    </>
-                  );
-                })
-              ) : (
-                <tr><td> Exam pending</td></tr>
-              )
+              resultData.Result &&
+              resultData.Result.map((element) => {
+                return resultData.Result !== 0 ? (
+                  <React.Fragment key={element._id}>
+                    <tr>
+                      <td>{element._id}</td>
+                      <td>{element.subjectName}</td>
+                      <td>{element.score}</td>
+                      <td>{element.rank}</td>
+                      <td>{element.resultStatus}</td>
+                    </tr>
+                  </React.Fragment>
+                ) : (
+                  <tr>
+                    <td> Exam pending</td>
+                  </tr>
+                );
+              })
             ) : (
-              <tr><td>Loading</td></tr>
+              <tr>
+                <td>Loading</td>
+              </tr>
             )}
           </tbody>
         </table>

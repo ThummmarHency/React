@@ -2,8 +2,10 @@ import React,{useState} from 'react'
 import axios from "axios";
 import {useNavigate} from 'react-router-dom'
 import FormView from '../Presentation/User/FormView';
+import { token1 } from "../Presentation/Teacher/ShowStudentData";
 
-const DataLogic = ({text,api,setValues,values,attribute}) => {
+
+const DataLogic = ({text,api,setValues,values,newToken,attribute}) => {
   const [error, seterror] = useState("")
 
   let naviGate = useNavigate();
@@ -15,10 +17,19 @@ const DataLogic = ({text,api,setValues,values,attribute}) => {
     e.preventDefault();
 
     const user = { ...values };
-    async function fetchdata() {
+    async function NewpwdToken(){
+      const NewPwdCheck =await axios.get(
+        process.env.REACT_APP_API + `${newToken}`
+      )
+      console.log(NewPwdCheck);
+    }
+    newToken && NewpwdToken()
+
+    async function fetchdata() { 
       const response = await axios.post(
         process.env.REACT_APP_API + `${api}`,
-        user
+        user,
+        { headers: { "access-token": `${token1}` } }
       );
       api === "/users/Login" && response.data.statusCode === 200 ? naviGate("../dashboard") : alert(response.data.message);
       (api === "/users/Login" && response.data.statusCode === 200) && localStorage.setItem("token", JSON.stringify(response.data));
@@ -34,7 +45,7 @@ const DataLogic = ({text,api,setValues,values,attribute}) => {
 
   return (
     <div>
-       <FormView handleSubmit={handleSubmit} attribute={attribute} error={error}  values={values} onChange={onChange} text={text}/>
+       <FormView handleSubmit={handleSubmit} attribute={attribute} error={error} values={values} onChange={onChange} text={text}/>
     </div>
   )
 }

@@ -7,7 +7,7 @@ import SearchBar from "material-ui-search-bar";
 
 let getData = localStorage.getItem("token");
 const data1= JSON.parse(getData);
-export const token1 = data1.data.token;
+export const token1 = data1 && data1.data.token;
 
 const ShowStudentData = ({Api="/dashboard/Teachers"}) => {
   const [stuData, setstudata] = useState([]);
@@ -15,16 +15,14 @@ const ShowStudentData = ({Api="/dashboard/Teachers"}) => {
   const [searched, setSearched] = useState("");
 
   let naviGate = useNavigate();
-
   useEffect(() => {
     async function fetchData() {
       const res = await axios.get(
         process.env.REACT_APP_API + `${Api}`,
         { headers: { "access-token": `${token1}` } }
       );
-      setstudata(res.data.data);
-      console.log(res.data.data);
-      setRows(res.data.data);
+    setstudata(res.data.data);
+     setRows(res.data.data);
     }
     fetchData();
 

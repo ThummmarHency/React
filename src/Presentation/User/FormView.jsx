@@ -17,10 +17,11 @@ const FormView = ({ handleSubmit, attribute,error, values, onChange, text }) => 
             />
           );
         })}
+        <br />
         {<CustomButton type="submit" value={text} />}
       </form>
     </div>
   );
-};
+};  
 
 export default FormView;

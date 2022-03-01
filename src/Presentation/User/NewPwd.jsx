@@ -26,7 +26,7 @@ const Newpwd = () => {
  
   return (
     <div> 
-      <DataLogic text="Set" attribute={attribute} api={`/users/ForgotPassword/Verify?=${token}`} setValues={setValues} values={values}/>
+      <DataLogic text="Set" attribute={attribute}  newToken="/users/newPassword" api={`/users/ForgotPassword/Verify?=${token}`} setValues={setValues} values={values}/>
     </div>
   )
 }

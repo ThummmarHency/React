@@ -16,6 +16,8 @@ input:invalid[focused="true"] ~ .errorMsg{
   border: 1px solid black;
   width: 20%;
   height: 100vh;
+  background-color: white;
+
 }
 .requireMsg{
   color:red
@@ -23,5 +25,8 @@ input:invalid[focused="true"] ~ .errorMsg{
 .renderData{
   margin-left: 23%;
   margin-top: -58%;
-  background-color: white;
+}
+.Questionrender{
+  margin-left: 23%;
+  margin-top: 4%;
 }
