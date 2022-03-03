@@ -15,6 +15,7 @@ import ViewData from "./Presentation/Teacher/ViewData";
 import ProtectedRoute from "./Container/ProtectedRoute";
 import CreateExam from "./Presentation/Teacher/CreateExam";
 import Question from "./Presentation/Teacher/Question";
+import ResetPwd from "./Presentation/User/ResetPwd";
 
 function App() {
   return (
@@ -45,7 +46,11 @@ function App() {
               path="ForgotPassword"
               element={<ProtectedRoute Com={ForgotPwd} />}
             />
-
+            <Route
+              exact
+              path="resetpwd"
+              element={<ProtectedRoute Com={ResetPwd} />}
+            />
             <Route
               exact
               path="dashboard"

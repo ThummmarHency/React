@@ -1,10 +1,10 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
 
-const CustomButton = ({type,value,onClick}) => {
+const CustomButton = ({type,value,onClick,isDisabled}) => {
   return (
     <div>
-        <Button variant="contained" type={type} onClick={onClick}>{value}</Button>
+        <Button variant="contained" type={type} disabled={isDisabled} onClick={onClick}>{value}</Button>
     </div>
   )
 }

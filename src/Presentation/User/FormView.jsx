@@ -2,11 +2,11 @@ import React from "react";
 import CustomInput from "../../Shared/CustomInput";
 import CustomButton from "../../Shared/CustomButton";
 
-const FormView = ({ handleSubmit, attribute,error, values, onChange, text }) => {
+const FormView = ({ handleSubmit, attribute, error,rdo, values, onChange, text }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        {attribute.map((input, index) => {
+        {attribute && attribute.map((input, index) => {
           return (
             <CustomInput
               key={index}
@@ -14,14 +14,15 @@ const FormView = ({ handleSubmit, attribute,error, values, onChange, text }) => 
               Requirefield={error}
               value={values[input.name]}
               onChange={onChange}
+              rdo={rdo}
             />
           );
         })}
         <br />
-        {<CustomButton type="submit" value={text} />}
+        {text && <CustomButton type="submit" value={text} />}
       </form>
     </div>
   );
-};  
+};
 
 export default FormView;

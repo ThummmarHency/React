@@ -14,7 +14,8 @@ const Navbar = () => {
     <div>
       {localStorage.getItem("isAuthenticated") ? (
         <>
-          <Link to="logout">Logout</Link>
+          <Link to="logout">Logout</Link>&nbsp;&nbsp;
+          <Link to="resetpwd">Reset Password</Link>
 
         </>
       ) : (
