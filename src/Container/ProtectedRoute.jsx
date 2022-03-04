@@ -9,6 +9,8 @@ const ProtectedRoute = (props) => {
     useEffect(() => {
         if (!localStorage.getItem('isAuthenticated')) {
             naviGate("../login")
+        }else{
+            naviGate(window.location.pathname)
         }
     }, [])
 

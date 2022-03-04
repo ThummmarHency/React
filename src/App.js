@@ -14,7 +14,6 @@ import VerifyData from "./Presentation/Teacher/VerifyData";
 import ViewData from "./Presentation/Teacher/ViewData";
 import ProtectedRoute from "./Container/ProtectedRoute";
 import CreateExam from "./Presentation/Teacher/CreateExam";
-import Question from "./Presentation/Teacher/Question";
 import ResetPwd from "./Presentation/User/ResetPwd";
 
 function App() {
@@ -56,11 +55,10 @@ function App() {
               path="dashboard"
               element={<ProtectedRoute Com={DashBoard} />}
             >
-              <Route exact path="studentdata" element={<ProtectedRoute Com={ShowStudentData} />} />
-              <Route exact path="verifieddata" element={<ProtectedRoute Com={VerifyData} />} />
-              <Route exact path="viewData" element={<ProtectedRoute Com={ViewData} />} />
-              <Route exact path="createexam" element={<ProtectedRoute Com={CreateExam} />} />
-              <Route exact path="Question" element={<ProtectedRoute Com={Question} />} />
+              <Route  path="studentdata" element={<ProtectedRoute Com={ShowStudentData} />} />
+              <Route  path="verifieddata" element={<ProtectedRoute Com={VerifyData} />} />
+              <Route  path="viewData" element={<ProtectedRoute Com={ViewData} />} />
+              <Route  path="createexam" element={<ProtectedRoute Com={CreateExam} />} />
             </Route>
 
           </Route>

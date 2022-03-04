@@ -4,9 +4,9 @@ import ShowStudentData from "./ShowStudentData";
 const VerifyData = () => {
   return (
     <div>
-      <ShowStudentData Api="/dashboard/Teachers/StudentForExam" />
+      <ShowStudentData api="/dashboard/Teachers/StudentForExam" />
     </div>
   );
 };
 
-export default React.memo(VerifyData);
+export default VerifyData;

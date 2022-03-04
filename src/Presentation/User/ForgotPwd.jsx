@@ -1,9 +1,9 @@
 import React,{ useState} from 'react'
-import Datalogic from '../../Container/DataLogic'
-import {formattribute} from '../User/LoginUi'
+import Reuse from '../../Shared/Reuse'
+import {FormAttribute} from '../../Container/FormAttribute'
 
 export const attribute =[
-  formattribute[0]
+  FormAttribute[0]
 ]
 const ForgotPwd = () => {
     const [values, setValues] = useState({
@@ -12,8 +12,7 @@ const ForgotPwd = () => {
   
   return (
     <div>
-      <Datalogic text="Send" api="/users/ForgotPassword" attribute={attribute} setValues={setValues} values={values} />
-
+      <Reuse text="Send" api="/users/ForgotPassword" attribute={attribute} setValues={setValues} values={values} />
     </div>
   )
 }

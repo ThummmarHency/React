@@ -4,7 +4,6 @@ const CustomInput = (props) => {
   const[focused,setfocused]= useState(false)
   
   const {label,onChange,value,Requirefield,errorMsg,rdo,...inputprops}=props
-  // console.log(value);
   return (
     <div>
         <label>{label}</label>

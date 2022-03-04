@@ -1,29 +1,11 @@
 import React, { useState } from "react";
-import DataLogic from "../../Container/DataLogic";
-import {formattribute} from '../User/LoginUi'
-
-
+import Reuse from "../../Shared/Reuse";
+import {FormAttribute} from '../../Container/FormAttribute'
 export  const attribute=[
-  ...formattribute,
-  {
-    
-    label: "Name : ",
-    type: "text",
-    name: "name",
-    placeholder: "Enter name",
-    errorMsg: "Name should be 3-16 character and shouldn't include any special character",
-    pattern:"^[A-Za-z0-9]{3,16}$",
-  },
-  {
-   
-    label: "Role : ",
-    type: "text",
-    name: "role",
-    placeholder: "student/teacher",
-    errorMsg: "Role should be either student or teacher ",
-    pattern:"^student|teacher$",
-   
-  },
+  FormAttribute[0],
+  FormAttribute[1],
+  FormAttribute[2],
+  FormAttribute[3],
 ]
 
 const SignupUI = () => {
@@ -39,7 +21,8 @@ const SignupUI = () => {
     <div>
       {
         <div>
-          <DataLogic text="Signup" api="/users/SignUp" attribute={attribute} setValues={setValues} values={values}  />
+          <Reuse text="Signup" api="/users/SignUp" attribute={attribute} setValues={setValues} values={values}  />
+
         </div>
       }
     </div>

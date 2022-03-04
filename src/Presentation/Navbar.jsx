@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   let naviGate = useNavigate();
 
   useEffect(() => {
-    localStorage.getItem("isAuthenticated") && naviGate("../dashboard")
+    // localStorage.getItem("isAuthenticated") && naviGate("../dashboard")
 
   }, []);
 

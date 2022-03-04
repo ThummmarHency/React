@@ -1,18 +1,12 @@
 import React, { useState }from 'react'
-import DataLogic from '../../Container/DataLogic';
 import { useLocation } from 'react-router-dom';
-import {formattribute} from '../User/LoginUi'
+import {FormAttribute} from '../../Container/FormAttribute'
+
+import Reuse from '../../Shared/Reuse';
 
 export const attribute =[
- {...formattribute[1],name:"Password",placeholder:"Enter New Password"},
-  {
-    label: "Confirm Password: ",
-    type: "password",
-    name: "ConfirmPassword",
-    placeholder: "Enter Confirm Password",
-    errorMsg: "password Not match",
-    pattern:"^[A-Za-z0-9]{3,16}$"
-  },
+  {...FormAttribute[1],name:"Password",placeholder:"Enter New Password"},
+  {...FormAttribute[1],name:"ConfirmPassword",placeholder:"Enter Confirm Password",errorMsg: "password Not match",label: "Confirm Password: "},
 ]
 const Newpwd = () => {
   const location=useLocation()
@@ -26,7 +20,7 @@ const Newpwd = () => {
  
   return (
     <div> 
-      <DataLogic text="Set" attribute={attribute}  newToken="/users/newPassword" api={`/users/ForgotPassword/Verify?=${token}`} setValues={setValues} values={values}/>
+      <Reuse text="Set" attribute={attribute}  newToken="/users/newPassword" api={`/users/ForgotPassword/Verify?=${token}`} setValues={setValues} values={values}/>
     </div>
   )
 }

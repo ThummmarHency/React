@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { token1 } from "./ShowStudentData";
 import { useLocation } from "react-router-dom";
-
+import {fetchDataGet} from '../../Container/DataLogic'
 const ViewData = () => {
   const [resultData, setResultData] = useState();
-
   const location = useLocation();
   let SearchToken = new URLSearchParams(location.search);
   let id = SearchToken.get("id");
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await axios.get(
-        process.env.REACT_APP_API +
-          `/dashboard/Teachers/viewStudentDetail?id=${id}`,
-        { headers: { "access-token": `${token1}` } }
-      );
-      setResultData(res.data.data[0]);
-      console.log(res.data.data[0]);
-    }
-    fetchData();
+    fetchDataGet(`/dashboard/Teachers/viewStudentDetail?id=${id}`,undefined,undefined,setResultData);
     return () => {
       setResultData([]);
     };

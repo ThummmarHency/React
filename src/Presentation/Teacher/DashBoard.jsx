@@ -4,8 +4,7 @@ const DashBoard = () => {
    useEffect(()=>{
    },[])
   return (
-    <div>
-        
+    <div> 
         <div className="sidebar">
           <ul>
             <li>
@@ -19,6 +18,7 @@ const DashBoard = () => {
             </li>
           </ul>
         </div>
+        
         <Outlet/>
     </div>
   )

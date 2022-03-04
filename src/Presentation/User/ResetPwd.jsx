@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import DataLogic from '../../Container/DataLogic';
-import { formattribute } from '../User/LoginUi'
+import Reuse from '../../Shared/Reuse';
+import {FormAttribute} from '../../Container/FormAttribute'
+
 
 export const attribute = [
-    { ...formattribute[1], name: "oldPassword", label: "Old Password: ", placeholder: "Enter Old Password" },
-    { ...formattribute[1], name: "Password", placeholder: "Enter New Password" },
-    { ...formattribute[1], name: "ConfirmPassword", placeholder: "Enter Confirm Password", label: "Confirm Password: ", errorMsg: "password Not match" },
+    { ...FormAttribute[1], name: "oldPassword", label: "Old Password: ", placeholder: "Enter Old Password" },
+    { ...FormAttribute[1], name: "Password", placeholder: "Enter New Password" },
+    { ...FormAttribute[1], name: "ConfirmPassword", placeholder: "Enter Confirm Password", label: "Confirm Password: ", errorMsg: "password Not match" },
 ]
 const ResetPwd = () => {
-
     const [values, setValues] = useState({
         oldPassword: "",
         Password: "",
@@ -17,7 +17,7 @@ const ResetPwd = () => {
 
     return (
         <div>
-            <DataLogic text="Reset Password" attribute={attribute} api="/users/ResetPassword" setValues={setValues} values={values} />
+            <Reuse text="Reset Password" attribute={attribute} api="/users/ResetPassword" setValues={setValues} values={values} />
         </div>
     )
 }
