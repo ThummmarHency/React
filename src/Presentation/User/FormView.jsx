@@ -8,6 +8,7 @@ const FormView = ({ handleSubmit, attribute, error, values, onChange, text }) =>
       <form onSubmit={handleSubmit}>
         {attribute && attribute.map((input, index) => {
           return (
+            <React.Fragment key={index}>
             <CustomInput
               key={index}
               {...input}
@@ -15,6 +16,8 @@ const FormView = ({ handleSubmit, attribute, error, values, onChange, text }) =>
               value={values[input.name]}
               onChange={onChange}
             />
+            <br />
+            </React.Fragment>
           );
         })}
         <br />

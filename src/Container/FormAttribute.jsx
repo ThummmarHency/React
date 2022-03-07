@@ -25,7 +25,6 @@ export const FormAttribute =[
         pattern:"^[A-Za-z0-9]{3,16}$",
       },
       {
-       
         label: "Role : ",
         type: "text",
         name: "role",

@@ -14,6 +14,7 @@ import VerifyData from "./Presentation/Teacher/VerifyData";
 import ViewData from "./Presentation/Teacher/ViewData";
 import ProtectedRoute from "./Container/ProtectedRoute";
 import CreateExam from "./Presentation/Teacher/CreateExam";
+import ViewExam from "./Presentation/Teacher/ViewExam"
 import ResetPwd from "./Presentation/User/ResetPwd";
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
               <Route  path="verifieddata" element={<ProtectedRoute Com={VerifyData} />} />
               <Route  path="viewData" element={<ProtectedRoute Com={ViewData} />} />
               <Route  path="createexam" element={<ProtectedRoute Com={CreateExam} />} />
+              <Route  path="viewexam" element={<ProtectedRoute Com={ViewExam} />} />
             </Route>
 
           </Route>

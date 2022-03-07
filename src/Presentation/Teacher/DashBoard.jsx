@@ -16,6 +16,9 @@ const DashBoard = () => {
             <li>
                 <Link to="createexam">Create Exam</Link>
             </li>
+            <li>
+                <Link to="viewexam">View Exam</Link>
+            </li>
           </ul>
         </div>
         
