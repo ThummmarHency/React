@@ -3,9 +3,11 @@ import ReactTable from "react-table-6";
 import "react-table-6/react-table.css";
 import SearchBar from "material-ui-search-bar";
 import useStudentData from '../../Container/useStudentData'
-const ShowStudentData = ({api="/dashboard/Teachers"}) => {
+import ShowData from '../../Shared/ShowData'
+
+const ShowStudentData = ({api="/dashboard/Teachers",h1="Id",a1="_id"}) => {
   
-  const [{rows,columns,cancelSearch,searched,requestSearch}]=useStudentData(api);
+  const [{rows,columns,cancelSearch,searched,requestSearch}]=useStudentData(api,h1,a1);
   return (
     <div>
       <div className="renderData">

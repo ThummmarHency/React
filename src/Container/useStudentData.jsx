@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import { fetchDataGet } from "./DataLogic";
 
-const useStudentData = (api) => {
+const useStudentData = (api,h1,a1) => {
   const [stuData, setStuData] = useState([]);
   const [rows, setRows] = useState([]);
   const [searched, setSearched] = useState("");
@@ -21,7 +21,7 @@ const useStudentData = (api) => {
   };
 
   const columns = [
-    { Header: "Id", accessor: "_id" },
+    { Header: h1, accessor: a1 },
     {
       Header: "Name",
       accessor: "name",

@@ -7,12 +7,12 @@ import useCreateExam from "../../Container/useCreateExam"
 const SubjectList = ["","React", "Node js", "Angular", "Ux/Ui"];
 
 const CreateExam = () => {
-  const [{isDisabled,error,questionNo,setQuestionNo,QuestionSet,rdoValue,getQuestion,AddQuestion,ClearForm,values,PrevNextQuestion,getSubject,exam}]=useCreateExam()
+  const [{isDisabled,error,store,questionNo,setQuestionNo,QuestionSet,rdoValue,getQuestion,AddQuestion,ClearForm,values,PrevNextQuestion,getSubject,exam}]=useCreateExam()
   
   return (
     <>
       <div className="renderData">
-      {questionNo!==16 && 
+      {questionNo<=15 ? 
       <>
         <h2>Question No : {questionNo}</h2>
         <label>Select Subject : </label>
@@ -25,14 +25,18 @@ const CreateExam = () => {
         <br />
         {QuestionSet && <FormView attribute={QuestionSet} error={error} values={values} onChange={getQuestion} />}
         <CustomInput type="text" name="answer" value={rdoValue.selectOpt} Requirefield={error} readOnly/>
-        </>}
+        </>: <h1>exam created</h1>
+        }
         <br />
         <br />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <CustomButton value="Pre" isDisabled={questionNo !== 1 ? false : true} onClick={()=>{setQuestionNo(questionNo - 1); PrevNextQuestion(questionNo-2);}} />
+         {questionNo<=15 && 
+         <> 
+         <CustomButton value="Pre" isDisabled={questionNo !== 1 ? false : true} onClick={()=>{setQuestionNo(questionNo - 1); PrevNextQuestion(questionNo-2);}} />
           <CustomButton value="next" isDisabled={questionNo!==15 ?false:true} onClick={()=>{setQuestionNo(questionNo + 1); PrevNextQuestion(questionNo);}} />
           <CustomButton value="Clear" onClick={ClearForm} />
-          <CustomButton value="add" isDisabled={questionNo!==16?false:true} onClick={AddQuestion} />  
+          </> }
+         <CustomButton value="add" isDisabled={store.length===15?true:false} onClick={AddQuestion} /> 
          {questionNo === 16 && <CustomButton value="create exam" onClick={() => fetchDataPost("/dashboard/Teachers/Exam", getToken, exam)} />}
 
         </div>

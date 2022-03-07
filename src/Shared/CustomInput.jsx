@@ -8,7 +8,7 @@ const CustomInput = (props) => {
     <>
         <label>{label}</label>
         <input onChange={onChange} value={value} checked={isChecked} {...inputprops} autoComplete='on' onBlur={()=>{setfocused(true)}} focused={focused.toString()} />
-        {value === "" ? <span className='requireMsg'> {Requirefield}</span> : null}
+        {value === "" || value==="Answer..." ? <span className='requireMsg'> {Requirefield}</span> : null}
         <span className='errorMsg'>{errorMsg}</span>
     </>
   )

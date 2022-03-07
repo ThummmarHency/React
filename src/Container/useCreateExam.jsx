@@ -2,8 +2,9 @@ import React,{ useState, useEffect} from 'react'
 import CustomInput from "../Shared/CustomInput";
 import {FormAttribute} from './FormAttribute'
 
+
 const useCreateExam = () => {
-    const [error, setError] = useState(null)
+  const [error, setError] = useState(null)
   const [rdoValue, setrdoValue] = useState({selectOpt:"Answer..."})
   const [values, setValues] = useState({
     question: "", ans1: "", ans2: "", ans3: "", ans4: ""
@@ -27,6 +28,10 @@ const useCreateExam = () => {
     setExam({ ...exam, questions: store })
   }, [store])
 
+  useEffect(() => {
+    setOption([values.ans1, values.ans2, values.ans3, values.ans4])
+  }, [values])
+
   const getRdoValue=(e)=>{
     const { name, value } = e.target;
     setrdoValue({[name]:value})
@@ -42,23 +47,22 @@ const useCreateExam = () => {
   ]
 
   const getQuestion = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-    setOption([values.ans1, values.ans2, values.ans3, values.ans4])
+    setValues({ ...values, [e.target.name]: e.target.value });  
   }
 
-  // console.log(exam);
+  console.log("exam",exam);
   const AddQuestion = () => {
 
-    const PushData = () => {
+      const PushData = () => {
       setStore([...store, setQuestions])
       setQuestionNo(questionNo + 1)
       setError(null)
       ClearForm()
     }
-   (rdoValue.selectOpt!=="" && (Object.values(values).some(e => e === "")) === false) ? PushData() : setError("This field is Required")
-  }
+    ((rdoValue.selectOpt!=="Answer..." && (Object.values(values).some(e => e === "")) === false)) ? PushData() : setError("This field is Required")
+}
   const PrevNextQuestion = (No) => { 
-    setValues({ question: store[No].question, ans1: store[No].options[0], ans2: store[No].options[1], ans3: store[No].options[2], ans4: store[No].options[3]})
+    setValues({ question: store[No].question, ans1: store[No].options[0], ans2: store[No].options[1],ans3: store[No].options[2],ans4: store[No].options[3]})
     setrdoValue({selectOpt:store[No].answer})
   }
 
@@ -72,7 +76,7 @@ const useCreateExam = () => {
     setisDisabled(true)
   }
 
-  return [{isDisabled,error,questionNo,setQuestionNo,QuestionSet,rdoValue,getQuestion,AddQuestion,ClearForm,values,PrevNextQuestion,getSubject,exam}]
+  return [{isDisabled,store,error,questionNo,setQuestionNo,QuestionSet,rdoValue,getQuestion,AddQuestion,ClearForm,values,PrevNextQuestion,getSubject,exam}]
 }
 
 export default useCreateExam
