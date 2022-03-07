@@ -3,13 +3,12 @@ import React,{ useState} from 'react'
 const CustomInput = (props) => {
   const[focused,setfocused]= useState(false)
   
-  const {label,onChange,value,Requirefield,errorMsg,rdo,...inputprops}=props
+  const {label,onChange,value,Requirefield,isChecked,errorMsg,rdo,...inputprops}=props
   return (
     <>
         <label>{label}</label>
-        <input onChange={onChange} value={value} {...inputprops} autoComplete='on' onBlur={()=>{setfocused(true)}} focused={focused.toString()} />
+        <input onChange={onChange} value={value} checked={isChecked} {...inputprops} autoComplete='on' onBlur={()=>{setfocused(true)}} focused={focused.toString()} />
         {value === "" ? <span className='requireMsg'> {Requirefield}</span> : null}
-       { rdo && <input type="radio"/>}
         <span className='errorMsg'>{errorMsg}</span>
     </>
   )
