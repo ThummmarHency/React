@@ -2,7 +2,6 @@ import React,{ useState, useEffect} from 'react'
 import CustomInput from "../Shared/CustomInput";
 import {FormAttribute} from './FormAttribute'
 
-
 const useCreateExam = () => {
   const [error, setError] = useState(null)
   const [rdoValue, setrdoValue] = useState({selectOpt:"Answer..."})

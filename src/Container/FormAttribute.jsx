@@ -1,3 +1,5 @@
+import CustomInput from "../Shared/CustomInput";
+
 export const FormAttribute =[
     {
       label: "Email : ",
@@ -33,4 +35,10 @@ export const FormAttribute =[
         pattern:"^student|teacher$",
        
       },
+    { label: "",
+      name: "",
+      placeholder: "",
+      pattern:"^[a-zA-Z0-9]*$" 
+    }
+
   ]
