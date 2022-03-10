@@ -25,7 +25,7 @@ export async function fetchDataPost(api, getToken, user) {
     window.location = "/login";
   }
     if(api === "/users/Login" && response.data.statusCode === 200){
-    window.location = "/dashboard";
+    window.location = "/dashboard/studentdata";
     localStorage.setItem("token", JSON.stringify(response.data));
     localStorage.setItem("isAuthenticated", true);
     }

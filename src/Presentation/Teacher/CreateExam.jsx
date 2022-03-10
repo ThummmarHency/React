@@ -16,48 +16,62 @@ const CreateExam = () => {
   const [exam, setExam] = useState({
     subjectName: "",
     questions: [],
+    notes:[],
     note: "",
     question: "",
     selectOpt: "Answer...",
-    ans1:"",
-    ans2:"",
-    ans3:"",
-    ans4:"",  
+    Ans1:"",
+    Ans2:"",
+    Ans3:"",
+    Ans4:"",  
   })
-  const [questionBank,setquestionBank]=useState({questions:[]})
+
    
   const getQuestion = (e) => {
     setExam({...exam,[e.target.name]: e.target.value})
   }
+  
+  const radioBtnAttribute=[
+    {value:exam.Ans1,
+      placeholder:"Ans1",
+    },
+    {value:exam.Ans2,
+      placeholder:"Ans2",
+   },
+    {value:exam.Ans3,
+     placeholder:"Ans3",
+    },
+    {value:exam.Ans4,
+      placeholder:"Ans4",
+    },
+  ]
+
     const QuestionSet = [
     { ...FormAttribute[2], name: "question", label: "Question : ", placeholder: "Enter Question",pattern:"^[a-zA-Z0-9]*$"},
-    { ...FormAttribute[4],label: <CustomInput type="radio" name="selectOpt" value={exam.ans1} isChecked={exam.selectOpt===exam.ans1} onChange={getQuestion}/>,placeholder:"Ans1",name:"ans1"},
-    { ...FormAttribute[4],label: <CustomInput type="radio" name="selectOpt" value={exam.ans2} isChecked={exam.selectOpt===exam.ans2} onChange={getQuestion}/>,placeholder:"Ans2",name:"ans2"},
-    { ...FormAttribute[4],label: <CustomInput type="radio" name="selectOpt" value={exam.ans3} isChecked={exam.selectOpt===exam.ans3} onChange={getQuestion}/>,placeholder:"Ans3",name:"ans3"},
-    { ...FormAttribute[4],label: <CustomInput type="radio" name="selectOpt" value={exam.ans4} isChecked={exam.selectOpt===exam.ans4} onChange={getQuestion}/>,placeholder:"Ans4",name:"ans4"},
-    { ...FormAttribute[2],placeholder: "Enter Notes",label:"Notes : ",name:"note",pattern:"^[a-zA-Z0-9]*$"},
+    { ...FormAttribute[2], placeholder: "Enter Notes",label:"Notes : ",name:"note",pattern:"^[a-zA-Z0-9]*$"},
   ]
-// console.log("exam",exam);
-useEffect(() => {
-},[questionBank])
-console.log("qb",questionBank);
+  console.log("exam",exam); 
 
-  const AddQuestion = (e) => {
-    // const PushData = () item
+  const AddQuestion = () => {
+    const PushData = () =>{
+      setError(null)
       setQuestionNo(questionNo + 1)
-      // setExam({subjectName:exam.subjectName,questions:[...exam.questions,{question:exam.question,answer:exam.selectOpt,options:[exam.ans1,exam.ans2,exam.ans3,exam.ans4]}],notes:exam.note });       
-      
-      setquestionBank({...questionBank,subjectName:exam.subjectName,questions:[...questionBank.questions,{question:exam.question,answer:exam.selectOpt,options:[exam.ans1,exam.ans2,exam.ans3,exam.ans4]}],notes:exam.note });       
-      ClearForm()  
-      // setquestionBank({...questionBank,exam})
+      setExam({subjectName:exam.subjectName,questions:[...exam.questions,{question:exam.question,answer:exam.selectOpt,options:[exam.Ans1,exam.Ans2,exam.Ans3,exam.Ans4]}], notes:[...exam.notes,exam.note] });       
+      questionNo!==15 && ClearForm()  
+    }
+    console.log(exam.questions[0]);
+      const updateData=()=>{
 
-      // setquestionBank({subjectName:exam.subjectName,questions:[...questionBank.questions,{question:exam.question,answer:exam.selectOpt,options:[exam.ans1,exam.ans2,exam.ans3,exam.ans4]}],notes:exam.note });       
-    
-      // setError(null)
-      // }
-      // ((Object.values(exam).some(e => e === "")) === false) ? PushData() : setError("This field is Required")
+      setExam({...exam,questions:[,...exam.questions,{question:exam.question,answer:exam.selectOpt,options:[exam.Ans1,exam.Ans2,exam.Ans3,exam.Ans4]}],notes:[exam.note]})
     }
 
+        
+        // {subjectName:exam.subjectName,questions:[...exam.questions,{question:exam.question,answer:exam.selectOpt,options:[exam.Ans1,exam.Ans2,exam.Ans3,exam.Ans4]}], notes:[...exam.notes,exam.note] };       
+          
+      
+      (exam.selectOpt!=="Answer..." && (Object.values(exam).some(e => e === "")) === false) ? (questionNo<=exam.questions.length? updateData(): PushData()) : setError("This field is Required")
+
+    }
 
   // const PrevNextQuestion = (No) => { 
   //   setValues({ question: store[No].question, ans1: store[No].options[0], ans2: store[No].options[1],ans3: store[No].options[2],ans4: store[No].options[3]})
@@ -66,58 +80,48 @@ console.log("qb",questionBank);
 
   const ClearForm = () => {
     setExam({
-      subjectName:"",
+      subjectName:exam.subjectName,
+      questions: [...exam.questions,
+        { question: exam.question,
+          answer: exam.selectOpt,
+          options: [exam.Ans1,exam.Ans2,exam.Ans3,exam.Ans4]}
+        ],
+      notes:[...exam.notes,exam.note],
       question: "",
-      questions: [],
-      ans1:"",
-      ans2:"",
-      ans3:"",
-      ans4:"",
-      note:"",
-      selectOpt:"Answer..."
-    })
-    // console.log("gfg",e.target);
-    
-    // setExam({})
-    // setExam((e)=>{
-    //   return {...e,subjectName:"",question:"",};
-    // })
-// setItem({question:"",ans1:""})
-// setExam({question:"",ans1:"",
-   
-//       ans2:"",
-//       ans3:"",
-//       ans4:"",
-//       note:"",
-// })
-    // setExam({subjectName: "",
-    // questions: [],
-    // notes: []})
-    
+      Ans1:"",Ans2:"",Ans3:"",Ans4:"",note:"",selectOpt:"Answer..."
+    })  
   }
 const prevQuetion=()=>{
-  console.log(questionBank.questions[questionNo-2])
-  setExam(
-    questionBank.questions.map((a)=>{
-      // setExam({[a.target.name]:a.target.value})
-      console.log("hjghu",a.answer);
-    })
-    // {
-    //   question: questionBank.questions[questionNo-2].question,
-    //   ans1:questionBank.questions[questionNo-2].options[0],
-    //   ans2:questionBank.questions[questionNo-2].options[1],
-    //   ans3:questionBank.questions[questionNo-2].options[2],
-    //   ans4:questionBank.questions[questionNo-2].options[3],
-    //   note:questionBank.notes,
-    //   selectOpt:questionBank.questions[questionNo-2].answer
-    )
-}
+  setQuestionNo(questionNo - 1);
+  console.log("qn",questionNo);
+  console.log("exam",exam.questions);
+   setExam({...exam,
+      question:exam.questions[questionNo-2].question,
+      Ans1:exam.questions[questionNo-2].options[0],
+      Ans2:exam.questions[questionNo-2].options[1],
+      Ans3:exam.questions[questionNo-2].options[2],
+      Ans4:exam.questions[questionNo-2].options[3],
+      note:exam.notes[questionNo-2],
+      selectOpt:exam.questions[questionNo-2].answer
+   })
+  }
+const nextQuestion=()=>{
+  console.log(exam);
+  setQuestionNo(questionNo + 1)
+  setExam({
+    question: exam.questions[questionNo].question,
+    Ans1:exam.questions[questionNo].options[0],
+    Ans2:exam.questions[questionNo].options[1],
+    Ans3:exam.questions[questionNo].options[2],
+    Ans4:exam.questions[questionNo].options[3],
+    note:exam.notes[questionNo],
+    selectOpt:exam.questions[questionNo].answer
+ })
 
+}
   return (
     <>
       <div className="renderData">
-
-   
       {questionNo<=15 ? 
       <>
         <h2>Question No : {questionNo}</h2>
@@ -127,9 +131,17 @@ const prevQuetion=()=>{
             return <option key={index} value={SubName}>{SubName}</option>
           })}
         </select>
+        {(questionNo===1 && exam.subjectName==="") && <label className="requireMsg">{error}</label>}
         <br />
         <br />
         {QuestionSet && <FormView attribute={QuestionSet} error={error} values={exam} onChange={getQuestion} />}
+        {radioBtnAttribute.map((e,index)=>{
+       return(
+       <div key={index}>
+         {
+         <CustomInput label={<CustomInput type="radio" name="selectOpt" value={e.value} isChecked={exam.selectOpt===e.value} onChange={getQuestion}/>} Requirefield={error} value={e.value} onChange={getQuestion} placeholder={e.placeholder} name={e.placeholder} />  }
+       </div>
+    )})}
         <CustomInput type="text" name="answer" placeholder="Answer" value={exam.selectOpt} Requirefield={error} readOnly/>
         </>: <h1>exam created</h1>
         }
@@ -138,11 +150,11 @@ const prevQuetion=()=>{
         <div style={{ display: "flex", justifyContent: "space-between" }}>
          {questionNo<=15 && 
          <> 
-          <CustomButton value="Pre" isDisabled={questionNo !== 1 ? false : true} onClick={()=>{setQuestionNo(questionNo - 1); prevQuetion()}} />
-          <CustomButton value="next" isDisabled={questionNo!==15 ?false:true} onClick={()=>{setQuestionNo(questionNo + 1); }} />
+          <CustomButton value="Pre" isDisabled={questionNo !==1 ? false : true} onClick={()=>{ prevQuetion()}} />
+          <CustomButton value="next" isDisabled={questionNo!==15 ?false:true} onClick={()=>{ nextQuestion()}} />
           <CustomButton value="Clear" onClick={ClearForm} />
           </> }
-         <CustomButton value="add" onClick={AddQuestion} /> 
+         <CustomButton value={questionNo<=exam.questions.length ? "update":"add"} onClick={AddQuestion} /> 
          {questionNo === 16 && <CustomButton value="create exam" onClick={() => fetchDataPost("/dashboard/Teachers/Exam", getToken, exam)} />}
 
         </div>

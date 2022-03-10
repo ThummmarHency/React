@@ -2,8 +2,7 @@
 import React,{ useState} from 'react'
 const CustomInput = (props) => {
   const[focused,setfocused]= useState(false)
-  
-  const {label,onChange,value,Requirefield,isChecked,errorMsg,rdo,...inputprops}=props
+  const {label,onChange,value,Requirefield,isChecked,errorMsg,rdo,...inputprops}=props;
   return (
     <>
         <label>{label}</label>
