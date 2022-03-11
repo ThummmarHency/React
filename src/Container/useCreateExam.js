@@ -37,13 +37,13 @@ const useCreateExam = () => {
     
   }
 
-  const QuestionSet = [
-    { ...FormAttribute[2], name: "question", label: "Question : ", placeholder: "Enter Question",pattern:"^[a-zA-Z0-9]*$"},
-    { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans1} isChecked={rdoValue.selectOpt===values.ans1} onChange={getRdoValue}/>, name: "ans1", placeholder: "Enter Ans1",pattern:"^[a-zA-Z0-9]*$" },
-    { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans2} isChecked={rdoValue.selectOpt===values.ans2} onChange={getRdoValue}/>, name: "ans2", placeholder: "Enter Ans2",pattern:"^[a-zA-Z0-9]*$" },
-    { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans3} isChecked={rdoValue.selectOpt===values.ans3} onChange={getRdoValue}/>, name: "ans3", placeholder: "Enter Ans3",pattern:"^[a-zA-Z0-9]*$" },
-    { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans4} isChecked={rdoValue.selectOpt===values.ans4} onChange={getRdoValue}/>, name: "ans4", placeholder: "Enter Ans4",pattern:"^[a-zA-Z0-9]*$" },
-  ]
+  // const QuestionSet = [
+  //   { ...FormAttribute[2], name: "question", label: "Question : ", placeholder: "Enter Question",pattern:"^[a-zA-Z0-9]*$"},
+  //   { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans1} isChecked={rdoValue.selectOpt===values.ans1} onChange={getRdoValue}/>, name: "ans1", placeholder: "Enter Ans1",pattern:"^[a-zA-Z0-9]*$" },
+  //   { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans2} isChecked={rdoValue.selectOpt===values.ans2} onChange={getRdoValue}/>, name: "ans2", placeholder: "Enter Ans2",pattern:"^[a-zA-Z0-9]*$" },
+  //   { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans3} isChecked={rdoValue.selectOpt===values.ans3} onChange={getRdoValue}/>, name: "ans3", placeholder: "Enter Ans3",pattern:"^[a-zA-Z0-9]*$" },
+  //   { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans4} isChecked={rdoValue.selectOpt===values.ans4} onChange={getRdoValue}/>, name: "ans4", placeholder: "Enter Ans4",pattern:"^[a-zA-Z0-9]*$" },
+  // ]
 
   const getQuestion = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });  
@@ -75,7 +75,7 @@ const useCreateExam = () => {
     setisDisabled(true)
   }
 
-  return [{isDisabled,store,error,questionNo,setQuestionNo,QuestionSet,rdoValue,getQuestion,AddQuestion,ClearForm,values,PrevNextQuestion,getSubject,exam}]
+  return [{isDisabled,store,error,questionNo,setQuestionNo,rdoValue,getQuestion,AddQuestion,ClearForm,values,PrevNextQuestion,getSubject,exam}]
 }
 
 export default useCreateExam

@@ -8,16 +8,16 @@ const DashBoard = () => {
         <div className="sidebar">
           <ul>
             <li>
-                <Link to="studentdata">Student Data</Link>
+                <Link to="student-data">Student Data</Link>
             </li>
             <li>
-                <Link to="verifieddata">Verify student data</Link>
+                <Link to="verified-data">Verify student data</Link>
             </li>
             <li>
-                <Link to="createexam">Create Exam</Link>
+                <Link to="create-exam">Create Exam</Link>
             </li>
             <li>
-                <Link to="viewexam">View Exam</Link>
+                <Link to="view-exam">View Exam</Link>
             </li>
           </ul>
         </div>

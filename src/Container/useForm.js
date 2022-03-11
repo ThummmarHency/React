@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NewPwdToken, fetchDataPost } from "./DataLogic";
-import { getToken } from "../Container/DataLogic";
+import { getToken } from "./DataLogic";
 
 const useForm = ({ setValues, values, newToken, api }) => {
   const [error, seterror] = useState("");

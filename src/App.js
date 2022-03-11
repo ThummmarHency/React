@@ -5,7 +5,7 @@ import SignupUi from "./Presentation/User/SignupUi";
 import LoginUi from "./Presentation/User/LoginUi";
 import ForgotPwd from "./Presentation/User/ForgotPwd";
 import NewPwd from "./Presentation/User/NewPwd";
-import Logout from "./Presentation/User/Logout"
+import Logout from "./Presentation/User/Logout";
 import PageNotFound from "./Presentation/User/PageNotFound";
 import DashBoard from "./Presentation/Teacher/DashBoard";
 import Navbar from "./Presentation/Navbar";
@@ -14,8 +14,9 @@ import VerifyData from "./Presentation/Teacher/VerifyData";
 import ViewData from "./Presentation/Teacher/ViewData";
 import ProtectedRoute from "./Container/ProtectedRoute";
 import CreateExam from "./Presentation/Teacher/CreateExam";
-import ViewExam from "./Presentation/Teacher/ViewExam"
+import ViewExam from "./Presentation/Teacher/ViewExam";
 import ResetPwd from "./Presentation/User/ResetPwd";
+import Sample from "./Presentation/Teacher/Sample";
 
 function App() {
   return (
@@ -56,21 +57,31 @@ function App() {
               path="dashboard"
               element={<ProtectedRoute Com={DashBoard} />}
             >
-              <Route  path="studentdata" element={<ProtectedRoute Com={ShowStudentData} />} />
-              <Route  path="verifieddata" element={<ProtectedRoute Com={VerifyData} />} />
-              <Route  path="viewData" element={<ProtectedRoute Com={ViewData} />} />
-              <Route  path="createexam" element={<ProtectedRoute Com={CreateExam} />} />
-              <Route  path="viewexam" element={<ProtectedRoute Com={ViewExam} />} />
+              <Route
+                path="student-data"
+                element={<ProtectedRoute Com={ShowStudentData} />}
+              />
+              <Route
+                path="verified-data"
+                element={<ProtectedRoute Com={VerifyData} />}
+              />
+              <Route
+                path="view-data"
+                element={<ProtectedRoute Com={ViewData} />}
+              />
+              <Route
+                path="create-exam"
+                element={<ProtectedRoute Com={CreateExam} />}
+              />
+              <Route
+                path="view-exam"
+                element={<ProtectedRoute Com={ViewExam} />}
+              />
             </Route>
-
           </Route>
-          <Route
-              exact
-              path="newPassword"
-              element={<NewPwd/>}
-            />
+          <Route exact path="newPassword" element={<NewPwd />} />
 
-            <Route path="*" element={<PageNotFound />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </>

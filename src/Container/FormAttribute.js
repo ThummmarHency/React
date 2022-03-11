@@ -35,10 +35,4 @@ export const FormAttribute =[
         pattern:"^student|teacher$",
        
       },
-    { label: "",
-      name: "",
-      placeholder: "",
-      pattern:"^[a-zA-Z0-9]*$" 
-    }
-
   ]

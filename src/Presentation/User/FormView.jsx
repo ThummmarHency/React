@@ -12,7 +12,7 @@ const FormView = ({ handleSubmit, attribute, error, values, onChange, text }) =>
             <CustomInput
               key={index}
               {...input}
-              Requirefield={error}
+              requireField={error}
               value={values[input.name]}
               onChange={onChange}
             />
