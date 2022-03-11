@@ -20,10 +20,10 @@ const CreateExam = () => {
     note: "",
     question: "",
     selectOpt: "Answer...",
-    Ans1: "",
-    Ans2: "",
-    Ans3: "",
-    Ans4: "",
+    ans1: "",
+    ans2: "", 
+    ans3: "",
+    ans4: "",
   });
 
   const getQuestion = (e) => {
@@ -31,10 +31,10 @@ const CreateExam = () => {
   };
 
   const radioBtnAttribute = [
-    { value: exam.Ans1, placeholder: "Ans1" },
-    { value: exam.Ans2, placeholder: "Ans2" },
-    { value: exam.Ans3, placeholder: "Ans3" },
-    { value: exam.Ans4, placeholder: "Ans4" },
+    { value: exam.ans1, placeholder: "Option1",name:"ans1" },
+    { value: exam.ans2, placeholder: "Option2",name:"ans2"},
+    { value: exam.ans3, placeholder: "Option3",name:"ans3"},
+    { value: exam.ans4, placeholder: "Option4",name:"ans4"},
   ];
 
   const QuestionSet = [
@@ -66,7 +66,7 @@ const CreateExam = () => {
           {
             question: exam.question,
             answer: exam.selectOpt,
-            options: [exam.Ans1, exam.Ans2, exam.Ans3, exam.Ans4],
+            options: [exam.ans1, exam.ans2, exam.ans3, exam.ans4],
           },
         ],
         notes: [...exam.notes, exam.note],
@@ -78,23 +78,16 @@ const CreateExam = () => {
    
     const updateData = () => {
       const updateExam = { ...exam };
-      console.log("ue",updateExam);
-      console.log("exam",exam);
-      // if(updateExam!==exam){
-      //   alert("same")
-      // }  
-      updateExam.questions[questionNo-1] = {
+        updateExam.questions[questionNo-1] = {
         question: exam.question,
         answer: exam.selectOpt,
-        options: [exam.Ans1, exam.Ans2, exam.Ans3, exam.Ans4]
+        options: [exam.ans1, exam.ans2, exam.ans3, exam.ans4]
       }
       updateExam.notes[questionNo-1]=exam.note
-
-         
-      setExam(updateExam)
-      nextQuestion()
+       
+      setExam(()=>updateExam)
+      questionNo<exam.questions.length && nextQuestion()
     };
-
 
     exam.selectOpt !== "Answer..." &&
     Object.values(exam).some((e) => e === "") === false
@@ -104,11 +97,6 @@ const CreateExam = () => {
       : setError("This field is Required");
   };
 
-  // const PrevNextQuestion = (No) => {
-  //   setValues({ question: store[No].question, ans1: store[No].options[0], ans2: store[No].options[1],ans3: store[No].options[2],ans4: store[No].options[3]})
-  //   setrdoValue({selectOpt:store[No].answer})
-  // }
-
   const ClearForm = () => {
     setExam({
       subjectName: exam.subjectName,
@@ -117,48 +105,53 @@ const CreateExam = () => {
         {
           question: exam.question,
           answer: exam.selectOpt,
-          options: [exam.Ans1, exam.Ans2, exam.Ans3, exam.Ans4],
+          options: [exam.ans1, exam.ans2, exam.ans3, exam.ans4],
         },
       ],
       notes: [...exam.notes, exam.note],
       question: "",
-      Ans1: "",
-      Ans2: "",
-      Ans3: "",
-      Ans4: "",
+      ans1: "",
+      ans2: "",
+      ans3: "",
+      ans4: "",
       note: "",
       selectOpt: "Answer...",
     });
   };
   const prevQuestion = () => {
-    setQuestionNo(questionNo - 1);
+    setQuestionNo(()=>questionNo - 1);
     setExam({
       ...exam,
       question: exam.questions[questionNo - 2].question,
-      Ans1: exam.questions[questionNo - 2].options[0],
-      Ans2: exam.questions[questionNo - 2].options[1],
-      Ans3: exam.questions[questionNo - 2].options[2],
-      Ans4: exam.questions[questionNo - 2].options[3],
+      ans1: exam.questions[questionNo - 2].options[0],
+      ans2: exam.questions[questionNo - 2].options[1],
+      ans3: exam.questions[questionNo - 2].options[2],
+      ans4: exam.questions[questionNo - 2].options[3],
       note: exam.notes[questionNo - 2],
       selectOpt: exam.questions[questionNo - 2].answer,
     });
   };
+  let x={...exam.questions}
+  let updateExam = { ...exam }
   const nextQuestion = () => {
-    // console.log(exam);
-    setQuestionNo(questionNo + 1);
-    console.log("qn", questionNo);
-    console.log("exam", exam.questions);
+    console.log('x', x)
+    console.log('updateExam.questions[questionNo-1]', updateExam.questions[questionNo-1])
+    // console.log('{exam.question}', x[questionNo-1]===updateExam.questions[questionNo-1])
+    // (x[questionNo-1]!==updateExam.questions[questionNo-1]) && alert("update first")
 
-    setExam({
+    setQuestionNo(()=>questionNo + 1) 
+     setExam({
       ...exam,
       question: exam.questions[questionNo].question,
-      Ans1: exam.questions[questionNo].options[0],
-      Ans2: exam.questions[questionNo].options[1],
-      Ans3: exam.questions[questionNo].options[2],
-      Ans4: exam.questions[questionNo].options[3],
+      ans1: exam.questions[questionNo].options[0],
+      ans2: exam.questions[questionNo].options[1],
+      ans3: exam.questions[questionNo].options[2],
+      ans4: exam.questions[questionNo].options[3],
       note: exam.notes[questionNo],
       selectOpt: exam.questions[questionNo].answer,
-    });
+    })
+    console.log('questionNo :>> ', questionNo);
+    
   };
   return (
     <>
@@ -211,7 +204,7 @@ const CreateExam = () => {
                       value={e.value}
                       onChange={getQuestion}
                       placeholder={e.placeholder}
-                      name={e.placeholder}
+                      name={e.name}
                     />
                   }
                 </div>
@@ -244,8 +237,7 @@ const CreateExam = () => {
               <CustomButton
                 value="next"
                 isDisabled={questionNo !== 15 ? false : true}
-                onClick={() => {
-                  nextQuestion();
+                onClick={() => { questionNo<exam.questions.length ? nextQuestion() : ClearForm();
                 }}
               />
               <CustomButton value="Clear" onClick={ClearForm} />
@@ -268,80 +260,4 @@ const CreateExam = () => {
     </>
   );
 };
-
 export default CreateExam;
-
-// function signupUser() {
-//   return new Promise(resolve => {
-//     setTimeout(resolve, 1000);
-//   });
-// }
-
-// const initialState = {
-//   username: "",
-//   email: "",
-//   password: "",
-//   passwordConfirmation: ""
-// };
-
-// const CreateExam = () => {
-//   const [{ username, email, password, passwordConfirmation },setState] = useState(initialState);
-
-//   const clearState = () => {
-//     setState({ ...initialState });
-//   };
-
-//   const onChange = e => {
-//     const { name, value } = e.target;
-//     setState(prevState => ({ ...prevState, [name]: value }));
-//   };
-
-//   const handleSubmit = e => {
-//     e.preventDefault();
-//     console.log(username, email, password, passwordConfirmation );
-//     signupUser().then(clearState);
-//   };
-
-//   return (
-//     <div className="renderData">
-//     <form onSubmit={handleSubmit}>
-//       <div>
-//         <label>
-//           Username:
-//           <input value={username} name="username" onChange={onChange} />
-//         </label>
-//       </div>
-//       <div>
-//         <label>
-//           Email:
-//           <input value={email} name="email" onChange={onChange} />
-//         </label>
-//       </div>
-//       <div>
-//         <label>
-//           Password:
-//           <input
-//             value={password}
-//             name="password"
-//             type="password"
-//             onChange={onChange}
-//           />
-//         </label>
-//       </div>
-//       <div>
-//         <label>
-//           Confirm Password:
-//           <input
-//             value={passwordConfirmation}
-//             name="passwordConfirmation"
-//             type="password"
-//             onChange={onChange}
-//           />
-//         </label>
-//       </div>
-//       <button>Submit</button>
-//     </form>
-//     </div>
-//   );
-// };
-// export default CreateExam;
