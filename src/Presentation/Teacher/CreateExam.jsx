@@ -20,10 +20,10 @@ const CreateExam = () => {
     note: "",
     question: "",
     selectOpt: "Answer...",
-    ans1: "",
-    ans2: "", 
-    ans3: "",
-    ans4: "",
+    opt1: "",
+    opt2: "",
+    opt3: "",
+    opt4: "",
   });
 
   const getQuestion = (e) => {
@@ -31,10 +31,10 @@ const CreateExam = () => {
   };
 
   const radioBtnAttribute = [
-    { value: exam.ans1, placeholder: "Option1",name:"ans1" },
-    { value: exam.ans2, placeholder: "Option2",name:"ans2"},
-    { value: exam.ans3, placeholder: "Option3",name:"ans3"},
-    { value: exam.ans4, placeholder: "Option4",name:"ans4"},
+    { value: exam.opt1, placeholder: "Option1", name: "opt1" },
+    { value: exam.opt2, placeholder: "Option2", name: "opt2" },
+    { value: exam.opt3, placeholder: "Option3", name: "opt3" },
+    { value: exam.opt4, placeholder: "Option4", name: "opt4" },
   ];
 
   const QuestionSet = [
@@ -59,40 +59,36 @@ const CreateExam = () => {
     const PushData = () => {
       setError(null);
       setQuestionNo(questionNo + 1);
-      setExam({
-        subjectName: exam.subjectName,
-        questions: [
-          ...exam.questions,
-          {
-            question: exam.question,
-            answer: exam.selectOpt,
-            options: [exam.ans1, exam.ans2, exam.ans3, exam.ans4],
-          },
-        ],
-        notes: [...exam.notes, exam.note],
-      });
-      
-      questionNo !== 15 && ClearForm();
+      let clonedExam={...exam}
+      clonedExam.subjectName=exam.subjectName;
+      clonedExam.questions=[...exam.questions,
+        {
+          question: exam.question,
+          answer: exam.selectOpt,
+          options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
+        }]
+        clonedExam.notes=[...exam.notes, exam.note]
+        setExam(clonedExam)
+        questionNo !== 15 && ClearForm();
     };
-    console.log(exam.questions[0]);
-   
+
     const updateData = () => {
-      const updateExam = { ...exam };
-        updateExam.questions[questionNo-1] = {
+      setError(null);
+      let updateExam = { ...exam };
+      updateExam.questions[questionNo - 1] = {
         question: exam.question,
         answer: exam.selectOpt,
-        options: [exam.ans1, exam.ans2, exam.ans3, exam.ans4]
-      }
-      updateExam.notes[questionNo-1]=exam.note
-       
-      setExam(()=>updateExam)
-      questionNo<exam.questions.length && nextQuestion()
+        options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
+      };
+      updateExam.notes[questionNo - 1] = exam.note;
+      setExam(updateExam);
+      nextQuestion();
     };
 
     exam.selectOpt !== "Answer..." &&
     Object.values(exam).some((e) => e === "") === false
       ? questionNo <= exam.questions.length
-        ? updateData(exam.questions[questionNo - 1])
+        ? updateData()
         : PushData()
       : setError("This field is Required");
   };
@@ -105,54 +101,117 @@ const CreateExam = () => {
         {
           question: exam.question,
           answer: exam.selectOpt,
-          options: [exam.ans1, exam.ans2, exam.ans3, exam.ans4],
+          options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
         },
       ],
       notes: [...exam.notes, exam.note],
       question: "",
-      ans1: "",
-      ans2: "",
-      ans3: "",
-      ans4: "",
+      opt1: "",
+      opt2: "",
+      opt3: "",
+      opt4: "",
       note: "",
       selectOpt: "Answer...",
     });
   };
-  const prevQuestion = () => {
-    setQuestionNo(()=>questionNo - 1);
-    setExam({
-      ...exam,
-      question: exam.questions[questionNo - 2].question,
-      ans1: exam.questions[questionNo - 2].options[0],
-      ans2: exam.questions[questionNo - 2].options[1],
-      ans3: exam.questions[questionNo - 2].options[2],
-      ans4: exam.questions[questionNo - 2].options[3],
-      note: exam.notes[questionNo - 2],
-      selectOpt: exam.questions[questionNo - 2].answer,
-    });
-  };
-  let x={...exam.questions}
-  let updateExam = { ...exam }
-  const nextQuestion = () => {
-    console.log('x', x)
-    console.log('updateExam.questions[questionNo-1]', updateExam.questions[questionNo-1])
-    // console.log('{exam.question}', x[questionNo-1]===updateExam.questions[questionNo-1])
-    // (x[questionNo-1]!==updateExam.questions[questionNo-1]) && alert("update first")
 
-    setQuestionNo(()=>questionNo + 1) 
-     setExam({
-      ...exam,
-      question: exam.questions[questionNo].question,
-      ans1: exam.questions[questionNo].options[0],
-      ans2: exam.questions[questionNo].options[1],
-      ans3: exam.questions[questionNo].options[2],
-      ans4: exam.questions[questionNo].options[3],
-      note: exam.notes[questionNo],
-      selectOpt: exam.questions[questionNo].answer,
-    })
-    console.log('questionNo :>> ', questionNo);
-    
+  const clear = () => {
+    const clonedExam = { ...exam };
+    console.log('clonedExam :>> ', clonedExam);
+    clonedExam.question = "";
+    clonedExam.opt1 = "";
+    clonedExam.opt2 = "";
+    clonedExam.opt3 = "";
+    clonedExam.opt4 = "";
+    clonedExam.note = "";
+    clonedExam.selectOpt = "Answer...";
+    setExam(clonedExam);
   };
+
+  const setValueInField = (index) => {
+    let clonedExam = { ...exam };
+    Object.entries(exam.questions[index]).map(([key, value]) => {
+      switch (key) {
+        case "options":
+          clonedExam.opt1 = value[0];
+          clonedExam.opt2 = value[1];
+          clonedExam.opt3 = value[2];
+          clonedExam.opt4 = value[3];
+          break;
+        case "question":
+          clonedExam.question = value;
+          break;
+        case "answer":
+          clonedExam.selectOpt = value;
+          break;
+        default:
+          break;
+      }
+    });
+    clonedExam.note = clonedExam.notes[index];
+    setExam(clonedExam);
+  };
+
+  const currentInpVal = {
+    question: exam.question,
+    opt1: exam.opt1,
+    opt2: exam.opt2,
+    opt3: exam.opt3,
+    opt4: exam.opt4,
+    note: exam.note,
+    answer: exam.selectOpt,
+  };
+  console.log('currentInpVal :>> ', currentInpVal);
+  const checkUpdation=()=>{
+    const clonedQuestions = {
+      question: exam.questions[questionNo-1].question,
+      note: exam.notes[questionNo - 1],
+      opt1: exam.questions[questionNo - 1].options[0],
+      opt2: exam.questions[questionNo - 1].options[1],
+      opt3: exam.questions[questionNo - 1].options[2],
+      opt4: exam.questions[questionNo - 1].options[3],
+      answer: exam.questions[questionNo - 1].answer,
+    };
+    console.log('clonedQuestions :>> ', clonedQuestions);
+    if (
+      currentInpVal.question === clonedQuestions.question &&
+      currentInpVal.note === clonedQuestions.note &&
+      currentInpVal.opt1 === clonedQuestions.opt1 &&
+      currentInpVal.opt2 === clonedQuestions.opt2 &&
+      currentInpVal.opt3 === clonedQuestions.opt3 &&
+      currentInpVal.opt4 === clonedQuestions.opt4 &&
+      currentInpVal.answer === clonedQuestions.answer
+    ){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  const prevQuestion = () => {
+    // let isUpdated=checkUpdation()
+    // if(isUpdated===true){
+       setQuestionNo(() => questionNo - 1);
+       setValueInField(questionNo - 2)
+      // }else{
+      //   alert("first update data")
+      // }
+  };
+
+  const nextQuestion = () => {
+    let isUpdated=checkUpdation()
+    if(isUpdated===true){
+      setQuestionNo(() => questionNo + 1);
+      if (questionNo < exam.questions.length) {
+        setValueInField(questionNo);
+      } else {
+        clear();
+      }
+    } else {
+      alert("first update data");
+    }
+  };
+  
   return (
     <>
       <div className="renderData">
@@ -237,10 +296,11 @@ const CreateExam = () => {
               <CustomButton
                 value="next"
                 isDisabled={questionNo !== 15 ? false : true}
-                onClick={() => { questionNo<exam.questions.length ? nextQuestion() : ClearForm();
+                onClick={() => { exam.selectOpt !== "Answer..." &&
+                Object.values(exam).some((e) => e === "") === false ? nextQuestion() : setError("This field is Required");
                 }}
               />
-              <CustomButton value="Clear" onClick={ClearForm} />
+              <CustomButton value="Clear" onClick={clear} />
             </>
           )}
           <CustomButton

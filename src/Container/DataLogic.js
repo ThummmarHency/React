@@ -20,7 +20,7 @@ export async function fetchDataPost(api, getToken, user) {
     { headers: { "access-token": `${getToken}` } }
   );
   console.log(response.data);
- response && alert(response.data.message);
+  response && alert(response.data.message);
   if ((api === "/users/SignUp" || api==="/users/ResetPassword") && response.data.statusCode === 200) {
     window.location = "/login";
   }
