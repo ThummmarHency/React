@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import FormView from "../User/FormView";
 import CustomButton from "../../Shared/CustomButton";
 import { fetchDataPost, getToken } from "../../Container/DataLogic";
@@ -7,12 +7,11 @@ import useCreateExam from "../../Container/useCreateExam";
 import { FormAttribute } from "../../Container/FormAttribute";
 
 const SubjectList = ["", "React", "Node js", "Angular", "Ux/Ui"];
-
 const CreateExam = () => {
   // const [{isDisabled,error,store,questionNo,setQuestionNo,QuestionSet,rdoValue,getQuestion,AddQuestion,ClearForm,values,PrevNextQuestion,getSubject,exam}]=useCreateExam()
   const [error, setError] = useState(null);
-
   const [questionNo, setQuestionNo] = useState(1);
+
   const [exam, setExam] = useState({
     subjectName: "",
     questions: [],
@@ -25,18 +24,34 @@ const CreateExam = () => {
     opt3: "",
     opt4: "",
   });
+  const currentInpVal = {
+    question: exam.question,
+    note: exam.note,
+    opt1: exam.opt1,
+    opt2: exam.opt2,
+    opt3: exam.opt3,
+    opt4: exam.opt4,
+    answer: exam.selectOpt,
+  };
+  let optionArray = [
+    currentInpVal.opt1,
+    currentInpVal.opt2,
+    currentInpVal.opt3,
+    currentInpVal.opt4,
+  ];
 
   const getQuestion = (e) => {
-    setExam({ ...exam, [e.target.name]: e.target.value });
+    (e.target.name === "selectOpt" && e.target.value === "")
+      ? alert("First fill field")
+      : setExam({ ...exam, [e.target.name]: e.target.value });
   };
 
   const radioBtnAttribute = [
-    { value: exam.opt1, placeholder: "Option1", name: "opt1" },
-    { value: exam.opt2, placeholder: "Option2", name: "opt2" },
-    { value: exam.opt3, placeholder: "Option3", name: "opt3" },
-    { value: exam.opt4, placeholder: "Option4", name: "opt4" },
+    { value: exam.opt1},
+    { value: exam.opt2},
+    { value: exam.opt3},
+    { value: exam.opt4},
   ];
-
   const QuestionSet = [
     {
       ...FormAttribute[2],
@@ -53,58 +68,79 @@ const CreateExam = () => {
       pattern: "^[a-zA-Z0-9]*$",
     },
   ];
-  console.log("exam", exam);
-
-  const AddQuestion = () => {
-    const PushData = () => {
-      setError(null);
-      setQuestionNo(questionNo + 1);
-      let clonedExam={...exam}
-      clonedExam.subjectName=exam.subjectName;
-      clonedExam.questions=[...exam.questions,
-        {
-          question: exam.question,
-          answer: exam.selectOpt,
-          options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
-        }]
-        clonedExam.notes=[...exam.notes, exam.note]
-        setExam(clonedExam)
-        questionNo !== 15 && ClearForm();
-    };
-
-    const updateData = () => {
-      setError(null);
-      let updateExam = { ...exam };
-      updateExam.questions[questionNo - 1] = {
+  console.log("exam >> ", exam);
+  let setDataInState = {
+    subjectName: exam.subjectName,
+    questions: [
+      ...exam.questions,
+      {
         question: exam.question,
         answer: exam.selectOpt,
         options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
-      };
-      updateExam.notes[questionNo - 1] = exam.note;
-      setExam(updateExam);
-      nextQuestion();
+      },
+    ],
+    notes: [...exam.notes, exam.note],
+  };
+  const sameOptAlert = () => {
+   let mapOption= optionArray.map((value)=>value===currentInpVal.answer); 
+    if (optionArray.some((val, i) => optionArray.indexOf(val) !== i)) {
+      alert("Question having same options");
+    } else {
+      if(mapOption.some((isSame)=>isSame===true)===false){
+        alert("Answer not match")
+      }
+        else{
+          return true;
+        }
+    }
+  };
+  // console.log('questionNo-1 :>> ', exam.questions[questionNo-1]);
+  Object.values(exam.questions).map((quesValue, i) => {
+    console.log('i[quesValue] :>> ', exam.questions[questionNo-2].question===currentInpVal.question );
+    console.log("result :>> ", quesValue.question, "i >>", i);
+    return quesValue.question === currentInpVal.question ;
+  });
+
+  const AddQuestion = () => {
+    const PushData = () => {
+      if (sameOptAlert() === true) {
+        setError(null);
+        setQuestionNo(questionNo + 1);
+        setExam(setDataInState);
+        questionNo !== 15 && ClearForm();
+      }
     };
+    const updateData = () => {
+      if (sameOptAlert() === true) {
+        setError(null);
+        let updateExam = { ...exam };
+        updateExam.questions[questionNo - 1] = {
+          question: exam.question,
+          answer: exam.selectOpt,
+          options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
+        };
+        updateExam.notes[questionNo - 1] = exam.note;
+        setExam(updateExam);
+        nextQuestion();
+      }
+    };
+
+    let result = Object.values(exam.questions).map((quesValue, i) => {
+      console.log("result :>> ", quesValue.question, "i >>", i);
+      return quesValue.question === currentInpVal.question;
+    });
 
     exam.selectOpt !== "Answer..." &&
     Object.values(exam).some((e) => e === "") === false
       ? questionNo <= exam.questions.length
-        ? updateData()
-        : PushData()
+        ?  updateData()
+        : result.some((tr) => tr === true)? alert("question repeated"): PushData()
       : setError("This field is Required");
   };
 
   const ClearForm = () => {
     setExam({
-      subjectName: exam.subjectName,
-      questions: [
-        ...exam.questions,
-        {
-          question: exam.question,
-          answer: exam.selectOpt,
-          options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
-        },
-      ],
-      notes: [...exam.notes, exam.note],
+      ...setDataInState,
       question: "",
       opt1: "",
       opt2: "",
@@ -117,7 +153,6 @@ const CreateExam = () => {
 
   const clear = () => {
     const clonedExam = { ...exam };
-    console.log('clonedExam :>> ', clonedExam);
     clonedExam.question = "";
     clonedExam.opt1 = "";
     clonedExam.opt2 = "";
@@ -151,56 +186,51 @@ const CreateExam = () => {
     clonedExam.note = clonedExam.notes[index];
     setExam(clonedExam);
   };
-
-  const currentInpVal = {
-    question: exam.question,
-    opt1: exam.opt1,
-    opt2: exam.opt2,
-    opt3: exam.opt3,
-    opt4: exam.opt4,
-    note: exam.note,
-    answer: exam.selectOpt,
-  };
-  console.log('currentInpVal :>> ', currentInpVal);
-  const checkUpdation=()=>{
-    const clonedQuestions = {
-      question: exam.questions[questionNo-1].question,
-      note: exam.notes[questionNo - 1],
-      opt1: exam.questions[questionNo - 1].options[0],
-      opt2: exam.questions[questionNo - 1].options[1],
-      opt3: exam.questions[questionNo - 1].options[2],
-      opt4: exam.questions[questionNo - 1].options[3],
-      answer: exam.questions[questionNo - 1].answer,
-    };
-    console.log('clonedQuestions :>> ', clonedQuestions);
-    if (
-      currentInpVal.question === clonedQuestions.question &&
-      currentInpVal.note === clonedQuestions.note &&
-      currentInpVal.opt1 === clonedQuestions.opt1 &&
-      currentInpVal.opt2 === clonedQuestions.opt2 &&
-      currentInpVal.opt3 === clonedQuestions.opt3 &&
-      currentInpVal.opt4 === clonedQuestions.opt4 &&
-      currentInpVal.answer === clonedQuestions.answer
-    ){
-      return true;
-    }else{
-      return false;
-    }
+  
+  const fieldRequire=(Question)=>{
+    console.log('exam.selectOpt !== "Answer..." && :>> ', Object.values(exam).some((e) => e === "") === false);
+    ((exam.selectOpt !== "Answer..." &&
+     Object.values(exam).some((e) => e === "")) === false)
+      ? Question()
+      : setError(()=>"This field is Required");
   }
+  const checkUpdation = (index) => {
+    console.log('index :>> ', index);
+    const clonedQuestions = {
+      question: exam.questions[index].question,
+      note: exam.notes[index],
+      opt1: exam.questions[index].options[0],
+      opt2: exam.questions[index].options[1],
+      opt3: exam.questions[index].options[2],
+      opt4: exam.questions[index].options[3],
+      answer: exam.questions[index].answer,
+    };
+    if (Object.values(currentInpVal).some((e) => e === "") === false) {
+      if (JSON.stringify(currentInpVal) === JSON.stringify(clonedQuestions)) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  };
 
   const prevQuestion = () => {
-    // let isUpdated=checkUpdation()
-    // if(isUpdated===true){
-       setQuestionNo(() => questionNo - 1);
-       setValueInField(questionNo - 2)
-      // }else{
-      //   alert("first update data")
-      // }
+    setError(null);
+    let isUpdated = checkUpdation(
+      questionNo - 1 === exam.questions.length ? questionNo - 2 : questionNo - 1
+    );
+    if (isUpdated === true || questionNo-1===exam.questions.length) {
+      setQuestionNo(() => questionNo - 1);
+      setValueInField(questionNo - 2);
+    } else {
+        alert("first update data")
+    }
   };
 
   const nextQuestion = () => {
-    let isUpdated=checkUpdation()
-    if(isUpdated===true){
+    setError(null);
+    let isUpdated = checkUpdation(questionNo - 1);
+    if (isUpdated === true) {
       setQuestionNo(() => questionNo + 1);
       if (questionNo < exam.questions.length) {
         setValueInField(questionNo);
@@ -208,10 +238,10 @@ const CreateExam = () => {
         clear();
       }
     } else {
-      alert("first update data");
+      alert("First update data");
     }
   };
-  
+
   return (
     <>
       <div className="renderData">
@@ -262,8 +292,8 @@ const CreateExam = () => {
                       requireField={error}
                       value={e.value}
                       onChange={getQuestion}
-                      placeholder={e.placeholder}
-                      name={e.name}
+                      placeholder={`Option${index + 1}`}
+                      name={`opt${index + 1}`}
                     />
                   }
                 </div>
@@ -284,29 +314,29 @@ const CreateExam = () => {
         <br />
         <br />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <CustomButton
+            value="Pre"
+            isDisabled={questionNo !== 1 ? false : true}
+            onClick={() => {fieldRequire(prevQuestion)}}
+          />
           {questionNo <= 15 && (
             <>
               <CustomButton
-                value="Pre"
-                isDisabled={questionNo !== 1 ? false : true}
-                onClick={() => {
-                  prevQuestion();
-                }}
-              />
-              <CustomButton
                 value="next"
-                isDisabled={questionNo !== 15 ? false : true}
-                onClick={() => { exam.selectOpt !== "Answer..." &&
-                Object.values(exam).some((e) => e === "") === false ? nextQuestion() : setError("This field is Required");
-                }}
+                isDisabled={
+                  questionNo !== 15 && questionNo <= exam.questions.length
+                    ? false
+                    : true
+                }
+                onClick={() => {fieldRequire(nextQuestion)}}
               />
               <CustomButton value="Clear" onClick={clear} />
+              <CustomButton
+                value={questionNo <= exam.questions.length ? "update" : "add"}
+                onClick={AddQuestion}
+              />
             </>
           )}
-          <CustomButton
-            value={questionNo <= exam.questions.length ? "update" : "add"}
-            onClick={AddQuestion}
-          />
           {questionNo === 16 && (
             <CustomButton
               value="create exam"
