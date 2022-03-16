@@ -15,6 +15,7 @@ import ViewData from "./Presentation/Teacher/ViewData";
 import ProtectedRoute from "./Container/ProtectedRoute";
 import CreateExam from "./Presentation/Teacher/CreateExam";
 import ViewExam from "./Presentation/Teacher/ViewExam";
+import ExamDetail from "./Presentation/Teacher/ExamDetail"
 import ResetPwd from "./Presentation/User/ResetPwd";
 import Sample from "./Presentation/Teacher/Sample";
 
@@ -49,7 +50,7 @@ function App() {
             />
             <Route
               exact
-              path="resetpwd"
+              path="reset-pwd"
               element={<ProtectedRoute Com={ResetPwd} />}
             />
             <Route
@@ -76,6 +77,10 @@ function App() {
               <Route
                 path="view-exam"
                 element={<ProtectedRoute Com={ViewExam} />}
+              />
+              <Route
+                path="exam-detail"
+                element={<ProtectedRoute Com={ExamDetail} />}
               />
             </Route>
           </Route>

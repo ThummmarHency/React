@@ -1,19 +1,10 @@
-import React,{ useState,useEffect} from 'react'
-import {fetchDataGet} from '../../Container/DataLogic'
+import React from 'react'
+import ShowData from '../../Shared/ShowData';
 const ViewExam = () => {
-    const [rows,setRows]=useState([])
-
-    useEffect(() => {
-        fetchDataGet("/dashboard/Teachers/viewExam",setRows)
-        console.log(rows);
-        return () => {
-          setRows([]);
-        };
-      }, []);
+    
   return (
-    <div className="renderData">
-        
-
+    <div >
+      <ShowData api="/dashboard/Teachers/viewExam" h1="Id" a1="_id" h2="SubjectName" a2="subjectName" h3="Email" a3="email" h4="notes" a4="notes" navigate="../exam-detail" Header="View Exam"/>
     </div>
   )
 }

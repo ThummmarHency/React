@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import { fetchDataGet } from "./DataLogic";
 
-const useStudentData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
+const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
   const [stuData, setStuData] = useState([]);
   const [rows, setRows] = useState([]);
   const [searched, setSearched] = useState("");
@@ -16,7 +16,7 @@ const useStudentData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
     };
   }, []);
 
-  const Viewdata = (id) => {
+  const ViewData = (id) => {
      naviGate(`${navigate}?id=${id}`)
   };
 
@@ -38,7 +38,7 @@ const useStudentData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
         return (
           <button
             onClick={() => {
-              Viewdata(rowId);
+              ViewData(rowId);
             }}
           >
             View
@@ -50,7 +50,7 @@ const useStudentData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
 
   const requestSearch = (searchedVal) => {
     const filteredRows = stuData.filter((row) => {
-      return row.name.toLowerCase().includes(searchedVal.toLowerCase());
+      return row._id.toLowerCase().includes(searchedVal.toLowerCase());
     });
     setRows(filteredRows);
   };
@@ -65,4 +65,4 @@ const useStudentData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
   ]
 }
 
-export default useStudentData
+export default useShowData

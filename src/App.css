@@ -23,8 +23,8 @@ input:invalid[focused="true"] ~ .errorMsg{
   color:red
 }
 .renderData{
-  margin-left: 23%;
-  margin-top: -58%;
+  margin-left: 20.5%;
+  margin-top: -60%;
 }
 .Questionrender{
   margin-left: 23%;

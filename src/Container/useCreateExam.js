@@ -1,81 +1,235 @@
-import React,{ useState, useEffect} from 'react'
-import CustomInput from "../Shared/CustomInput";
-import {FormAttribute} from './FormAttribute'
+import React,{ useState} from 'react'
+import { FormAttribute } from "./FormAttribute";
 
 const useCreateExam = () => {
-  const [error, setError] = useState(null)
-  const [rdoValue, setrdoValue] = useState({selectOpt:"Answer..."})
-  const [values, setValues] = useState({
-    question: "", ans1: "", ans2: "", ans3: "", ans4: ""
-  })
-  const [isDisabled, setisDisabled] = useState(false)
-  const [questionNo, setQuestionNo] = useState(1)
-  const [Option, setOption] = useState([])
- 
-  let setQuestions = { question: values.question, answer: rdoValue.selectOpt, options: [...Option] }
-  const [store, setStore] = useState([])
+  const SubjectList = ["", "React", "Node js", "Angular", "Ux/Ui"];
+  const [error, setError] = useState(null);
+  const [questionNo, setQuestionNo] = useState(1);
+  const [selectValue,setSelectValue]=useState('')
+
   const [exam, setExam] = useState({
     subjectName: "",
     questions: [],
-    notes: [
-      "10mins exam",
-      "start time 10am"
-    ]
-  })
-
-  useEffect(() => {
-    setExam({ ...exam, questions: store })
-  }, [store])
-
-  useEffect(() => {
-    setOption([values.ans1, values.ans2, values.ans3, values.ans4])
-  }, [values])
-
-  const getRdoValue=(e)=>{
-    const { name, value } = e.target;
-    setrdoValue({[name]:value})
-    
-  }
-
-  // const QuestionSet = [
-  //   { ...FormAttribute[2], name: "question", label: "Question : ", placeholder: "Enter Question",pattern:"^[a-zA-Z0-9]*$"},
-  //   { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans1} isChecked={rdoValue.selectOpt===values.ans1} onChange={getRdoValue}/>, name: "ans1", placeholder: "Enter Ans1",pattern:"^[a-zA-Z0-9]*$" },
-  //   { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans2} isChecked={rdoValue.selectOpt===values.ans2} onChange={getRdoValue}/>, name: "ans2", placeholder: "Enter Ans2",pattern:"^[a-zA-Z0-9]*$" },
-  //   { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans3} isChecked={rdoValue.selectOpt===values.ans3} onChange={getRdoValue}/>, name: "ans3", placeholder: "Enter Ans3",pattern:"^[a-zA-Z0-9]*$" },
-  //   { ...FormAttribute[2], label: <CustomInput type="radio" name="selectOpt" value={values.ans4} isChecked={rdoValue.selectOpt===values.ans4} onChange={getRdoValue}/>, name: "ans4", placeholder: "Enter Ans4",pattern:"^[a-zA-Z0-9]*$" },
-  // ]
+    notes: [],
+    note: "",
+    question: "",
+    selectOpt: "Answer...",
+    opt1: "",
+    opt2: "",
+    opt3: "",
+    opt4: "",
+  });
+ 
+  const currentInpVal = {
+    question: exam.question,
+    note: exam.note,
+    opt1: exam.opt1,
+    opt2: exam.opt2,
+    opt3: exam.opt3,
+    opt4: exam.opt4,
+    answer: exam.selectOpt,
+  };
+  let optionArray = [
+    currentInpVal.opt1,
+    currentInpVal.opt2,
+    currentInpVal.opt3,
+    currentInpVal.opt4,
+  ];
 
   const getQuestion = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });  
-  }
+    (e.target.name === "selectOpt" && e.target.value === "")
+      ? alert("First fill field")
+      : setExam({ ...exam, [e.target.name]: e.target.value });
+      e.target.name==="subjectName" && setSelectValue(e.target.value)
+  };
 
-  console.log("exam",exam);
-  const AddQuestion = () => {
-
-      const PushData = () => {
-      setStore([...store, setQuestions])
-      setQuestionNo(questionNo + 1)
-      setError(null)
-      ClearForm()
+  const radioBtnAttribute = [
+    { value: exam.opt1},
+    { value: exam.opt2},
+    { value: exam.opt3},
+    { value: exam.opt4},
+  ];
+  const QuestionSet = [
+    {
+      ...FormAttribute[2],
+      name: "question",
+      label: "Question : ",
+      placeholder: "Enter Question",
+      pattern: null,
+    },
+    {
+      ...FormAttribute[2],
+      placeholder: "Enter Notes",
+      label: "Notes : ",
+      name: "note",
+      pattern: null,
+    },
+  ];
+  console.log("exam >> ", exam);
+  let setDataInState = {
+    subjectName: exam.subjectName,
+    questions: [
+      ...exam.questions,
+      {
+        question: exam.question,
+        answer: exam.selectOpt,
+        options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
+      },
+    ],
+    notes: [...exam.notes, exam.note],
+  };
+  const sameOptAlert = () => {
+   let mapOption= optionArray.map((value)=>value===currentInpVal.answer); 
+    if (optionArray.some((val, i) => optionArray.indexOf(val) !== i)) {
+      alert("Question having same options");
+    } else {
+      if(mapOption.some((isSame)=>isSame===true)===false){
+        alert("Answer not match")
+      }
+        else{
+          return true;
+        }
     }
-    ((rdoValue.selectOpt!=="Answer..." && (Object.values(values).some(e => e === "")) === false)) ? PushData() : setError("This field is Required")
-}
-  const PrevNextQuestion = (No) => { 
-    setValues({ question: store[No].question, ans1: store[No].options[0], ans2: store[No].options[1],ans3: store[No].options[2],ans4: store[No].options[3]})
-    setrdoValue({selectOpt:store[No].answer})
-  }
+  };
+  
+  const AddQuestion = () => {
+    const PushData = () => {
+      if (sameOptAlert() === true) {
+        setError(null);
+        setQuestionNo(questionNo + 1);
+        setExam(setDataInState);
+        questionNo !== 15 && ClearForm();
+      }
+    };
+    const updateData = () => {
+      if (sameOptAlert() === true) {
+        setError(null);
+        let updateExam = { ...exam };
+        updateExam.questions[questionNo - 1] = {
+          question: exam.question,
+          answer: exam.selectOpt,
+          options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
+        };
+        updateExam.notes[questionNo - 1] = exam.note;
+        setExam(updateExam);
+        nextQuestion();
+      }
+    };
+
+    let result = Object.values(exam.questions).map((quesValue) => {
+      return (quesValue.question === currentInpVal.question);
+    });
+    exam.selectOpt !== "Answer..." &&
+    Object.values(exam).some((e) => e === "") === false
+      ? questionNo <= exam.questions.length
+        ? (result.some((tr) => tr === true)&&((exam.questions[questionNo-1].question===currentInpVal.question)===false))? alert("question repeated"): updateData()
+        : result.some((tr) => tr === true)? alert("question repeated"): PushData()
+      : setError("This field is Required");
+  };
 
   const ClearForm = () => {
-    setValues({ question: "", ans1: "", ans2: "", ans3: "", ans4: ""})
-    setrdoValue({selectOpt:"Answer..."})
-  }
+    setExam({
+      ...setDataInState,
+      question: "",
+      opt1: "",
+      opt2: "",
+      opt3: "",
+      opt4: "",
+      note: "",
+      selectOpt: "Answer...",
+    });
+  };
 
-  const getSubject = (e) => {
-    setExam({ ...exam, subjectName: e.target.value })
-    setisDisabled(true)
-  }
+  const clear = () => {
+    const clonedExam = { ...exam };
+    clonedExam.subjectName="";
+    clonedExam.question = "";
+    clonedExam.opt1 = "";
+    clonedExam.opt2 = "";
+    clonedExam.opt3 = "";
+    clonedExam.opt4 = "";
+    clonedExam.note = "";
+    clonedExam.selectOpt = "Answer...";
+    setExam(clonedExam);
+    questionNo===1 && setSelectValue('')
+  };
 
-  return [{isDisabled,store,error,questionNo,setQuestionNo,rdoValue,getQuestion,AddQuestion,ClearForm,values,PrevNextQuestion,getSubject,exam}]
+  const setValueInField = (index) => {
+    let clonedExam = { ...exam };
+    Object.entries(exam.questions[index]).map(([key, value]) => {
+      switch (key) {
+        case "options":
+          clonedExam.opt1 = value[0];
+          clonedExam.opt2 = value[1];
+          clonedExam.opt3 = value[2];
+          clonedExam.opt4 = value[3];
+          break;
+        case "question":
+          clonedExam.question = value;
+          break;
+        case "answer":
+          clonedExam.selectOpt = value;
+          break;
+        default:
+          break;
+      }
+    });
+    clonedExam.note = clonedExam.notes[index];
+    setExam(clonedExam);
+  };
+  
+  const fieldRequire=(Question)=>{
+    ((exam.selectOpt !== "Answer..." && Object.values(exam).some((e) => e === "")=== false) || (questionNo-1===exam.questions.length)=== true)
+      ? Question()
+      : setError(()=>"This field is Required");
+  }
+  const checkUpdation = (index) => {
+    const clonedQuestions = {
+      question: exam.questions[index].question,
+      note: exam.notes[index],
+      opt1: exam.questions[index].options[0],
+      opt2: exam.questions[index].options[1],
+      opt3: exam.questions[index].options[2],
+      opt4: exam.questions[index].options[3],
+      answer: exam.questions[index].answer,
+    };
+    if (Object.values(currentInpVal).some((e) => e === "") === false) {
+      if (JSON.stringify(currentInpVal) === JSON.stringify(clonedQuestions)) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  };
+
+  const prevQuestion = () => {
+    setError(null);
+    let isUpdated = checkUpdation(
+      questionNo - 1 === exam.questions.length ? questionNo - 2 : questionNo - 1
+    );
+    if (isUpdated === true || questionNo-1===exam.questions.length) {
+      setQuestionNo(() => questionNo - 1);
+      setValueInField(questionNo - 2);
+    } else {
+        alert("first update data")
+    }
+  };
+
+  const nextQuestion = () => {
+    setError(null);
+    let isUpdated = checkUpdation(questionNo - 1);
+    if (isUpdated === true) {
+      setQuestionNo(() => questionNo + 1);
+      if (questionNo < exam.questions.length) {
+        setValueInField(questionNo);
+      } else {
+        clear();
+      }
+    } else {
+      alert("First update data");
+    }
+  };
+  return [{error,selectValue,questionNo,QuestionSet,SubjectList,radioBtnAttribute,fieldRequire,prevQuestion,nextQuestion,clear,getQuestion,AddQuestion,exam}]
 }
 
 export default useCreateExam

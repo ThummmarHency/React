@@ -1,11 +1,11 @@
 import React from 'react'
-import useStudentData from '../Container/useStudentData'
+import useShowData from '../Container/useShowData'
 import ReactTable from "react-table-6";
 import SearchBar from "material-ui-search-bar";
 
 const ShowData = ({api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,Header}) => {
 
-const [{rows,columns,cancelSearch,searched,requestSearch}]=useStudentData(api,h1,a1,h2,a2,h3,a3,h4,a4,navigate);
+const [{rows,columns,cancelSearch,searched,requestSearch}]=useShowData(api,h1,a1,h2,a2,h3,a3,h4,a4,navigate);
   
   return (
     <div>

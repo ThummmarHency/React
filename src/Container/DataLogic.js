@@ -41,7 +41,7 @@ export  async function fetchDataGet(Api,setStuData,setRows,setResultData) {
 // alert(res.data.message)
 setStuData && setStuData(res.data.data);
 setRows && setRows(res.data.data);
-setResultData && setResultData(res.data.data[0])
+setResultData && setResultData(res.data.data)
 
 }
 
