@@ -1,5 +1,6 @@
-import React,{ useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { FormAttribute } from "./FormAttribute";
+import { fetchDataPost, getToken } from "../Container/DataLogic";
 
 const useCreateExam = () => {
   const SubjectList = ["", "React", "Node js", "Angular", "Ux/Ui"];
@@ -35,7 +36,16 @@ const useCreateExam = () => {
     currentInpVal.opt3,
     currentInpVal.opt4,
   ];
-
+  const radioBtnAttribute = [
+    { value: exam.opt1},
+    { value: exam.opt2},
+    { value: exam.opt3},
+    { value: exam.opt4},
+  ];
+  useEffect(()=>{
+    console.log('exam>>>>>>>>>', exam)
+    questionNo===16 && fetchDataPost("/dashboard/Teachers/Exam", getToken, exam)
+  },[exam])
   const getQuestion = (e) => {
     (e.target.name === "selectOpt" && e.target.value === "")
       ? alert("First fill field")
@@ -43,26 +53,22 @@ const useCreateExam = () => {
       e.target.name==="subjectName" && setSelectValue(e.target.value)
   };
 
-  const radioBtnAttribute = [
-    { value: exam.opt1},
-    { value: exam.opt2},
-    { value: exam.opt3},
-    { value: exam.opt4},
-  ];
   const QuestionSet = [
     {
       ...FormAttribute[2],
       name: "question",
       label: "Question : ",
       placeholder: "Enter Question",
-      pattern: null,
+      pattern: /^[^ ][A-Za-z0-9_ ]{0,}$/,
+      errorMsg:"White space not allow"
     },
     {
       ...FormAttribute[2],
       placeholder: "Enter Notes",
       label: "Notes : ",
       name: "note",
-      pattern: null,
+      pattern: /^[^ ][A-Za-z0-9_ ]{0,}$/,
+      errorMsg:"White space not allow"
     },
   ];
   console.log("exam >> ", exam);
@@ -71,7 +77,7 @@ const useCreateExam = () => {
     questions: [
       ...exam.questions,
       {
-        question: exam.question,
+        question: exam.question.trim(),
         answer: exam.selectOpt,
         options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
       },
@@ -96,10 +102,11 @@ const useCreateExam = () => {
     const PushData = () => {
       if (sameOptAlert() === true) {
         setError(null);
-        setQuestionNo(questionNo + 1);
-        setExam(setDataInState);
+        setExam(()=>setDataInState);
+        questionNo<=15 && setQuestionNo(questionNo + 1);
         questionNo !== 15 && ClearForm();
       }
+      setSelectValue(exam.subjectName)
     };
     const updateData = () => {
       if (sameOptAlert() === true) {
@@ -113,14 +120,13 @@ const useCreateExam = () => {
         updateExam.notes[questionNo - 1] = exam.note;
         setExam(updateExam);
         nextQuestion();
+        setSelectValue(exam.subjectName)
       }
     };
-
     let result = Object.values(exam.questions).map((quesValue) => {
       return (quesValue.question === currentInpVal.question);
     });
-    exam.selectOpt !== "Answer..." &&
-    Object.values(exam).some((e) => e === "") === false
+     Object.values(exam).some((e) => e === "") === false
       ? questionNo <= exam.questions.length
         ? (result.some((tr) => tr === true)&&((exam.questions[questionNo-1].question===currentInpVal.question)===false))? alert("question repeated"): updateData()
         : result.some((tr) => tr === true)? alert("question repeated"): PushData()
@@ -129,7 +135,7 @@ const useCreateExam = () => {
 
   const ClearForm = () => {
     setExam({
-      ...setDataInState,
+      ...setDataInState,  
       question: "",
       opt1: "",
       opt2: "",
@@ -142,7 +148,6 @@ const useCreateExam = () => {
 
   const clear = () => {
     const clonedExam = { ...exam };
-    clonedExam.subjectName="";
     clonedExam.question = "";
     clonedExam.opt1 = "";
     clonedExam.opt2 = "";
@@ -151,7 +156,8 @@ const useCreateExam = () => {
     clonedExam.note = "";
     clonedExam.selectOpt = "Answer...";
     setExam(clonedExam);
-    questionNo===1 && setSelectValue('')
+    setError(null);
+    (questionNo===1 && exam.questions.length!==1) && setSelectValue('')
   };
 
   const setValueInField = (index) => {
@@ -219,7 +225,7 @@ const useCreateExam = () => {
     setError(null);
     let isUpdated = checkUpdation(questionNo - 1);
     if (isUpdated === true) {
-      setQuestionNo(() => questionNo + 1);
+      questionNo<15 && setQuestionNo(() => questionNo + 1);
       if (questionNo < exam.questions.length) {
         setValueInField(questionNo);
       } else {

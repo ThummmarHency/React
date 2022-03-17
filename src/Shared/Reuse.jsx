@@ -1,5 +1,5 @@
 import React from "react";
-import FormView from "../Presentation/User/FormView";
+import FormView from "./FormView";
 import useForm from '../Container/useForm'
 const Reuse = ({ text, api, setValues, values, newToken, attribute }) => {
 

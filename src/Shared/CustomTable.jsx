@@ -20,7 +20,7 @@ const CustomTable = ({ api }) => {
     return (
       <tr className={`border`}>
         {resultData &&
-             Object.keys(resultData).map((keyName, index) => (
+             Object.keys(resultData).map((keyName, index) => (  
                 <th className={`border`} key={index}>
                   {keyName.toUpperCase()}
                 </th>
@@ -31,13 +31,13 @@ const CustomTable = ({ api }) => {
   //   console.log('object :>> ', Array.isArray(resultData));
   const tableBody = (resultDat) => {
     return (
-      <tr className="renderData">
+      <tr className="renderData border">
         {resultDat && 
           (Object.values(resultDat).map((value, index) =>
             Array.isArray(value) ? (
-              value.map((e) => {
+              value.map((e,i) => {
                 return (
-                  <React.Fragment key={index}>
+                  <React.Fragment key={i}>
                     {tableHead(e)}
                     {tableBody(e)}
                   </React.Fragment>

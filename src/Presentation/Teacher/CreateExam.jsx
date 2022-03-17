@@ -1,7 +1,6 @@
 import React from "react";
-import FormView from "../User/FormView";
+import FormView from "../../Shared/FormView";
 import CustomButton from "../../Shared/CustomButton";
-import { fetchDataPost, getToken } from "../../Container/DataLogic";
 import CustomInput from "../../Shared/CustomInput";
 import useCreateExam from "../../Container/useCreateExam";
 
@@ -11,9 +10,10 @@ const CreateExam = () => {
   return (
     <>
       <div className="renderData">
-        {questionNo <= 15 ? (
-          <>
-            <h2>Question No : {questionNo}</h2>
+        
+           {questionNo<=15 ? 
+           <>
+           <h2>Question No : {questionNo}</h2>
             <label>Select Subject : </label>
             <select
               disabled={questionNo === 1 ? false : true}
@@ -29,7 +29,7 @@ const CreateExam = () => {
                 );
               })}
             </select>
-            {questionNo === 1 && exam.subjectName === "" && (
+            {questionNo === 1 && selectValue==='' && (
               <label className="requireMsg">{error}</label>
             )}
             <br />
@@ -57,6 +57,8 @@ const CreateExam = () => {
                         />
                       }
                       requireField={error}
+                      errorMsg="White space not allow"
+                      pattern={/[^ ][A-Za-z0-9_ ]{0,}$/}
                       value={e.value}
                       onChange={getQuestion}
                       placeholder={`Option${index + 1}`}
@@ -74,15 +76,11 @@ const CreateExam = () => {
               requireField={error}
               readOnly
             />
-          </>
-        ) : (
-          <h1>exam created</h1>      
-        )}
+         
         <br />
         <br />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-        {questionNo <= 15 && (
-            <>
+        
           <CustomButton
             value="Pre"
             isDisabled={questionNo !== 1 ? false : true}
@@ -99,20 +97,20 @@ const CreateExam = () => {
               />
               <CustomButton value="Clear" onClick={clear} />
               <CustomButton
-                value={questionNo <= exam.questions.length ? "update" : "add"}
+                value={questionNo<15?(questionNo <= exam.questions.length ? "update" : "add"):"create exam"}
                 onClick={AddQuestion}
               />
-            </>
-          )}
-          {questionNo === 16 && (
+            
+          {/* {questionNo === 16 && (
             <CustomButton
               value="create exam"
               onClick={() =>
                 fetchDataPost("/dashboard/Teachers/Exam", getToken, exam)
               }
             />
-          )}
+          )} */}
         </div>
+        </> : <h1>Exam Created </h1> }
       </div>
     </>
   );

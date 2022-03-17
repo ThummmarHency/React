@@ -14,6 +14,7 @@ export async function NewPwdToken(newToken) {
 
 
 export async function fetchDataPost(api, getToken, user) {
+  console.log('user', user)
   const response = await axios.post(
     process.env.REACT_APP_API + `${api}`,
     user,
@@ -39,6 +40,7 @@ export  async function fetchDataGet(Api,setStuData,setRows,setResultData) {
     { headers: { "access-token": `${getToken}` } }
   );
 // alert(res.data.message)
+console.log('res', res.data)
 setStuData && setStuData(res.data.data);
 setRows && setRows(res.data.data);
 setResultData && setResultData(res.data.data)

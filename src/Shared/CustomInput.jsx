@@ -5,30 +5,28 @@ const CustomInput = (props) => {
     label,
     onChange,
     value,
+    pattern,
     requireField,
     isChecked,
     errorMsg,
-    rdo,
     ...inputProps
   } = props;
   return (
     <>
       <label>{label}</label>
       <input
+        {...inputProps}
         onChange={onChange}
         value={value}
         checked={isChecked}
-        {...inputProps}
         autoComplete="on"
-        onBlur={() => {
-          setFocused(true);
-        }}
+        onBlur={() => setFocused(true)}
         focused={focused.toString()}
       />
       {value === "" || value==="Answer..." ? (
         <span className="requireMsg"> {requireField}</span>
-      ) : null}
-      <span className="errorMsg">{errorMsg}</span>
+       ) : null} 
+      {pattern && (pattern.test(value)===false && value!=="" && focused===true) && <span className="errorMsg">{errorMsg}</span>}
     </>
   );
 };
