@@ -5,7 +5,7 @@ const ViewData = () => {
   
   return (
     <div>
-     <CustomTable api="/dashboard/Teachers/viewStudentDetail"/>
+     <CustomTable api="/dashboard/Teachers/viewStudentDetail" />
     </div>
   );
 };

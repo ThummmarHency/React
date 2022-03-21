@@ -10,9 +10,9 @@ export  const attribute=[
 
 const SignupUI = () => {
   const [values, setValues] = useState({
-    name: "",
     email: "",
     password: "",
+    name: "",
     role: "",
   });
  

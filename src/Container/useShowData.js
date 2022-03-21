@@ -1,16 +1,22 @@
 import React,{useState,useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import { fetchDataGet } from "./DataLogic";
+import { useLocation } from "react-router-dom";
 
 const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
   const [stuData, setStuData] = useState([]);
   const [rows, setRows] = useState([]);
   const [searched, setSearched] = useState("");
 
+  const location = useLocation();
+  let SearchId = new URLSearchParams(location.search);
+  let id = SearchId.get("id");
+
   let naviGate = useNavigate();
 
   useEffect(() => {
-    fetchDataGet(api,setStuData,setRows);
+    id? fetchDataGet(`${api}?id=${id}`,setStuData,setRows):
+    fetchDataGet(api,setStuData,setRows)
     return () => {
       setRows([]);
     };

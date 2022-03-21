@@ -14,7 +14,7 @@ export const FormAttribute =[
       name: "password",
       placeholder: "Enter password",
       errorMsg: "password should be 8-16 characters long",
-      pattern:/^[A-Za-z0-9]{5,15}$/
+      pattern:/^[A-Za-z0-9]{8,15}$/
     },
     {
       label: "Name : ",
