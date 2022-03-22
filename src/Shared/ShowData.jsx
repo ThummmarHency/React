@@ -3,13 +3,11 @@ import useShowData from '../Container/useShowData'
 import ReactTable from "react-table-6";
 import SearchBar from "material-ui-search-bar";
 
-const ShowData = ({api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,Header}) => {
+const ShowData = ({api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,Header,btnText}) => {
 
-const [{rows,columns,cancelSearch,searched,requestSearch}]=useShowData(api,h1,a1,h2,a2,h3,a3,h4,a4,navigate);
+const [{rows,columns,cancelSearch,searched,requestSearch}]=useShowData(api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText);
 
   return (
-    <div>
-      
       <div className="renderData">
         <br />
         {console.log('rows :>> ', rows) }
@@ -21,7 +19,7 @@ const [{rows,columns,cancelSearch,searched,requestSearch}]=useShowData(api,h1,a1
               onCancelSearch={() => cancelSearch()}
             />
             <ReactTable
-              data={rows}  
+              data={Array.isArray(rows)?rows:rows.questions}  
               columns={columns}
               defaultPageSize={10}
               pageSizeOptions={[10]}
@@ -29,7 +27,6 @@ const [{rows,columns,cancelSearch,searched,requestSearch}]=useShowData(api,h1,a1
           </> : "No data Found"}
       
       </div>
-    </div>
   )
 }
 

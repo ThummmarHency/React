@@ -1,26 +1,45 @@
 import React,{useEffect, useState} from 'react'
 import { FormAttribute } from "./FormAttribute";
-import { fetchDataPost, getToken } from "../Container/DataLogic";
+import { fetchDataPost,getToken } from "../Container/DataLogic";
 
-const useCreateExam = () => {
+const useCreateExam = ({exam,setExam}) => {
   const SubjectList = ["", "React", "Node js", "Angular", "Ux/Ui"];
   const [error, setError] = useState(null);
   const [questionNo, setQuestionNo] = useState(1);
   const [selectValue,setSelectValue]=useState('')
+   
+  console.log("exam >>>>> ", exam);
 
-  const [exam, setExam] = useState({
-    subjectName: "",
-    questions: [],
-    notes: [],
-    note: "",
-    question: "",
-    selectOpt: "Answer...",
-    opt1: "",
-    opt2: "",
-    opt3: "",
-    opt4: "",
-  });
- 
+  const setValueInField = (index) => {
+    let clonedExam = { ...exam };
+    Object.entries(exam.questions[index]).map(([key, value]) => {
+      switch (key) {
+        case "options":
+          clonedExam.opt1 = value[0];
+          clonedExam.opt2 = value[1];
+          clonedExam.opt3 = value[2];
+          clonedExam.opt4 = value[3];
+          break;
+        case "question":
+          clonedExam.question = value;
+          break;
+        case "answer":
+          clonedExam.selectOpt = value;
+          break;
+        default:
+          break;
+      }
+    });
+    clonedExam.note = clonedExam.notes[index];
+    setExam(clonedExam);
+  };
+  
+  useEffect(() => {
+    setTimeout(() => { 
+      exam.questions.length===15 && setValueInField(questionNo-1)
+   }, 1000)
+  },[exam.questions.length===15])
+
   const currentInpVal = {
     question: exam.question,
     note: exam.note,
@@ -43,9 +62,9 @@ const useCreateExam = () => {
     { value: exam.opt4},
   ];
   useEffect(()=>{
-    console.log('exam>>>>>>>>>', exam)
     questionNo===16 && fetchDataPost("/dashboard/Teachers/Exam", getToken, exam)
   },[exam])
+
   const getQuestion = (e) => {
     (e.target.name === "selectOpt" && e.target.value === "")
       ? alert("First fill field")
@@ -53,6 +72,7 @@ const useCreateExam = () => {
       e.target.name==="subjectName" && setSelectValue(e.target.value)
   };
 
+  
   const QuestionSet = [
     {
       ...FormAttribute[2],
@@ -71,13 +91,12 @@ const useCreateExam = () => {
       errorMsg:"White space not allow"
     },
   ];
-  console.log("exam >> ", exam);
   let setDataInState = {
     subjectName: exam.subjectName,
     questions: [
       ...exam.questions,
       {
-        question: exam.question.trim(),
+        question: exam.question,
         answer: exam.selectOpt,
         options: [exam.opt1, exam.opt2, exam.opt3, exam.opt4],
       },
@@ -160,32 +179,8 @@ const useCreateExam = () => {
     (questionNo===1 && exam.questions.length!==1) && setSelectValue('')
   };
 
-  const setValueInField = (index) => {
-    let clonedExam = { ...exam };
-    Object.entries(exam.questions[index]).map(([key, value]) => {
-      switch (key) {
-        case "options":
-          clonedExam.opt1 = value[0];
-          clonedExam.opt2 = value[1];
-          clonedExam.opt3 = value[2];
-          clonedExam.opt4 = value[3];
-          break;
-        case "question":
-          clonedExam.question = value;
-          break;
-        case "answer":
-          clonedExam.selectOpt = value;
-          break;
-        default:
-          break;
-      }
-    });
-    clonedExam.note = clonedExam.notes[index];
-    setExam(clonedExam);
-  };
-  
   const fieldRequire=(Question)=>{
-    ((exam.selectOpt !== "Answer..." && Object.values(exam).some((e) => e === "")=== false) || (questionNo-1===exam.questions.length)=== true)
+    ((exam.selectOpt !== "Answer..." && Object.values(exam).some((e) => e === "")=== false) || ((questionNo-1===exam.questions.length)=== true && exam.subjectName===""))
       ? Question()
       : setError(()=>"This field is Required");
   }

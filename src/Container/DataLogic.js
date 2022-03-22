@@ -39,8 +39,7 @@ export  async function fetchDataGet(Api,setStuData,setRows,setResultData) {
     process.env.REACT_APP_API + `${Api}`,
     { headers: { "access-token": `${getToken}` } }
   );
-// alert(res.data.message)
-console.log('res', res.data)
+console.log('res', res.data.data)
 setStuData && setStuData(res.data.data);
 setRows && setRows(res.data.data);
 setResultData && setResultData(res.data.data)

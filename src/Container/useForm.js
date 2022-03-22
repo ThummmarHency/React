@@ -41,7 +41,6 @@ const useForm = ({ setValues, values, newToken, api }) => {
     
     return isValid;
   };
-  console.log("values", values);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = { ...values };

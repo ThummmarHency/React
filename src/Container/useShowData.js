@@ -3,19 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { fetchDataGet } from "./DataLogic";
 import { useLocation } from "react-router-dom";
 
-const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
+const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText) => {
   const [stuData, setStuData] = useState([]);
   const [rows, setRows] = useState([]);
   const [searched, setSearched] = useState("");
 
   const location = useLocation();
   let SearchId = new URLSearchParams(location.search);
-  let id = SearchId.get("id");
+  let ids = SearchId.get("id");
 
   let naviGate = useNavigate();
-
   useEffect(() => {
-    id? fetchDataGet(`${api}?id=${id}`,setStuData,setRows):
+    ids? fetchDataGet(`${api}?id=${ids}`,setStuData,setRows):
     fetchDataGet(api,setStuData,setRows)
     return () => {
       setRows([]);
@@ -23,7 +22,7 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
   }, []);
 
   const ViewData = (id) => {
-     naviGate(`${navigate}?id=${id}`)
+     naviGate(`${navigate}?id=${id===undefined?ids:id}`)
   };
 
   const columns = [
@@ -38,7 +37,7 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
     },
     { Header: h4, accessor: a4 },
     {
-      Header: "View",
+      Header: "Action",
       Cell: (props) => {
         const rowId = props.row._id;
         return (
@@ -47,7 +46,7 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate) => {
               ViewData(rowId);
             }}
           >
-            View
+            {btnText}
           </button>
         );
       },

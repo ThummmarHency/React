@@ -22,7 +22,6 @@ const FormView = ({ handleSubmit, attribute, error, values, onChange, text }) =>
           );
         })}
         <br />
-        {console.log('values :>> ', Object.values(values).map((v)=>{return v}))}
         {text && <CustomButton isDisabled={false} type="submit" value={text} />}
       </form>
     </div>

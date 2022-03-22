@@ -16,7 +16,6 @@ const SignupUI = () => {
     role: "",
   });
  
-
   return (
     <div>
       {

@@ -1,20 +1,86 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FormView from "../../Shared/FormView";
 import CustomButton from "../../Shared/CustomButton";
 import CustomInput from "../../Shared/CustomInput";
 import useCreateExam from "../../Container/useCreateExam";
+import { useLocation } from "react-router-dom";
+import { fetchDataGet } from "../../Container/DataLogic";
 
 const CreateExam = () => {
-  const [{error,selectValue,questionNo,QuestionSet,SubjectList,radioBtnAttribute,fieldRequire,prevQuestion,nextQuestion,clear,getQuestion,AddQuestion,exam}]=useCreateExam()
+  const [rows, setRows] = useState([]);
+  const [rows1, setRows1] = useState({});
+  const location = useLocation();
+  let SearchId = new URLSearchParams(location.search);
+  let ids = SearchId.get("id");
+  useEffect(() => {
+    fetchDataGet(
+      `/dashboard/Teachers/examDetail?id=${ids}`,
+      undefined,
+      setRows
+    );
+    return () => {
+      setRows([]);
+    };
+  }, []);
+  console.log("rows :>> ", rows);
   
+  const [exam1, setExam1] = useState({
+    subjectName: "",
+    questions: [],
+    notes: [],
+    note: "",
+    question: "",
+    selectOpt: "Answer...",
+    opt1: "",
+    opt2: "",
+    opt3: "",
+    opt4: "",
+  });
+
+  useEffect(() => {
+   rows && setRows1({
+      subjectName: "",
+      questions: rows.questions,
+      notes: [1],
+      note: "",
+      question: "",
+      selectOpt: "Answer...",
+      opt1: "",
+      opt2: "",
+      opt3: "",
+      opt4: "",
+    });
+  }, [rows]);
+
+  const [
+    {
+      error,
+      selectValue,
+      questionNo,
+      QuestionSet,
+      SubjectList,
+      radioBtnAttribute,
+      fieldRequire,
+      prevQuestion,
+      nextQuestion,
+      clear,
+      getQuestion,
+      AddQuestion,
+      exam,
+    },
+  ] = useCreateExam({
+    exam:ids?(rows1.questions === undefined ? exam1 : rows1) : exam1,
+    setExam:ids? (rows1.questions === undefined ? setExam1 : setRows1) : setExam1,
+    
+  });
   return (
     <>
       <div className="renderData">
-        
-           {questionNo<=15 ? 
-           <>
-           <h2>Question No : {questionNo}</h2>
-            <label>Select Subject : </label>
+        {questionNo <= 15 ? (
+          <>
+            <h2>Question No : {questionNo}</h2>
+           {ids?null:
+          <> <label>Select Subject : </label>
             <select
               disabled={questionNo === 1 ? false : true}
               onChange={getQuestion}
@@ -29,9 +95,9 @@ const CreateExam = () => {
                 );
               })}
             </select>
-            {questionNo === 1 && selectValue==='' && (
+            {questionNo === 1 && selectValue === "" && (
               <label className="requireMsg">{error}</label>
-            )}
+            )}</>}
             <br />
             <br />
             {QuestionSet && (
@@ -76,16 +142,17 @@ const CreateExam = () => {
               requireField={error}
               readOnly
             />
-         
-        <br />
-        <br />
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-        
-          <CustomButton
-            value="Pre"
-            isDisabled={questionNo !== 1 ? false : true}
-            onClick={() => {fieldRequire(prevQuestion)}}
-          />
+
+            <br />
+            <br />
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <CustomButton
+                value="Pre"
+                isDisabled={questionNo !== 1 ? false : true}
+                onClick={() => {
+                  fieldRequire(prevQuestion);
+                }}
+              />
               <CustomButton
                 value="next"
                 isDisabled={
@@ -93,24 +160,26 @@ const CreateExam = () => {
                     ? false
                     : true
                 }
-                onClick={() => {fieldRequire(nextQuestion)}}
+                onClick={() => {
+                  fieldRequire(nextQuestion);
+                }}
               />
               <CustomButton value="Clear" onClick={clear} />
               <CustomButton
-                value={questionNo<15?(questionNo <= exam.questions.length ? "update" : "add"):"create exam"}
+                value={
+                  questionNo < 15
+                    ? questionNo <= exam.questions.length
+                      ? "update"
+                      : "add"
+                    : "create exam"
+                }
                 onClick={AddQuestion}
               />
-            
-          {/* {questionNo === 16 && (
-            <CustomButton
-              value="create exam"
-              onClick={() =>
-                fetchDataPost("/dashboard/Teachers/Exam", getToken, exam)
-              }
-            />
-          )} */}
-        </div>
-        </> : <h1>Exam Created </h1> }
+            </div>
+          </>
+        ) : (
+          <h1>Exam Created </h1>
+        )}
       </div>
     </>
   );
