@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
-import { fetchDataGet } from "./DataLogic";
+import { fetchDataGet,fetchDataDel } from "./DataLogic";
 import { useLocation } from "react-router-dom";
 
-const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText) => {
+const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText,btnText1) => {
   const [stuData, setStuData] = useState([]);
   const [rows, setRows] = useState([]);
   const [searched, setSearched] = useState("");
@@ -20,34 +20,52 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText) => {
       setRows([]);
     };
   }, []);
-
-  const ViewData = (id) => {
-     naviGate(`${navigate}?id=${id===undefined?ids:id}`)
+  
+  const ViewData = (id,ques) => {
+    naviGate(`${navigate}?id=${id===undefined?ids:id}&index=${ques!==undefined && ques}`)
   };
-
+  
+  const deleteExam=(id)=>{
+  var result = window.confirm("Are you sure you want to delete exam?");
+  if (result) {
+    fetchDataDel(`/dashboard/Teachers/deleteExam?id=${id}`)
+    const newExamList=rows.filter((item)=>item._id!==id)
+    setRows(newExamList)
+  }
+  }
   const columns = [
     { Header: h1, accessor: a1 },
     {
       Header: h2,
-      accessor: a2,
+      accessor:a2,
+      Cell: e=> (e.value + ",").slice(0,-1)
     },
     {
       Header: h3,
       accessor: a3,
     },
-    { Header: h4, accessor: a4 },
+    {Header: h4, accessor: a4},
     {
       Header: "Action",
       Cell: (props) => {
         const rowId = props.row._id;
+        const rowQues=props.row.question;
         return (
+          <>
           <button
-            onClick={() => {
-              ViewData(rowId);
+          onClick={() => {
+              ViewData(rowId,rowQues);
             }}
           >
             {btnText}
           </button>
+          {btnText1 && <button
+          onClick={()=>{
+            deleteExam(rowId)
+          }}>
+            {btnText1}
+          </button>}
+          </>
         );
       },
     },

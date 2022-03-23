@@ -3,14 +3,14 @@ import useShowData from '../Container/useShowData'
 import ReactTable from "react-table-6";
 import SearchBar from "material-ui-search-bar";
 
-const ShowData = ({api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,Header,btnText}) => {
+const ShowData = ({api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,Header,btnText,btnText1}) => {
 
-const [{rows,columns,cancelSearch,searched,requestSearch}]=useShowData(api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText);
+const [{rows,columns,cancelSearch,searched,requestSearch}]=useShowData(api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText,btnText1);
 
   return (
       <div className="renderData">
         <br />
-        {console.log('rows :>> ', rows) }
+        {console.log('rows ::>> ', rows) }
         <h2>{Header}</h2> 
          {rows ?  <>
             <SearchBar

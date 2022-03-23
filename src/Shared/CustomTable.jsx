@@ -7,7 +7,7 @@ const CustomTable = ({api}) => {
   const location = useLocation();
   let SearchId = new URLSearchParams(location.search);
   let id = SearchId.get("id");
-
+  console.log('id :>> ', id);
   useEffect(() => {
    fetchDataGet(`${api}?id=${id}`, undefined, undefined, setResultData);
     return () => {

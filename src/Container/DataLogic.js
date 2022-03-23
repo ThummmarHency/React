@@ -46,3 +46,12 @@ setResultData && setResultData(res.data.data)
 
 }
 
+export async function fetchDataDel(Api){
+  const res=await axios.delete(process.env.REACT_APP_API + `${Api}`, {
+    headers: {
+      "access-token": `${getToken}`
+    },
+  });
+  console.log('res', res)
+
+}

@@ -1,14 +1,12 @@
-import React,{useEffect, useState} from 'react'
+import React, { useEffect, useState } from "react";
 import { FormAttribute } from "./FormAttribute";
-import { fetchDataPost,getToken } from "../Container/DataLogic";
+import { fetchDataPost, getToken } from "../Container/DataLogic";
+import { useLocation } from "react-router-dom";
 
-const useCreateExam = ({exam,setExam}) => {
+const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo }) => {
   const SubjectList = ["", "React", "Node js", "Angular", "Ux/Ui"];
   const [error, setError] = useState(null);
-  const [questionNo, setQuestionNo] = useState(1);
-  const [selectValue,setSelectValue]=useState('')
-   
-  console.log("exam >>>>> ", exam);
+  const [selectValue, setSelectValue] = useState("");
 
   const setValueInField = (index) => {
     let clonedExam = { ...exam };
@@ -33,12 +31,11 @@ const useCreateExam = ({exam,setExam}) => {
     clonedExam.note = clonedExam.notes[index];
     setExam(clonedExam);
   };
-  
+  console.log('exam : >>', exam.notes)
+
   useEffect(() => {
-    setTimeout(() => { 
-      exam.questions.length===15 && setValueInField(questionNo-1)
-   }, 1000)
-  },[exam.questions.length===15])
+    (exam.questions.length === 15 && questionNo!==null) && setValueInField(questionNo-1);
+  }, [exam.questions.length === 15 && questionNo!==null]);
 
   const currentInpVal = {
     question: exam.question,
@@ -56,23 +53,23 @@ const useCreateExam = ({exam,setExam}) => {
     currentInpVal.opt4,
   ];
   const radioBtnAttribute = [
-    { value: exam.opt1},
-    { value: exam.opt2},
-    { value: exam.opt3},
-    { value: exam.opt4},
+    { value: exam.opt1 },
+    { value: exam.opt2 },
+    { value: exam.opt3 },
+    { value: exam.opt4 },
   ];
-  useEffect(()=>{
-    questionNo===16 && fetchDataPost("/dashboard/Teachers/Exam", getToken, exam)
-  },[exam])
+  useEffect(() => {
+    questionNo === 16 &&
+      fetchDataPost("/dashboard/Teachers/Exam", getToken, exam);
+  }, [exam]);
 
   const getQuestion = (e) => {
-    (e.target.name === "selectOpt" && e.target.value === "")
+    e.target.name === "selectOpt" && e.target.value === ""
       ? alert("First fill field")
       : setExam({ ...exam, [e.target.name]: e.target.value });
-      e.target.name==="subjectName" && setSelectValue(e.target.value)
+    e.target.name === "subjectName" && setSelectValue(e.target.value);
   };
 
-  
   const QuestionSet = [
     {
       ...FormAttribute[2],
@@ -80,7 +77,7 @@ const useCreateExam = ({exam,setExam}) => {
       label: "Question : ",
       placeholder: "Enter Question",
       pattern: /^[^ ][A-Za-z0-9_ ]{0,}$/,
-      errorMsg:"White space not allow"
+      errorMsg: "White space not allow",
     },
     {
       ...FormAttribute[2],
@@ -88,7 +85,7 @@ const useCreateExam = ({exam,setExam}) => {
       label: "Notes : ",
       name: "note",
       pattern: /^[^ ][A-Za-z0-9_ ]{0,}$/,
-      errorMsg:"White space not allow"
+      errorMsg: "White space not allow",
     },
   ];
   let setDataInState = {
@@ -104,28 +101,27 @@ const useCreateExam = ({exam,setExam}) => {
     notes: [...exam.notes, exam.note],
   };
   const sameOptAlert = () => {
-   let mapOption= optionArray.map((value)=>value===currentInpVal.answer); 
+    let mapOption = optionArray.map((value) => value === currentInpVal.answer);
     if (optionArray.some((val, i) => optionArray.indexOf(val) !== i)) {
       alert("Question having same options");
     } else {
-      if(mapOption.some((isSame)=>isSame===true)===false){
-        alert("Answer not match")
+      if (mapOption.some((isSame) => isSame === true) === false) {
+        alert("Answer not match");
+      } else {
+        return true;
       }
-        else{
-          return true;
-        }
     }
   };
-  
+
   const AddQuestion = () => {
     const PushData = () => {
       if (sameOptAlert() === true) {
         setError(null);
-        setExam(()=>setDataInState);
-        questionNo<=15 && setQuestionNo(questionNo + 1);
+        setExam(() => setDataInState);
+        questionNo <= 15 && setQuestionNo(questionNo + 1);
         questionNo !== 15 && ClearForm();
       }
-      setSelectValue(exam.subjectName)
+      setSelectValue(exam.subjectName);
     };
     const updateData = () => {
       if (sameOptAlert() === true) {
@@ -139,22 +135,29 @@ const useCreateExam = ({exam,setExam}) => {
         updateExam.notes[questionNo - 1] = exam.note;
         setExam(updateExam);
         nextQuestion();
-        setSelectValue(exam.subjectName)
+        setSelectValue(exam.subjectName);
       }
     };
     let result = Object.values(exam.questions).map((quesValue) => {
-      return (quesValue.question === currentInpVal.question);
+      return quesValue.question === currentInpVal.question;
     });
-     Object.values(exam).some((e) => e === "") === false
+    Object.values(exam).some((e) => e === "") === false
       ? questionNo <= exam.questions.length
-        ? (result.some((tr) => tr === true)&&((exam.questions[questionNo-1].question===currentInpVal.question)===false))? alert("question repeated"): updateData()
-        : result.some((tr) => tr === true)? alert("question repeated"): PushData()
+        ? result.some((tr) => tr === true) &&
+          (exam.questions[questionNo - 1].question ===
+            currentInpVal.question) ===
+            false
+          ? alert("question repeated")
+          : updateData()
+        : result.some((tr) => tr === true)
+        ? alert("question repeated")
+        : PushData()
       : setError("This field is Required");
   };
 
   const ClearForm = () => {
     setExam({
-      ...setDataInState,  
+      ...setDataInState,
       question: "",
       opt1: "",
       opt2: "",
@@ -176,14 +179,17 @@ const useCreateExam = ({exam,setExam}) => {
     clonedExam.selectOpt = "Answer...";
     setExam(clonedExam);
     setError(null);
-    (questionNo===1 && exam.questions.length!==1) && setSelectValue('')
+    questionNo === 1 && exam.questions.length !== 1 && setSelectValue("");
   };
 
-  const fieldRequire=(Question)=>{
-    ((exam.selectOpt !== "Answer..." && Object.values(exam).some((e) => e === "")=== false) || ((questionNo-1===exam.questions.length)=== true && exam.subjectName===""))
+  const fieldRequire = (Question) => {
+    (exam.selectOpt !== "Answer..." &&
+      Object.values(exam).some((e) => e === "") === false) ||
+    ((questionNo - 1 === exam.questions.length) === true &&
+      exam.subjectName === "")
       ? Question()
-      : setError(()=>"This field is Required");
-  }
+      : setError(() => "This field is Required");
+  };
   const checkUpdation = (index) => {
     const clonedQuestions = {
       question: exam.questions[index].question,
@@ -208,11 +214,11 @@ const useCreateExam = ({exam,setExam}) => {
     let isUpdated = checkUpdation(
       questionNo - 1 === exam.questions.length ? questionNo - 2 : questionNo - 1
     );
-    if (isUpdated === true || questionNo-1===exam.questions.length) {
+    if (isUpdated === true || questionNo - 1 === exam.questions.length) {
       setQuestionNo(() => questionNo - 1);
       setValueInField(questionNo - 2);
     } else {
-        alert("first update data")
+      alert("first update data");
     }
   };
 
@@ -220,7 +226,7 @@ const useCreateExam = ({exam,setExam}) => {
     setError(null);
     let isUpdated = checkUpdation(questionNo - 1);
     if (isUpdated === true) {
-      questionNo<15 && setQuestionNo(() => questionNo + 1);
+      questionNo < 15 && setQuestionNo(() => questionNo + 1);
       if (questionNo < exam.questions.length) {
         setValueInField(questionNo);
       } else {
@@ -230,7 +236,22 @@ const useCreateExam = ({exam,setExam}) => {
       alert("First update data");
     }
   };
-  return [{error,selectValue,questionNo,QuestionSet,SubjectList,radioBtnAttribute,fieldRequire,prevQuestion,nextQuestion,clear,getQuestion,AddQuestion,exam}]
-}
+  return [
+    {
+      error,
+      selectValue,
+      QuestionSet,
+      SubjectList,
+      radioBtnAttribute,
+      fieldRequire,
+      prevQuestion,
+      nextQuestion,
+      clear,
+      getQuestion,
+      AddQuestion,
+      exam,
+    },
+  ];
+};
 
-export default useCreateExam
+export default useCreateExam;
