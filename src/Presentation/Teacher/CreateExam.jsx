@@ -4,7 +4,7 @@ import CustomButton from "../../Shared/CustomButton";
 import CustomInput from "../../Shared/CustomInput";
 import useCreateExam from "../../Container/useCreateExam";
 import { useLocation } from "react-router-dom";
-import { fetchDataGet } from "../../Container/DataLogic";
+import { fetchDataGet} from "../../Container/DataLogic";
 
 const CreateExam = () => {
   const [rows, setRows] = useState([]);
@@ -16,8 +16,8 @@ const CreateExam = () => {
   let SearchId = new URLSearchParams(location.search);
   let ids = SearchId.get("id");
   let index = SearchId.get("index");
-  // console.log('questionNo1 :>> ', questionNo1);
- 
+  console.log('location :>> ', location);
+
   useEffect(() => {
     fetchDataGet(
       `/dashboard/Teachers/examDetail?id=${ids}`,
@@ -29,8 +29,8 @@ const CreateExam = () => {
       setRows([]);
     };
   }, []);
+  
   console.log("rows :>> ", rows);
-
   const [exam1, setExam1] = useState({
     subjectName: "",
     questions: [],
@@ -47,7 +47,7 @@ const CreateExam = () => {
     getNameNotes && setNameNotesSet(
       getNameNotes?.map((e) => {
           return (
-            e._id === ids && { subjectName: e.subjectName, notes: e.notes }
+            e._id === ids && { subjectName: e.subjectName, notes: e?.notes}
           );
         })
         .filter((val) => val !== false)
@@ -58,9 +58,9 @@ const CreateExam = () => {
   useEffect(() => {
    rows && 
           setRows1({
-            subjectName: NameNotesSet[0]?.subjectName,
+            subjectName:NameNotesSet[0]?.subjectName,
             questions: rows.questions,
-            notes: NameNotesSet[0]?.notes,
+            notes:NameNotesSet[0]?.notes,
             note: "",
             question: "",
             selectOpt: "Answer...",
@@ -70,7 +70,7 @@ const CreateExam = () => {
             opt4: "",
           })
         rows && ids ? setQuestionNo1((Object.values(rows)[0]?.map((e)=>{return Object.values(e)[1]}).indexOf(index))+1):setQuestionNo1(1)
-        console.log('questionNo1 :>> ',questionNo1);
+        ids===null && setQuestionNo1(1)
   }, [rows]);
   const [
     {
@@ -86,25 +86,27 @@ const CreateExam = () => {
       getQuestion,
       AddQuestion,
       exam,
+      notes
     },
   ] = useCreateExam({
     exam: ids ? (rows1.questions === undefined ? exam1 : rows1) : exam1,
     setExam: ids
-      ? rows1.questions === undefined
-        ? setExam1
-        : setRows1
-      : setExam1,
-      questionNo:ids?(rows1.questions === undefined ? 1 : questionNo1):1,
-      setQuestionNo:ids?(rows1.questions === undefined ? 1 : setQuestionNo1):1
+    ? rows1.questions === undefined
+    ? setExam1
+    : setRows1
+    : setExam1,
+    questionNo:ids?(rows1.questions === undefined ? questionNo1 : questionNo1):questionNo1,
+    setQuestionNo: ids?rows1.questions === undefined ? setQuestionNo1:setQuestionNo1:setQuestionNo1,
+    ids:ids
   });
+  
   return (
     <>
-    {/* {console.log('questionNo1 :>> ', questionNo1)} */}
       <div className="renderData">
-        {questionNo1 <= 15 || isNaN(questionNo1) ? (
+        {questionNo1 <= 15 ? (
           <>
             <h2>Question No : {questionNo1}</h2>
-            {ids ? null : (
+            {ids ? <label>Subject : {NameNotesSet[0]?.subjectName} </label> : (
               <>
                 <label>Select Subject : </label>
                 <select
@@ -129,12 +131,22 @@ const CreateExam = () => {
             <br />
             <br />
             {QuestionSet && (
+              <>
               <FormView
                 attribute={QuestionSet}
                 error={error}
                 values={exam}
                 onChange={getQuestion}
               />
+            Notes: <input type="text" 
+            placeholder= "Enter Notes"
+            label= "Notes : "
+            name= "note"
+            value={notes}
+            pattern= {/^[^ ][A-Za-z0-9_ ]{0,}$/}
+            onChange={getQuestion}
+            />
+            </>
             )}
             {radioBtnAttribute.map((e, index) => {
               return (
@@ -151,8 +163,8 @@ const CreateExam = () => {
                         />
                       }
                       requireField={error}
-                      errorMsg="White space not allow"
                       pattern={/[^ ][A-Za-z0-9_ ]{0,}$/}
+                      errorMsg="White space not allow"
                       value={e.value}
                       onChange={getQuestion}
                       placeholder={`Option${index + 1}`}
@@ -199,14 +211,14 @@ const CreateExam = () => {
                     ? questionNo1 <= exam.questions.length
                       ? "update"
                       : "add"
-                    : "create exam"
+                    : ids ? "Update exam" :"create exam"
                 }
                 onClick={AddQuestion}
               />
             </div>
           </>
         ) : (
-          <h1>Exam Created </h1>
+          <h1> </h1>
         )}
       </div>
     </>

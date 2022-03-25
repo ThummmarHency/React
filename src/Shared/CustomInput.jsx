@@ -23,7 +23,8 @@ const CustomInput = (props) => {
         onBlur={() => setFocused(true)}
         focused={focused.toString()}
       />
-      {value === "" || value==="Answer..." ? (
+     
+      {(value === "" || value==="Answer...")? (
         <span className="requireMsg"> {requireField}</span>
        ) : null} 
       {pattern && (pattern.test(value)===false && value!=="" && focused===true) && <span className="errorMsg">{errorMsg}</span>}

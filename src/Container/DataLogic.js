@@ -55,3 +55,15 @@ export async function fetchDataDel(Api){
   console.log('res', res)
 
 }
+
+export async function fetchDataPut(api, getToken, user){
+  const res=await axios.put(process.env.REACT_APP_API + `${api}`,
+  user,
+  {
+    headers: {
+      "access-token": `${getToken}`
+    },
+  });
+  console.log('res', res)
+
+}

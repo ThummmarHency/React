@@ -18,6 +18,7 @@ import ViewExam from "./Presentation/Teacher/ViewExam";
 import ExamDetail from "./Presentation/Teacher/ExamDetail"
 import ResetPwd from "./Presentation/User/ResetPwd";
 import Sample from "./Presentation/Teacher/Sample";
+import EditExam from "./Presentation/Teacher/EditExam";
 
 function App() {
   return (
@@ -77,6 +78,10 @@ function App() {
               <Route
                 path="view-exam"
                 element={<ProtectedRoute Com={ViewExam} />}
+              />
+              <Route
+                path="edit-exam"
+                element={<ProtectedRoute Com={EditExam} />}
               />
               <Route
                 path="exam-detail"

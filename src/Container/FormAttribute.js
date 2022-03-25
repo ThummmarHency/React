@@ -32,4 +32,5 @@ export const FormAttribute =[
       errorMsg: "Role should be either student or teacher ",
       pattern:/^student|teacher$/,
     },
+   
   ]

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchDataGet,fetchDataDel } from "./DataLogic";
 import { useLocation } from "react-router-dom";
 
-const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText,btnText1) => {
+const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText,btnText1,notes) => {
   const [stuData, setStuData] = useState([]);
   const [rows, setRows] = useState([]);
   const [searched, setSearched] = useState("");
@@ -21,11 +21,11 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText,btnText1) => {
     };
   }, []);
   
-  const ViewData = (id,ques) => {
-    naviGate(`${navigate}?id=${id===undefined?ids:id}&index=${ques!==undefined && ques}`)
+  const ViewData = (id,ques,notes) => {
+    naviGate(`${navigate}?id=${id===undefined?ids:id}&index=${ques!==undefined && ques}`,{state:notes})
   };
   
-  const deleteExam=(id)=>{
+  const deleteExam=(id)=>{  
   var result = window.confirm("Are you sure you want to delete exam?");
   if (result) {
     fetchDataDel(`/dashboard/Teachers/deleteExam?id=${id}`)
@@ -50,11 +50,12 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText,btnText1) => {
       Cell: (props) => {
         const rowId = props.row._id;
         const rowQues=props.row.question;
+        const notes=props.row.notes
         return (
           <>
           <button
           onClick={() => {
-              ViewData(rowId,rowQues);
+              ViewData(rowId,rowQues,notes);
             }}
           >
             {btnText}
