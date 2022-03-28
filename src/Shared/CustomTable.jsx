@@ -7,18 +7,16 @@ const CustomTable = ({api}) => {
   const location = useLocation();
   let SearchId = new URLSearchParams(location.search);
   let id = SearchId.get("id");
-  console.log('id :>> ', id);
   useEffect(() => {
    fetchDataGet(`${api}?id=${id}`, undefined, undefined, setResultData);
     return () => {
       setResultData([]);
     };
   }, []);
-  console.log("resultData :>> ", resultData);
 
-  const tableHead = (resultDat) => {
+  const tableHead = (resultDat,i) => {
     return (
-      <tr>
+      <tr key={i}>
         {resultDat &&
              Object.keys(resultDat).map((keyName, index) => (  
                 <th key={index}>
@@ -29,9 +27,9 @@ const CustomTable = ({api}) => {
       </tr>
     );
   };
-  const tableBody = (resultDat) => {
+  const tableBody = (resultDat,i) => {
     return (
-      <tr className="renderData">
+      <tr className="renderData" key={i}>
         {resultDat && 
           (Object.values(resultDat).map((value, index) =>
             Array.isArray(value) ? (
@@ -39,7 +37,7 @@ const CustomTable = ({api}) => {
                 return (
                   <React.Fragment key={i}>
                     {tableHead(e)}
-                    {tableBody(e)}
+                    {tableBody(e,i)}
                   </React.Fragment>
                 );
               })
@@ -55,8 +53,8 @@ const CustomTable = ({api}) => {
   return (
     <div className="renderData">
       <table border="1">
-        {<thead>{resultData && Array.isArray(resultData)?resultData.map((rData)=>tableHead(rData)) :tableHead(resultData)}</thead>}
-        {<tbody>{resultData && Array.isArray(resultData)?resultData.map((rData)=>tableBody(rData)) :tableBody(resultData)}</tbody> }
+        {<thead>{resultData && Array.isArray(resultData)?resultData.map((rData,index)=> tableHead(rData,index)) :tableHead(resultData)}</thead>}
+        {<tbody>{resultData && Array.isArray(resultData)?resultData.map((rData,index)=>tableBody(rData,index)) :tableBody(resultData)}</tbody> }
       </table>
     </div>
   );

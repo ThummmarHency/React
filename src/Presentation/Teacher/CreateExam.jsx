@@ -10,13 +10,13 @@ const CreateExam = () => {
   const [rows, setRows] = useState([]);
   const [rows1, setRows1] = useState({});
   const [questionNo1, setQuestionNo1] = useState(1);
-  const [getNameNotes, setGetNameNotes] = useState([]);
-  const [NameNotesSet, setNameNotesSet] = useState({});
+  const [nxtBtn1,setNxtBtn1]=useState(false);
   const location = useLocation();
   let SearchId = new URLSearchParams(location.search);
   let ids = SearchId.get("id");
   let index = SearchId.get("index");
-  console.log('location :>> ', location);
+  const note= JSON.parse(localStorage.getItem("notes"))
+  const subjectName=localStorage.getItem("subjectName")
 
   useEffect(() => {
     fetchDataGet(
@@ -24,13 +24,11 @@ const CreateExam = () => {
       undefined,
       setRows
     );
-    fetchDataGet(`/dashboard/Teachers/viewExam`, undefined, setGetNameNotes);
     return () => {
       setRows([]);
     };
   }, []);
   
-  console.log("rows :>> ", rows);
   const [exam1, setExam1] = useState({
     subjectName: "",
     questions: [],
@@ -43,24 +41,13 @@ const CreateExam = () => {
     opt3: "",
     opt4: "",
   });
-  useEffect(() => {
-    getNameNotes && setNameNotesSet(
-      getNameNotes?.map((e) => {
-          return (
-            e._id === ids && { subjectName: e.subjectName, notes: e?.notes}
-          );
-        })
-        .filter((val) => val !== false)
-    )
-    console.log('getNameNotes :>> ', getNameNotes);
-  },[getNameNotes])
 
   useEffect(() => {
    rows && 
           setRows1({
-            subjectName:NameNotesSet[0]?.subjectName,
+            subjectName:subjectName,
             questions: rows.questions,
-            notes:NameNotesSet[0]?.notes,
+            notes:note,
             note: "",
             question: "",
             selectOpt: "Answer...",
@@ -70,7 +57,6 @@ const CreateExam = () => {
             opt4: "",
           })
         rows && ids ? setQuestionNo1((Object.values(rows)[0]?.map((e)=>{return Object.values(e)[1]}).indexOf(index))+1):setQuestionNo1(1)
-        ids===null && setQuestionNo1(1)
   }, [rows]);
   const [
     {
@@ -97,16 +83,18 @@ const CreateExam = () => {
     : setExam1,
     questionNo:ids?(rows1.questions === undefined ? questionNo1 : questionNo1):questionNo1,
     setQuestionNo: ids?rows1.questions === undefined ? setQuestionNo1:setQuestionNo1:setQuestionNo1,
-    ids:ids
+    setNxtBtn:setNxtBtn1,
+    ids:ids,
+    subjectName:subjectName===null?"":subjectName
   });
-  
+  console.log('nxtBtn1 :>> ', nxtBtn1);
   return (
     <>
       <div className="renderData">
         {questionNo1 <= 15 ? (
           <>
             <h2>Question No : {questionNo1}</h2>
-            {ids ? <label>Subject : {NameNotesSet[0]?.subjectName} </label> : (
+            {ids ? <label>Subject : {subjectName} </label> : (
               <>
                 <label>Select Subject : </label>
                 <select
@@ -188,7 +176,7 @@ const CreateExam = () => {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <CustomButton
                 value="Pre"
-                isDisabled={questionNo1 !== 1 ? false : true}
+                isDisabled={questionNo1 !== 1 ? nxtBtn1 : true}
                 onClick={() => {
                   fieldRequire(prevQuestion);
                 }}
@@ -196,8 +184,8 @@ const CreateExam = () => {
               <CustomButton
                 value="next"
                 isDisabled={
-                  questionNo1 !== 15 && questionNo1 <= exam.questions.length
-                    ? false
+                ids?nxtBtn1:questionNo1 !== 15 && questionNo1 <= exam.questions.length
+                    ? nxtBtn1
                     : true
                 }
                 onClick={() => {
@@ -218,7 +206,7 @@ const CreateExam = () => {
             </div>
           </>
         ) : (
-          <h1> </h1>
+          ids ? "" : <h1>Exam Created </h1>
         )}
       </div>
     </>

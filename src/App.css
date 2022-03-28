@@ -23,6 +23,13 @@
 .requireMsg{
   color:red
 }
+
+/* @media only screen and (max-width: 1600px) {
+  .renderData{
+    margin-left: 20.5%;
+    margin-top: -70%;
+  }
+} */
 .renderData{
   margin-left: 20.5%;
   margin-top: -60%;

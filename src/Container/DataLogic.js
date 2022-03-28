@@ -14,7 +14,6 @@ export async function NewPwdToken(newToken) {
 
 
 export async function fetchDataPost(api, getToken, user) {
-  console.log('user', user)
   const response = await axios.post(
     process.env.REACT_APP_API + `${api}`,
     user,
@@ -52,11 +51,10 @@ export async function fetchDataDel(Api){
       "access-token": `${getToken}`
     },
   });
-  console.log('res', res)
-
+return res;
 }
 
-export async function fetchDataPut(api, getToken, user){
+export async function fetchDataPut(api,user){
   const res=await axios.put(process.env.REACT_APP_API + `${api}`,
   user,
   {
@@ -64,6 +62,9 @@ export async function fetchDataPut(api, getToken, user){
       "access-token": `${getToken}`
     },
   });
-  console.log('res', res)
-
+  alert(res.data.message)
+  localStorage.removeItem('subjectName')
+  localStorage.removeItem('notes')
+  res.data.statusCode === 200 ? window.location = "./view-exam" : alert(res.data.message)
+return res;
 }

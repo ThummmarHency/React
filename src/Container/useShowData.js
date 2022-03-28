@@ -21,8 +21,10 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText,btnText1,notes
     };
   }, []);
   
-  const ViewData = (id,ques,notes) => {
-    naviGate(`${navigate}?id=${id===undefined?ids:id}&index=${ques!==undefined && ques}`,{state:notes})
+  const ViewData = (id,ques,notes,subjectName) => {
+    naviGate(`${navigate}?id=${id===undefined?ids:id}&index=${ques!==undefined && ques}`)
+    id && localStorage.setItem('notes',JSON.stringify(notes))
+    id && localStorage.setItem('subjectName',subjectName)
   };
   
   const deleteExam=(id)=>{  
@@ -51,11 +53,12 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,navigate,btnText,btnText1,notes
         const rowId = props.row._id;
         const rowQues=props.row.question;
         const notes=props.row.notes
+        const subjectName=props.row.subjectName
         return (
           <>
           <button
           onClick={() => {
-              ViewData(rowId,rowQues,notes);
+              ViewData(rowId,rowQues,notes,subjectName);
             }}
           >
             {btnText}
