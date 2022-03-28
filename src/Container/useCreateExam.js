@@ -181,7 +181,7 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
   const clear = () => {
     const clonedExam = { ...exam };
     clonedExam.question = "";
-    clonedExam.subjectName=ids?exam.subjectName: questionNo===1 ? "" : exam.subjectName;
+    clonedExam.subjectName=ids?exam.subjectName : questionNo===1 ? "" : exam.subjectName;
     clonedExam.opt1 = "";
     clonedExam.opt2 = "";
     clonedExam.opt3 = "";
@@ -191,6 +191,7 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
     setExam(questionNo===15?{subjectName:exam.subjectName,questions:exam.questions,notes:exam.notes}:clonedExam);
     setError(null);
     setNotes("")
+   ids && questionNo === 1 && exam.questions.length === 1 && setSelectValue("");
     questionNo === 1 && exam.questions.length >= 1 && setSelectValue("");
   };
   const fieldRequire = (Question) => {
@@ -240,11 +241,14 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
      setQuestionNo(() => questionNo + 1);
       if (questionNo < exam.questions.length) {
         setValueInField(questionNo);
+      setNxtBtn(false)
       } else {
         clear();
       }
     } else {
-      alert("First update data");
+      // alert("First update data");
+      setNxtBtn(true)
+
     }
   };
   return [
