@@ -37,3 +37,14 @@
 button{
   margin: 2px;
 }
+table{
+  border:1px solid #ddd;
+  border-collapse: collapse;
+}
+table th{
+  border: 1px solid #ddd;
+}
+.tbl tr td {
+  padding: 5px;
+  border: 1px solid #ddd;
+}

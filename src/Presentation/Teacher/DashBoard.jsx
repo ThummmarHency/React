@@ -1,8 +1,7 @@
-import React,{ useEffect}  from 'react'
+import React from 'react'
 import { Link,Outlet} from 'react-router-dom'
 const DashBoard = () => {
-   useEffect(()=>{
-   },[])
+ 
   return (
     <div> 
         <div className="sidebar">

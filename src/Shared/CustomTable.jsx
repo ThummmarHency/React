@@ -2,59 +2,36 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { fetchDataGet } from "../Container/DataLogic";
 
-const CustomTable = ({api}) => {
+const CustomTable = ({api,Header}) => {
   const [resultData, setResultData] = useState();
   const location = useLocation();
-  let SearchId = new URLSearchParams(location.search);
-  let id = SearchId.get("id");
   useEffect(() => {
-   fetchDataGet(`${api}?id=${id}`, undefined, undefined, setResultData);
+ fetchDataGet(location!==null ? `${api}?id=${location.state.id}` : api, undefined, undefined, setResultData)
     return () => {
       setResultData([]);
     };
   }, []);
-
-  const tableHead = (resultDat,i) => {
+  const tbl=(data)=>{ 
     return (
-      <tr key={i}>
-        {resultDat &&
-             Object.keys(resultDat).map((keyName, index) => (  
-                <th key={index}>
-                  {keyName.toUpperCase()}
-                </th>
-              ))
-              }
-      </tr>
-    );
-  };
-  const tableBody = (resultDat,i) => {
-    return (
-      <tr className="renderData" key={i}>
-        {resultDat && 
-          (Object.values(resultDat).map((value, index) =>
-            Array.isArray(value) ? (
-              value.map((e,i) => {
-                return (
-                  <React.Fragment key={i}>
-                    {tableHead(e)}
-                    {tableBody(e,i)}
-                  </React.Fragment>
-                );
-              })
-            ) : (
-              <td key={index}>
-                <> {value}</>
-              </td>
-            )
-          ))}
-      </tr>
-    );
-  };
+      data && Array.isArray(data)?data.map((dt,i)=>(
+        <React.Fragment key={i}>
+        <tr>{tbl(dt)}</tr>
+        </React.Fragment>
+      )):
+      data && Object.entries(data).map(([key, value], index)=>(
+        <React.Fragment key={index}>
+        <tr><th>{key}</th>
+        {Array.isArray(value)?tbl(value):
+        <td>{value}</td>}</tr>
+        </React.Fragment>)
+        )
+    )
+  }
   return (
     <div className="renderData">
-      <table border="1">
-        {<thead>{resultData && Array.isArray(resultData)?resultData.map((rData,index)=> tableHead(rData,index)) :tableHead(resultData)}</thead>}
-        {<tbody>{resultData && Array.isArray(resultData)?resultData.map((rData,index)=>tableBody(rData,index)) :tableBody(resultData)}</tbody> }
+      <h2>{Header}</h2>
+      <table className="tbl">
+       { <tbody>{resultData && tbl(resultData[0])}</tbody> }
       </table>
     </div>
   );

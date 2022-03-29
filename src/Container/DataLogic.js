@@ -24,10 +24,14 @@ export async function fetchDataPost(api, getToken, user) {
   if ((api === "/users/SignUp" || api==="/users/ResetPassword") && response.data.statusCode === 200) {
     window.location = "/login";
   }
-    if(api === "/users/Login" && response.data.statusCode === 200){
-    window.location = "/dashboard/student-data";
+    if(api === "/users/Login" && response.data.statusCode === 200 && response.data.data.role==="teacher"){
+    window.location = "/teacher-dashboard/student-data";
     localStorage.setItem("token", JSON.stringify(response.data));
     localStorage.setItem("isAuthenticated", true);
+    }else{
+      window.location = "/student-dashboard";
+      localStorage.setItem("token", JSON.stringify(response.data));
+      localStorage.setItem("isAuthenticated", true);
     }
   return response.data;
 }

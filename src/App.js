@@ -17,8 +17,10 @@ import CreateExam from "./Presentation/Teacher/CreateExam";
 import ViewExam from "./Presentation/Teacher/ViewExam";
 import ExamDetail from "./Presentation/Teacher/ExamDetail"
 import ResetPwd from "./Presentation/User/ResetPwd";
+import SDashBoard from "./Presentation/Student/SDashBoard";
 import Sample from "./Presentation/Teacher/Sample";
 import EditExam from "./Presentation/Teacher/EditExam";
+import AllExam from "./Presentation/Student/AllExam";
 
 function App() {
   return (
@@ -56,7 +58,7 @@ function App() {
             />
             <Route
               exact
-              path="dashboard"
+              path="teacher-dashboard"
               element={<ProtectedRoute Com={DashBoard} />}
             >
               <Route
@@ -88,9 +90,20 @@ function App() {
                 element={<ProtectedRoute Com={ExamDetail} />}
               />
             </Route>
-          </Route>
-          <Route exact path="newPassword" element={<NewPwd />} />
+            <Route
+               path="student-dashboard"
+               element={<ProtectedRoute Com={SDashBoard} />}
+            >
+              <Route
+                path="all-exam"
+                element={<ProtectedRoute Com={AllExam} />}
+              />
 
+            </Route>
+          </Route>
+          
+
+          <Route exact path="newPassword" element={<NewPwd />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

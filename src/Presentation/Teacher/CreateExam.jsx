@@ -15,7 +15,8 @@ const CreateExam = () => {
   let SearchId = new URLSearchParams(location.search);
   let ids = SearchId.get("id");
   let index = SearchId.get("index");
-  const note= JSON.parse(localStorage.getItem("notes"))
+  const lNote=localStorage.getItem("notes")
+  const note = lNote==='undefined' ? null :JSON.parse(lNote) 
   const subjectName=localStorage.getItem("subjectName")
 
   useEffect(() => {
@@ -87,7 +88,6 @@ const CreateExam = () => {
     ids:ids,
     subjectName:subjectName===null?"":subjectName
   });
-  console.log('nxtBtn1 :>> ', nxtBtn1);
   return (
     <>
       <div className="renderData">
@@ -131,7 +131,7 @@ const CreateExam = () => {
             label= "Notes : "
             name= "note"
             value={notes}
-            pattern= {/^[^ ][A-Za-z0-9_ ]{0,}$/}
+            pattern= {/[^ ][A-Za-z0-9_ ]{0,}$/}
             onChange={getQuestion}
             />
             </>
@@ -176,7 +176,7 @@ const CreateExam = () => {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <CustomButton
                 value="Pre"
-                isDisabled={questionNo1 !== 1 ? nxtBtn1 : true}
+                isDisabled={questionNo1 !== 1 ? questionNo1-1===exam.questions.length?false: nxtBtn1 : true}
                 onClick={() => {
                   fieldRequire(prevQuestion);
                 }}
@@ -184,7 +184,7 @@ const CreateExam = () => {
               <CustomButton
                 value="next"
                 isDisabled={
-                ids?nxtBtn1:questionNo1 !== 15 && questionNo1 <= exam.questions.length
+                questionNo1 !== 15 && questionNo1 <= exam.questions.length
                     ? nxtBtn1
                     : true
                 }
