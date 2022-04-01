@@ -46,7 +46,7 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,h5,a5,h6,a6,h7,a7,h8,a8,h9,a9,n
       accessor: a3,
     }:{show: false},
     h4?{Header: h4, accessor: a4}:{show: false},
-    h5?{Header: h5, accessor: a5}:{show: false},
+    h5?{Header: h5, columns:a5 }:{show: false},
     h6?{Header: h6, accessor: a6}:{show: false},
     h7?{Header: h7, accessor: a7}:{show: false},
     h8?{Header: h8, accessor: a8}:{show: false},
