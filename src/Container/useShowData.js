@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchDataGet,fetchDataDel } from "./DataLogic";
 import { useLocation } from "react-router-dom";
 
-const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,h5,a5,h6,a6,h7,a7,h8,a8,h9,a9,navigate,btnText,btnText1) => {
+const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,h5,c5,navigate,btnText,btnText1) => {
   const [stuData, setStuData] = useState([]);
   const [rows, setRows] = useState([]);
   const [searched, setSearched] = useState("");
@@ -11,9 +11,10 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,h5,a5,h6,a6,h7,a7,h8,a8,h9,a9,n
   const location = useLocation();
   let SearchId = new URLSearchParams(location.search);
   let ids = SearchId.get("id");
+  const ids1=localStorage.getItem("id")
   let naviGate = useNavigate();
   useEffect(() => {
-    ids? fetchDataGet(`${api}?id=${ids}`,setStuData,setRows):
+    ids1? fetchDataGet(`${api}?id=${ids1}`,setStuData,setRows):
     fetchDataGet(api,setStuData,setRows)
     return () => {
       setRows([]);
@@ -22,6 +23,8 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,h5,a5,h6,a6,h7,a7,h8,a8,h9,a9,n
   
   const ViewData = (id,ques,notes,subjectName) => {
     naviGate(`${navigate}?id=${id===undefined?ids:id}&index=${ques!==undefined && ques}`,{state:{id:id}})
+    id && localStorage.setItem('id',id)
+    ques && localStorage.setItem('ques',ques)
     id && localStorage.setItem('notes',JSON.stringify(notes))
     id && localStorage.setItem('subjectName',subjectName)
   };
@@ -46,11 +49,7 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,h5,a5,h6,a6,h7,a7,h8,a8,h9,a9,n
       accessor: a3,
     }:{show: false},
     h4?{Header: h4, accessor: a4}:{show: false},
-    h5?{Header: h5, columns:a5 }:{show: false},
-    h6?{Header: h6, accessor: a6}:{show: false},
-    h7?{Header: h7, accessor: a7}:{show: false},
-    h8?{Header: h8, accessor: a8}:{show: false},
-    h9?{Header: h9, accessor: a9}:{show: false},
+    h5?{Header: h5, columns: c5 }:{show: false},
     {
       Header: "Action",
       Cell: (props) => {

@@ -21,6 +21,8 @@ import SDashBoard from "./Presentation/Student/SDashBoard";
 import Sample from "./Presentation/Teacher/Sample";
 import EditExam from "./Presentation/Teacher/EditExam";
 import AllExam from "./Presentation/Student/AllExam";
+import ExamPaper from "./Presentation/Student/ExamPaper";
+import PendingExam from "./Presentation/Student/PendingExam";
 
 function App() {
   return (
@@ -98,7 +100,14 @@ function App() {
                 path="all-exam"
                 element={<ProtectedRoute Com={AllExam} />}
               />
-
+              <Route
+                path="exam-paper"
+                element={<ProtectedRoute Com={ExamPaper} />}
+              />
+              <Route
+                path="pending-exam"
+                element={<ProtectedRoute Com={PendingExam} />}
+              />
             </Route>
           </Route>
           

@@ -3,30 +3,31 @@ import FormView from "../../Shared/FormView";
 import CustomButton from "../../Shared/CustomButton";
 import CustomInput from "../../Shared/CustomInput";
 import useCreateExam from "../../Container/useCreateExam";
+import { fetchDataGet } from "../../Container/DataLogic";
 import { useLocation } from "react-router-dom";
-import { fetchDataGet} from "../../Container/DataLogic";
 
 const CreateExam = () => {
   const [rows, setRows] = useState([]);
   const [rows1, setRows1] = useState({});
   const [questionNo1, setQuestionNo1] = useState(1);
   const [nxtBtn1,setNxtBtn1]=useState(false);
-  const location = useLocation();
-  let SearchId = new URLSearchParams(location.search);
-  let ids = SearchId.get("id");
-  let index = SearchId.get("index");
+  let index = localStorage.getItem("ques");
+  let ids=localStorage.getItem("id")
   const lNote=localStorage.getItem("notes")
   const note = lNote==='undefined' ? null :JSON.parse(lNote) 
   const subjectName=localStorage.getItem("subjectName")
-
+  const location = useLocation();
+  const currentLoc=location.pathname;
   useEffect(() => {
     fetchDataGet(
-      `/dashboard/Teachers/examDetail?id=${ids}`,
+     location.pathname==="/student-dashboard/exam-paper"?`/student/examPaper?id=${ids}`: `/dashboard/Teachers/examDetail?id=${ids}`,
       undefined,
       setRows
     );
     return () => {
       setRows([]);
+      localStorage.removeItem("ques")
+      // localStorage.removeItem("id")
     };
   }, []);
   
@@ -47,7 +48,7 @@ const CreateExam = () => {
    rows && 
           setRows1({
             subjectName:subjectName,
-            questions: rows.questions,
+            questions:currentLoc==="/student-dashboard/exam-paper"?rows: rows.questions,
             notes:note,
             note: "",
             question: "",
@@ -57,7 +58,7 @@ const CreateExam = () => {
             opt3: "",
             opt4: "",
           })
-        rows && ids ? setQuestionNo1((Object.values(rows)[0]?.map((e)=>{return Object.values(e)[1]}).indexOf(index))+1):setQuestionNo1(1)
+        rows && currentLoc!=="/student-dashboard/exam-paper" ? setQuestionNo1((Object.values(rows)[0]?.map((e)=>{return Object.values(e)[1]}).indexOf(index))+1):setQuestionNo1(1)
   }, [rows]);
   const [
     {
@@ -65,7 +66,7 @@ const CreateExam = () => {
       selectValue,
       QuestionSet,
       SubjectList,
-      radioBtnAttribute,
+      radioBtnAttribute,skpBtn,
       fieldRequire,
       prevQuestion,
       nextQuestion,
@@ -76,14 +77,14 @@ const CreateExam = () => {
       notes
     },
   ] = useCreateExam({
-    exam: ids ? (rows1.questions === undefined ? exam1 : rows1) : exam1,
+    exam: ids!==undefined ? (rows1.questions === undefined ? exam1 : rows1) : exam1,
     setExam: ids
     ? rows1.questions === undefined
     ? setExam1
     : setRows1
     : setExam1,
-    questionNo:ids?(rows1.questions === undefined ? questionNo1 : questionNo1):questionNo1,
-    setQuestionNo: ids?rows1.questions === undefined ? setQuestionNo1:setQuestionNo1:setQuestionNo1,
+    questionNo:ids!==undefined ?(rows1.questions === undefined ? questionNo1 : questionNo1):questionNo1,
+    setQuestionNo: ids!==undefined ?rows1.questions === undefined ? setQuestionNo1:setQuestionNo1:setQuestionNo1,
     setNxtBtn:setNxtBtn1,
     ids:ids,
     subjectName:subjectName===null?"":subjectName
@@ -94,7 +95,7 @@ const CreateExam = () => {
         {questionNo1 <= 15 ? (
           <>
             <h2>Question No : {questionNo1}</h2>
-            {ids ? <label>Subject : {subjectName} </label> : (
+            {ids!==undefined ? <label>Subject : {subjectName} </label> : (
               <>
                 <label>Select Subject : </label>
                 <select
@@ -124,6 +125,7 @@ const CreateExam = () => {
                 attribute={QuestionSet}
                 error={error}
                 values={exam}
+                rdonly={currentLoc!=="/student-dashboard/exam-paper"?false:true}
                 onChange={getQuestion}
               />
             Notes: <input type="text" 
@@ -131,6 +133,7 @@ const CreateExam = () => {
             label= "Notes : "
             name= "note"
             value={notes}
+            readOnly={currentLoc!=="/student-dashboard/exam-paper"?false:true}
             pattern= {/[^ ][A-Za-z0-9_ ]{0,}$/}
             onChange={getQuestion}
             />
@@ -154,6 +157,7 @@ const CreateExam = () => {
                       pattern={/[^ ][A-Za-z0-9_ ]{0,}$/}
                       errorMsg="White space not allow"
                       value={e.value}
+                      readOnly={currentLoc!=="/student-dashboard/exam-paper"?false:true}
                       onChange={getQuestion}
                       placeholder={`Option${index + 1}`}
                       name={`opt${index + 1}`}
@@ -197,7 +201,7 @@ const CreateExam = () => {
                 value={
                   questionNo1 < 15
                     ? questionNo1 <= exam.questions.length
-                      ? "update"
+                      ?currentLoc==="/student-dashboard/exam-paper"?skpBtn: "update"
                       : "add"
                     : ids ? "Update exam" :"create exam"
                 }

@@ -3,7 +3,7 @@ import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
 import {FormAttribute} from '../Container/FormAttribute'
 
-const FormView = ({ handleSubmit, attribute, error, values, onChange, text }) => {
+const FormView = ({ handleSubmit, attribute, error,rdonly, values, onChange, text }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -14,6 +14,7 @@ const FormView = ({ handleSubmit, attribute, error, values, onChange, text }) =>
               key={index}
               {...input}
               requireField={error}
+              readOnly={rdonly}
               value={values[input.name]}
               onChange={onChange}
             />

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { fetchDataGet } from "../Container/DataLogic";
 
 const CustomTable = ({api,Header}) => {
   const [resultData, setResultData] = useState();
-  const location = useLocation();
+  const id=localStorage.getItem("id")
   useEffect(() => {
- fetchDataGet(location!==null ? `${api}?id=${location.state.id}` : api, undefined, undefined, setResultData)
+ fetchDataGet(id!==null ? `${api}?id=${id}` : api, undefined, undefined, setResultData)
     return () => {
       setResultData([]);
     };

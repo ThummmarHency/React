@@ -24,7 +24,7 @@ const CustomInput = (props) => {
         focused={focused.toString()}
       />
      
-      {(value === "" || value==="Answer...")? (
+      {(value === "" )? (
         <span className="requireMsg"> {requireField}</span>
        ) : null} 
       {pattern && (pattern.test(value)===false && value!=="" && focused===true) && <span className="errorMsg">{errorMsg}</span>}

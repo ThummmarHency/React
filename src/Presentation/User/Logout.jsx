@@ -11,8 +11,7 @@ const Logout = () => {
     return (
         <div>
             <Navbar />
-            {localStorage.removeItem('token')}
-            {localStorage.removeItem('isAuthenticated')}
+            {localStorage.clear()}
         </div>
     )
 }
