@@ -15,7 +15,6 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
   const currentLoc=location.pathname;
   const loc="/student-dashboard/exam-paper"
   const setValueInField = (index) => {
-    // console.log('exam', exam)
    
     let clonedExam = { ...exam };
     Object.entries(exam.questions[index]).map(([key, value]) => {
