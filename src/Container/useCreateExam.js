@@ -13,7 +13,10 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
   const naviGate = useNavigate();
   const location = useLocation();
   const currentLoc=location.pathname;
+  const loc="/student-dashboard/exam-paper"
   const setValueInField = (index) => {
+    // console.log('exam', exam)
+   
     let clonedExam = { ...exam };
     Object.entries(exam.questions[index]).map(([key, value]) => {
       switch (key) {
@@ -25,6 +28,7 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
           break;
         case "question":
           clonedExam.question = value;
+         if(currentLoc===loc){clonedExam.selectOpt="Answer..."}
           break;
         case "answer":
           clonedExam.selectOpt = value;
@@ -32,7 +36,8 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
         default:
           break;
       }
-    });
+    }
+    );
     if(typeof clonedExam.notes[index] === 'undefined') {
       clonedExam.note = ""
    }
@@ -40,8 +45,11 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
     clonedExam.note = clonedExam.notes[index]===" "?"":clonedExam.notes[index];
    }
     setNotes(clonedExam.note)
+    console.log('clonedExam', clonedExam)
     setExam(clonedExam);
+    (currentLoc===loc && clonedExam.selectOpt==="Answer...") ?  setSkpBtn("skip"):setSkpBtn("update")
   };
+  
   console.log('exam : >>', exam)
 
   useEffect(() => {
@@ -53,8 +61,11 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
   },[exam.questions.length === 7 && ids!==null])
 
   useEffect(() => {
-    (currentLoc==="/student-dashboard/exam-paper" && questionNo===8) && naviGate("../pending-exam")
-
+    if(currentLoc===loc && questionNo===8){
+      naviGate("../pending-exam")
+     localStorage.setItem("pendingExam",JSON.stringify(exam.questions) )
+      
+    }
     (questionNo === 16 && ids===null) && fetchDataPost("/dashboard/Teachers/Exam",getToken,exam);
   }, [questionNo]);
   
@@ -96,8 +107,8 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
       answer: exam.questions[index]?.answer,
     };
 
-    if (currentLoc==="/student-dashboard/exam-paper" || (exam.question!=="" && exam.opt1!=="" && exam.opt2!=="" && exam.opt3!=="" && exam.opt4!=="" && exam.selectOpt!=="Answer...")) {
-      if (currentLoc==="/student-dashboard/exam-paper" || JSON.stringify(currentInpVal) === JSON.stringify(clonedQuestions)) {
+    if (currentLoc===loc || (exam.question!=="" && exam.opt1!=="" && exam.opt2!=="" && exam.opt3!=="" && exam.opt4!=="" && exam.selectOpt!=="Answer...")) {
+      if (currentLoc===loc || JSON.stringify(currentInpVal) === JSON.stringify(clonedQuestions)) {
         return true;
       }else{ 
         return false;
@@ -116,7 +127,7 @@ useEffect(() => {
       : setExam({ ...exam, [e.target.name]: e.target.value });
     e.target.name==="note" &&  setNotes(e.target.value)
     e.target.name === "subjectName" && setSelectValue(e.target.value);
-    (currentLoc==="/student-dashboard/exam-paper" &&  e.target.name==="selectOpt") && setSkpBtn("Confirm")
+    (currentLoc===loc &&  e.target.name==="selectOpt") && setSkpBtn("Confirm")
 
   };
 
@@ -168,7 +179,7 @@ useEffect(() => {
 
     };
     const updateData = () => {
-      if (currentLoc==="/student-dashboard/exam-paper" || sameOptAlert() === true) {
+      if (currentLoc===loc || sameOptAlert() === true) {
         setError(null);
         let updateExam = { ...exam };
           updateExam.questions[questionNo - 1] = {
@@ -186,7 +197,7 @@ useEffect(() => {
     let result = Object.values(exam.questions).map((quesValue) => {
       return quesValue.question === currentInpVal.question;
     });
-    (currentLoc==="/student-dashboard/exam-paper" || (exam.subjectName!=="" && selectValue!=="" && exam.question!=="" && exam.opt1!=="" && exam.opt2!=="" && exam.opt3!=="" && exam.opt4!=="" && exam.selectOpt!=="Answer..."))
+    (currentLoc===loc || (exam.subjectName!=="" && selectValue!=="" && exam.question!=="" && exam.opt1!=="" && exam.opt2!=="" && exam.opt3!=="" && exam.opt4!=="" && exam.selectOpt!=="Answer..."))
       ? questionNo-1 < exam.questions.length
         ? result.some((tr) => tr === true) &&
           (exam.questions[questionNo - 1].question ===
@@ -201,7 +212,6 @@ useEffect(() => {
   };
 
   const ClearForm = () => {
-
     setExam({
       ...setDataInState,
       question: "",
@@ -229,7 +239,7 @@ useEffect(() => {
     clonedExam.selectOpt = "Answer...";
     const clearAns={...exam};
     clearAns.selectOpt="Answer...";
-    if(currentLoc==="/student-dashboard/exam-paper"){setExam(clearAns) 
+    if(currentLoc===loc){setExam(clearAns) 
       setSkpBtn("skip")}
     else{
          setExam(questionNo===15 && ids ?{subjectName:exam.subjectName,questions:exam.questions,notes:exam.notes}: clonedExam);
@@ -240,23 +250,21 @@ useEffect(() => {
   };
 
   const fieldRequire = (Question) => {
-    (currentLoc==="/student-dashboard/exam-paper" || (exam.subjectName!=="" && selectValue!=="" && exam.question!=="" && exam.opt1!=="" && exam.opt2!=="" && exam.opt3!=="" && exam.opt4!=="" && exam.selectOpt!=="Answer...")) || 
+    (currentLoc===loc || (exam.subjectName!=="" && selectValue!=="" && exam.question!=="" && exam.opt1!=="" && exam.opt2!=="" && exam.opt3!=="" && exam.opt4!=="" && exam.selectOpt!=="Answer...")) || 
     (questionNo-1 === exam.questions.length)
       ? ((exam.question !== "" || exam.opt1!=="" || exam.opt2!=="" || exam.opt3!=="" || exam.opt4!=="") && questionNo-1 === exam.questions.length) ? alert("You are loosing data")?Question():Question() :Question() 
       : setError(() => "This field is Required");
   };
   
   const prevQuestion = () => {
-    setError(null);
     console.log('currentInpVal.answer', exam.selectOpt)
-
+    setError(null);
     let isUpdated = checkUpdation(
       questionNo - 1 === exam.questions.length ? questionNo - 2 : questionNo - 1
     );
     if (isUpdated === true || questionNo - 1 === exam.questions.length) {
       setQuestionNo(() => questionNo - 1);
       setValueInField(questionNo - 2);
-      (currentLoc==="/student-dashboard/exam-paper" && currentInpVal.answer==="Answer...") ? setSkpBtn("skip"):setSkpBtn("update")
     } 
   };
 
@@ -267,11 +275,7 @@ useEffect(() => {
     if (isUpdated === true) {
      setQuestionNo(() => questionNo + 1);
      if (questionNo < exam.questions.length) {
-       const clearAns={...exam};
-       clearAns.selectOpt="Answer...";
-       currentLoc==="/student-dashboard/exam-paper" && setExam(clearAns)
        setValueInField(questionNo);
-       (currentLoc==="/student-dashboard/exam-paper" && exam.selectOpt==="Answer...") ?  setSkpBtn("skip"):setSkpBtn("update")
       } else {
         clear(true);
       }

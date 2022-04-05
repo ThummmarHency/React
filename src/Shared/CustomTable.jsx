@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchDataGet } from "../Container/DataLogic";
 
-const CustomTable = ({api,Header}) => {
+const CustomTable = ({api,Header,data}) => {
   const [resultData, setResultData] = useState();
   const id=localStorage.getItem("id")
   useEffect(() => {

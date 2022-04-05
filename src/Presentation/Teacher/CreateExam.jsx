@@ -11,6 +11,7 @@ const CreateExam = () => {
   const [rows1, setRows1] = useState({});
   const [questionNo1, setQuestionNo1] = useState(1);
   const [nxtBtn1,setNxtBtn1]=useState(false);
+  // const [cloneExam,setCloneExam]=useState({})
   let index = localStorage.getItem("ques");
   let ids=localStorage.getItem("id")
   const lNote=localStorage.getItem("notes")
@@ -18,6 +19,7 @@ const CreateExam = () => {
   const subjectName=localStorage.getItem("subjectName")
   const location = useLocation();
   const currentLoc=location.pathname;
+  let cloneExam={}
   useEffect(() => {
     fetchDataGet(
      location.pathname==="/student-dashboard/exam-paper"?`/student/examPaper?id=${ids}`: `/dashboard/Teachers/examDetail?id=${ids}`,
@@ -60,6 +62,7 @@ const CreateExam = () => {
           })
         rows && currentLoc!=="/student-dashboard/exam-paper" ? setQuestionNo1((Object.values(rows)[0]?.map((e)=>{return Object.values(e)[1]}).indexOf(index))+1):setQuestionNo1(1)
   }, [rows]);
+  
   const [
     {
       error,
@@ -87,7 +90,7 @@ const CreateExam = () => {
     setQuestionNo: ids!==undefined ?rows1.questions === undefined ? setQuestionNo1:setQuestionNo1:setQuestionNo1,
     setNxtBtn:setNxtBtn1,
     ids:ids,
-    subjectName:subjectName===null?"":subjectName
+    subjectName:subjectName===null?"":subjectName,
   });
   return (
     <>
@@ -128,7 +131,7 @@ const CreateExam = () => {
                 rdonly={currentLoc!=="/student-dashboard/exam-paper"?false:true}
                 onChange={getQuestion}
               />
-            Notes: <input type="text" 
+          {currentLoc!=="/student-dashboard/exam-paper" && <> <label>Notes:</label> <input type="text" 
             placeholder= "Enter Notes"
             label= "Notes : "
             name= "note"
@@ -136,7 +139,7 @@ const CreateExam = () => {
             readOnly={currentLoc!=="/student-dashboard/exam-paper"?false:true}
             pattern= {/[^ ][A-Za-z0-9_ ]{0,}$/}
             onChange={getQuestion}
-            />
+            /></>  }
             </>
             )}
             {radioBtnAttribute.map((e, index) => {
