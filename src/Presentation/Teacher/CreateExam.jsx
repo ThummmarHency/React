@@ -11,15 +11,17 @@ const CreateExam = () => {
   const [rows1, setRows1] = useState({});
   const [questionNo1, setQuestionNo1] = useState(1);
   const [nxtBtn1,setNxtBtn1]=useState(false);
-  // const [cloneExam,setCloneExam]=useState({})
+  const [idArray, setIdArray] = useState([]);
   let index = localStorage.getItem("ques");
   let ids=localStorage.getItem("id")
   const lNote=localStorage.getItem("notes")
   const note = lNote==='undefined' ? null :JSON.parse(lNote) 
   const subjectName=localStorage.getItem("subjectName")
+  const pendingExamQues=localStorage.getItem("pendingExam-Question")
+  let data = localStorage.getItem("pendingExam");
+  let pendingExamData = JSON.parse(data);
   const location = useLocation();
   const currentLoc=location.pathname;
-  let cloneExam={}
   useEffect(() => {
     fetchDataGet(
      location.pathname==="/student-dashboard/exam-paper"?`/student/examPaper?id=${ids}`: `/dashboard/Teachers/examDetail?id=${ids}`,
@@ -29,10 +31,18 @@ const CreateExam = () => {
     return () => {
       setRows([]);
       localStorage.removeItem("ques")
-      // localStorage.removeItem("id")
     };
-  }, []);
-  
+  }, []);  
+  useEffect(() => {
+    console.log("ionside");
+    console.log('idArray', idArray)
+    currentLoc==="/student-dashboard/exam-paper" && questionNo1===8 && localStorage.setItem('idArray',JSON.stringify(idArray))
+  },[currentLoc==="/student-dashboard/exam-paper" && questionNo1===8])
+  useEffect(() => {
+      if(currentLoc==="/teacher-dashboard/create-exam"){localStorage.removeItem("id")
+    localStorage.removeItem("subjectName")
+  localStorage.removeItem("notes") }
+  },[])
   const [exam1, setExam1] = useState({
     subjectName: "",
     questions: [],
@@ -45,12 +55,12 @@ const CreateExam = () => {
     opt3: "",
     opt4: "",
   });
-
   useEffect(() => {
+    console.log("abc");
    rows && 
           setRows1({
             subjectName:subjectName,
-            questions:currentLoc==="/student-dashboard/exam-paper"?rows: rows.questions,
+            questions:currentLoc==="/student-dashboard/exam-paper"?pendingExamData!==null?pendingExamData: rows: rows.questions,
             notes:note,
             note: "",
             question: "",
@@ -60,9 +70,16 @@ const CreateExam = () => {
             opt3: "",
             opt4: "",
           })
-        rows && currentLoc!=="/student-dashboard/exam-paper" ? setQuestionNo1((Object.values(rows)[0]?.map((e)=>{return Object.values(e)[1]}).indexOf(index))+1):setQuestionNo1(1)
+        if(rows && ids!==null)
+        { if(currentLoc==="/teacher-dashboard/edit-exam"){
+          setQuestionNo1((Object.values(rows)[0]?.map((e)=>{return Object.values(e)[1]}).indexOf(index))+1)}
+          if(currentLoc==="/student-dashboard/exam-paper"){
+            pendingExamQues!==null? setQuestionNo1((Object.values(pendingExamData).map((e)=>e.question).indexOf(pendingExamQues))+1):setQuestionNo1(1) 
+          }
+        }
+       else{setQuestionNo1(1)}
+     rows && Object.values(rows).map((value)=>setIdArray(old=>[...old,value._id]))
   }, [rows]);
-  
   const [
     {
       error,
@@ -80,25 +97,26 @@ const CreateExam = () => {
       notes
     },
   ] = useCreateExam({
-    exam: ids!==undefined ? (rows1.questions === undefined ? exam1 : rows1) : exam1,
+    exam: ids!==null ? (rows1.questions === undefined ? exam1 : rows1) : exam1,
     setExam: ids
     ? rows1.questions === undefined
     ? setExam1
     : setRows1
     : setExam1,
-    questionNo:ids!==undefined ?(rows1.questions === undefined ? questionNo1 : questionNo1):questionNo1,
-    setQuestionNo: ids!==undefined ?rows1.questions === undefined ? setQuestionNo1:setQuestionNo1:setQuestionNo1,
+    questionNo:ids!==null ?(rows1.questions === undefined ? questionNo1 : questionNo1):questionNo1,
+    setQuestionNo: ids!==null ?rows1.questions === undefined ? setQuestionNo1:setQuestionNo1:setQuestionNo1,
     setNxtBtn:setNxtBtn1,
     ids:ids,
     subjectName:subjectName===null?"":subjectName,
   });
+
   return (
     <>
       <div className="renderData">
         {questionNo1 <= 15 ? (
           <>
             <h2>Question No : {questionNo1}</h2>
-            {ids!==undefined ? <label>Subject : {subjectName} </label> : (
+            {ids!==undefined && currentLoc!=="/teacher-dashboard/create-exam" ? <label>Subject : {subjectName} </label> : (
               <>
                 <label>Select Subject : </label>
                 <select
@@ -182,7 +200,7 @@ const CreateExam = () => {
             <br />
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <CustomButton
-                value="Pre"
+                value= "Pre"
                 isDisabled={questionNo1 !== 1 ? questionNo1-1===exam.questions.length?false: nxtBtn1 : true}
                 onClick={() => {
                   fieldRequire(prevQuestion);
@@ -204,7 +222,7 @@ const CreateExam = () => {
                 value={
                   questionNo1 < 15
                     ? questionNo1 <= exam.questions.length
-                      ?currentLoc==="/student-dashboard/exam-paper"?skpBtn: "update"
+                      ?currentLoc==="/student-dashboard/exam-paper"? questionNo1===7 ? "Preview": skpBtn: "update"
                       : "add"
                     : ids ? "Update exam" :"create exam"
                 }
@@ -213,7 +231,7 @@ const CreateExam = () => {
             </div>
           </>
         ) : (
-          ids ? "" : <h1>Exam Created </h1>
+          ids!==null ? "Loading..." : questionNo1 <= 15 && currentLoc==="/teacher-dashboard/create-exam" ? <h1>Exam Created </h1> :"Loading..."
         )}
       </div>
     </>

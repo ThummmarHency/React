@@ -13,8 +13,7 @@ const Filter = ({ attribute }) => {
   const Thead = () => {
     return (
       <tr>
-        {header
-          .filter((item, i, ar) => ar.indexOf(item) === i)
+        {rmvDupObj
           .map((h1, index) => (
             <th key={index}>{h1}</th>
           ))}

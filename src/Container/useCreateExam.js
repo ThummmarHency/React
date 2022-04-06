@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormAttribute } from "./FormAttribute";
 import { fetchDataPost, getToken,fetchDataPut} from "../Container/DataLogic";
 import { useLocation } from "react-router-dom";
@@ -7,17 +7,17 @@ import { useNavigate } from "react-router-dom";
 const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,subjectName}) => {
   const SubjectList = ["", "React", "Node js", "Angular", "Ux/Ui", "Python"];
   const [error, setError] = useState(null);
-  const [selectValue, setSelectValue] = useState(ids?subjectName:"");
+  const location = useLocation();
+  const currentLoc=location.pathname;
+  const [selectValue, setSelectValue] = useState(ids!==null && currentLoc!=="/teacher-dashboard/create-exam"?subjectName:"");
   const [notes,setNotes]=useState("");
   const [skpBtn,setSkpBtn]=useState("skip")
   const naviGate = useNavigate();
-  const location = useLocation();
-  const currentLoc=location.pathname;
   const loc="/student-dashboard/exam-paper"
+  
   const setValueInField = (index) => {
-   
     let clonedExam = { ...exam };
-    Object.entries(exam.questions[index]).map(([key, value]) => {
+    Object.entries(exam?.questions[index]).map(([key, value]) => {
       switch (key) {
         case "options":
           clonedExam.opt1 = value[0];
@@ -44,33 +44,31 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
     clonedExam.note = clonedExam.notes[index]===" "?"":clonedExam.notes[index];
    }
     setNotes(clonedExam.note)
-    console.log('clonedExam', clonedExam)
     setExam(clonedExam);
     (currentLoc===loc && clonedExam.selectOpt==="Answer...") ?  setSkpBtn("skip"):setSkpBtn("update")
   };
-  
+
   console.log('exam : >>', exam)
 
   useEffect(() => {
     (exam.questions.length === 15 && ids!==null) && setValueInField(questionNo-1);
   }, [exam.questions.length === 15 && ids!==null]);
-
   useEffect(() => {
+    
     (exam.questions.length === 7 && ids!==null) && setValueInField(questionNo-1)
   },[exam.questions.length === 7 && ids!==null])
-
+  
   useEffect(() => {
     if(currentLoc===loc && questionNo===8){
       naviGate("../pending-exam")
      localStorage.setItem("pendingExam",JSON.stringify(exam.questions) )
-      
+
     }
     (questionNo === 16 && ids===null) && fetchDataPost("/dashboard/Teachers/Exam",getToken,exam);
   }, [questionNo]);
   
   useEffect(() => {
     (questionNo === 16 && ids!==null) && fetchDataPut(`/dashboard/Teachers/editExam?id=${ids}`,exam)
-    
   },[questionNo===16])
 
   const currentInpVal = {
@@ -117,7 +115,7 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
     }
   };
 useEffect(() => {
-  setNxtBtn(checkUpdation(questionNo-1)===true?false:true)
+  currentLoc!==loc && setNxtBtn(checkUpdation(questionNo-1)===true?false:true)
 },[currentInpVal])
 
   const getQuestion = (e) => {
@@ -126,7 +124,9 @@ useEffect(() => {
       : setExam({ ...exam, [e.target.name]: e.target.value });
     e.target.name==="note" &&  setNotes(e.target.value)
     e.target.name === "subjectName" && setSelectValue(e.target.value);
-    (currentLoc===loc &&  e.target.name==="selectOpt") && setSkpBtn("Confirm")
+    if(currentLoc===loc &&  e.target.name==="selectOpt") {setSkpBtn("Confirm")
+     setNxtBtn( e.target.value !=="Answer"?true:false)
+  }
 
   };
 
@@ -196,6 +196,7 @@ useEffect(() => {
     let result = Object.values(exam.questions).map((quesValue) => {
       return quesValue.question === currentInpVal.question;
     });
+
     (currentLoc===loc || (exam.subjectName!=="" && selectValue!=="" && exam.question!=="" && exam.opt1!=="" && exam.opt2!=="" && exam.opt3!=="" && exam.opt4!=="" && exam.selectOpt!=="Answer..."))
       ? questionNo-1 < exam.questions.length
         ? result.some((tr) => tr === true) &&
@@ -222,7 +223,6 @@ useEffect(() => {
       selectOpt: "Answer...",
     });
     setNotes("")
-
   };
 
   const clear = (tkn) => {
@@ -245,18 +245,18 @@ useEffect(() => {
        }
     setError(null);
     setNotes("")
-    setSelectValue(ids===undefined? subjectName : questionNo===1 ? tkn===true?exam.subjectName: "" : exam.subjectName);
+    setSelectValue(ids===undefined? subjectName : questionNo===1 ? tkn===true?exam.subjectName: subjectName : exam.subjectName);
+    currentLoc===loc && setNxtBtn(false)
   };
 
   const fieldRequire = (Question) => {
     (currentLoc===loc || (exam.subjectName!=="" && selectValue!=="" && exam.question!=="" && exam.opt1!=="" && exam.opt2!=="" && exam.opt3!=="" && exam.opt4!=="" && exam.selectOpt!=="Answer...")) || 
     (questionNo-1 === exam.questions.length)
-      ? ((exam.question !== "" || exam.opt1!=="" || exam.opt2!=="" || exam.opt3!=="" || exam.opt4!=="") && questionNo-1 === exam.questions.length) ? alert("You are loosing data")?Question():Question() :Question() 
+      ? ((exam.question !== "" || exam.opt1!=="" || exam.opt2!=="" || exam.opt3!=="" || exam.opt4!=="") && questionNo-1 === exam.questions.length) ? alert("You are loosing data")?Question():Question() : Question()
       : setError(() => "This field is Required");
   };
   
   const prevQuestion = () => {
-    console.log('currentInpVal.answer', exam.selectOpt)
     setError(null);
     let isUpdated = checkUpdation(
       questionNo - 1 === exam.questions.length ? questionNo - 2 : questionNo - 1
@@ -268,11 +268,10 @@ useEffect(() => {
   };
 
   const nextQuestion = () => {
-    console.log('currentInpVal.answer', exam.selectOpt)
     setError(null);
     let isUpdated = checkUpdation(questionNo - 1);
     if (isUpdated === true) {
-     setQuestionNo(() => questionNo + 1);
+    setQuestionNo(() => questionNo + 1)
      if (questionNo < exam.questions.length) {
        setValueInField(questionNo);
       } else {

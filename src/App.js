@@ -18,11 +18,11 @@ import ViewExam from "./Presentation/Teacher/ViewExam";
 import ExamDetail from "./Presentation/Teacher/ExamDetail"
 import ResetPwd from "./Presentation/User/ResetPwd";
 import SDashBoard from "./Presentation/Student/SDashBoard";
-import Sample from "./Presentation/Teacher/Sample";
 import EditExam from "./Presentation/Teacher/EditExam";
 import AllExam from "./Presentation/Student/AllExam";
 import ExamPaper from "./Presentation/Student/ExamPaper";
 import PendingExam from "./Presentation/Student/PendingExam";
+import Sample from "./Presentation/Teacher/Sample";
 
 function App() {
   return (
