@@ -4,7 +4,7 @@ const ExamPaper = () => {
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <CreateExam />
+         <CreateExam />
       </Suspense>
     </div>
   )

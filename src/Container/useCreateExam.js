@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { FormAttribute } from "./FormAttribute";
 import { fetchDataPost, getToken,fetchDataPut} from "../Container/DataLogic";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 
 const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,subjectName}) => {
   const SubjectList = ["", "React", "Node js", "Angular", "Ux/Ui", "Python"];
@@ -14,9 +13,13 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
   const [skpBtn,setSkpBtn]=useState("skip")
   const naviGate = useNavigate();
   const loc="/student-dashboard/exam-paper"
+  const con1=exam.questions.length === 15 && ids!==null
+  const con2=exam.questions.length === 7 && ids!==null
   
   const setValueInField = (index) => {
+    console.log("nbvfebvbvvb");
     let clonedExam = { ...exam };
+    console.log(">>>>>",exam);
     Object.entries(exam?.questions[index]).map(([key, value]) => {
       switch (key) {
         case "options":
@@ -45,18 +48,19 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
    }
     setNotes(clonedExam.note)
     setExam(clonedExam);
+    console.log(">>>>>>>>>>>>>>>>>>>");
     (currentLoc===loc && clonedExam.selectOpt==="Answer...") ?  setSkpBtn("skip"):setSkpBtn("update")
   };
 
   console.log('exam : >>', exam)
 
   useEffect(() => {
-    (exam.questions.length === 15 && ids!==null) && setValueInField(questionNo-1);
-  }, [exam.questions.length === 15 && ids!==null]);
+    (con1) && setValueInField(questionNo-1);
+  }, [con1]);
   useEffect(() => {
-    
-    (exam.questions.length === 7 && ids!==null) && setValueInField(questionNo-1)
-  },[exam.questions.length === 7 && ids!==null])
+    (con2) && setValueInField(questionNo-1)
+  },[con2])
+  
   
   useEffect(() => {
     if(currentLoc===loc && questionNo===8){

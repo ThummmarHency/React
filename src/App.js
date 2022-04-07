@@ -108,6 +108,7 @@ function App() {
                 path="pending-exam"
                 element={<ProtectedRoute Com={PendingExam} />}
               />
+              
             </Route>
           </Route>
           

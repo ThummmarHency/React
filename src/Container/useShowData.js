@@ -63,6 +63,7 @@ const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,h5,c5,navigate,btnText,btnText1
           onClick={() => {
               ViewData(rowId,rowQues,notes,subjectName);
             }}
+           disabled={props.original.Result && props.original.Result.length!==0?true:false}
           >
             {btnText}
           </button>
