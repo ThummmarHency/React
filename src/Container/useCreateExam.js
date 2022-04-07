@@ -12,14 +12,14 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
   const [notes,setNotes]=useState("");
   const [skpBtn,setSkpBtn]=useState("skip")
   const naviGate = useNavigate();
-  const loc="/student-dashboard/exam-paper"
+  const loc="/student-dashboard/exam-paper";
+  let data = localStorage.getItem("pendingExam");
+  let pendingExamData = JSON.parse(data);
   const con1=exam.questions.length === 15 && ids!==null
-  const con2=exam.questions.length === 7 && ids!==null
-  
+  const con2=exam.questions.length === 7 && ids!==null 
   const setValueInField = (index) => {
-    console.log("nbvfebvbvvb");
     let clonedExam = { ...exam };
-    console.log(">>>>>",exam);
+    console.log('exam', exam)
     Object.entries(exam?.questions[index]).map(([key, value]) => {
       switch (key) {
         case "options":
@@ -48,25 +48,22 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
    }
     setNotes(clonedExam.note)
     setExam(clonedExam);
-    console.log(">>>>>>>>>>>>>>>>>>>");
     (currentLoc===loc && clonedExam.selectOpt==="Answer...") ?  setSkpBtn("skip"):setSkpBtn("update")
   };
 
-  console.log('exam : >>', exam)
-
   useEffect(() => {
-    (con1) && setValueInField(questionNo-1);
+    con1 && setValueInField(questionNo-1);
   }, [con1]);
   useEffect(() => {
-    (con2) && setValueInField(questionNo-1)
+    console.log(">>");
+    con2 && setValueInField(questionNo-1)
   },[con2])
-  
-  
+ 
+  console.log('exam : >>>', exam)
   useEffect(() => {
     if(currentLoc===loc && questionNo===8){
       naviGate("../pending-exam")
      localStorage.setItem("pendingExam",JSON.stringify(exam.questions) )
-
     }
     (questionNo === 16 && ids===null) && fetchDataPost("/dashboard/Teachers/Exam",getToken,exam);
   }, [questionNo]);
@@ -74,6 +71,7 @@ const useCreateExam = ({ exam, setExam,questionNo,setQuestionNo,setNxtBtn,ids,su
   useEffect(() => {
     (questionNo === 16 && ids!==null) && fetchDataPut(`/dashboard/Teachers/editExam?id=${ids}`,exam)
   },[questionNo===16])
+
 
   const currentInpVal = {
     question: exam.question,  

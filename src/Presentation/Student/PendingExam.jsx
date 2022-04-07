@@ -32,10 +32,36 @@ const PendingExam = () => {
     {
       Header: "Options",
       columns: [
-        { Header: "Ans1", accessor: "options[0]" },
-        { Header: "Ans2", accessor: "options[1]" },
-        { Header: "Ans3", accessor: "options[2]" },
-        { Header: "Ans4", accessor: "options[3]" },
+        { Header: "Ans1",
+        Cell: (props) => {
+          return (
+            <> <button>{props.original.options[0]}</button>
+              
+            </>
+          );
+        },
+         },
+        { Header: "Ans2",  Cell: (props) => {
+          return (
+            <> <button>{props.original.options[1]}</button>
+              
+            </>
+          );
+        }, },
+        { Header: "Ans3",  Cell: (props) => {
+          return (
+            <> <button>{props.original.options[2]}</button>
+              
+            </>
+          );
+        }, },
+        { Header: "Ans4",  Cell: (props) => {
+          return (
+            <> <button>{props.original.options[3]}</button>
+              
+            </>
+          );
+        }, },
       ],
     },
     {

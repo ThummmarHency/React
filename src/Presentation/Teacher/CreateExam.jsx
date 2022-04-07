@@ -26,6 +26,7 @@ const CreateExam = () => {
   const CreateExamLoc="/teacher-dashboard/create-exam";
   const loading="Loading..."
   const con1= currentLoc===examPaperLoc && questionNo1===8
+
   useEffect(() => {
     fetchDataGet(
      location.pathname===examPaperLoc?`/student/examPaper?id=${ids}`: `/dashboard/Teachers/examDetail?id=${ids}`,
@@ -58,12 +59,11 @@ const CreateExam = () => {
     opt4: "",
   });
   useEffect(() => {
-    // console.log("ininin");
    rows && 
           setRows1({
             subjectName:subjectName,
             questions:currentLoc===examPaperLoc
-            ?pendingExamData!==null
+            ?pendingExamData!==null  
             ?pendingExamData:rows:rows.questions,
             notes:note,
             note: "",
@@ -78,12 +78,14 @@ const CreateExam = () => {
         { if(currentLoc==="/teacher-dashboard/edit-exam"){
           setQuestionNo1((Object.values(rows)[0]?.map((e)=>{return Object.values(e)[1]}).indexOf(index))+1)}
           if(currentLoc===examPaperLoc){
-            pendingExamQues!==null? setQuestionNo1((1)+1):setQuestionNo1(1) 
+            pendingExamQues!==null? setQuestionNo1((Object.values(pendingExamData).map((e)=>e.question).indexOf(pendingExamQues))+1):setQuestionNo1(1) 
           }
         }
        else{setQuestionNo1(1)}
      rows && Object.values(rows).map((value)=>setIdArray(old=>[...old,value._id]))
+    
   }, [rows]);
+
   const [
     {
       error,
@@ -112,6 +114,7 @@ const CreateExam = () => {
     setNxtBtn:setNxtBtn1,
     ids:ids,
     subjectName:subjectName===null?"":subjectName,
+  
   });
   return (
     <>
