@@ -1,13 +1,7 @@
-import React, { Suspense } from "react";
-const CreateExam = React.lazy(() => import("../Teacher/CreateExam"));
+import React from "react";
+import CreateExam from "../Teacher/CreateExam";
 const ExamPaper = () => {
-  return (
-    <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <CreateExam />
-      </Suspense>
-    </div>
-  );
+  return <CreateExam />;
 };
 
 export default ExamPaper;

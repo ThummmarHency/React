@@ -8,22 +8,15 @@ const useForm = ({ setValues, values, newToken, api }) => {
     return { [e.name]: e.pattern };
   });
   const [error, setError] = useState("");
-  const [patternError, setpatternError] = useState(false);
-
+  const isError=localStorage.getItem("error")
+  // console.log('isError',  isError)
   useEffect(() => {
-
-    
   },[values])
   
-
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    // isValidate()
-    //  for(let i=0;i<Object.keys(values).length;i++){
-    //   setpatternError(Object.values(pv[i])[0].test(Object.values(values)[i])===true ? true: false)
-    // }
+    
   };
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = { ...values };

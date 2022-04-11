@@ -1,9 +1,9 @@
 import React from "react";
 import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
-import {FormAttribute} from '../Container/FormAttribute'
 
-const FormView = ({ handleSubmit, attribute, error,rdonly, values, onChange, text }) => {
+const FormView = ({ handleSubmit, attribute, error,rdonly, values, onChange, text,isError }) => {
+  console.log('iserror', isError)
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -23,7 +23,7 @@ const FormView = ({ handleSubmit, attribute, error,rdonly, values, onChange, tex
           );
         })}
         <br />
-        {text && <CustomButton isDisabled={false} type="submit" value={text} />}
+        {text && <CustomButton isDisabled={isError} type="submit" value={text} />}
       </form>
     </div>
   );

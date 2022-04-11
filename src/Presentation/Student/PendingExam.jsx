@@ -12,7 +12,7 @@ const PendingExam = () => {
   const [data, setData] = useState(acData);
   const [tblData, setTblData] = useState(data);
   const [isDisable, setIsDisable] = useState(true);
-  const [answer, setAnswer] = useState();
+  const [answer, setAnswer] = useState(acData[0].answer);
   const subId = localStorage.getItem("id");
   let idArray = JSON.parse(quesId);
   const ans = "Answer...";
@@ -29,13 +29,13 @@ const PendingExam = () => {
           default:
             break;
         }
+        clonedData[selected].answer = answer;
       });
-
       answer !== undefined && setData(clonedData);
     };
     AnswerInQue();
   }, [answer, selected]);
-
+  console.log("data", data);
   const submitExam = () => {
     setIsDisable(true);
     let i = 0;
@@ -50,6 +50,7 @@ const PendingExam = () => {
     );
   };
   useEffect(() => {
+    console.log("data :>> ", queAns);
     queAns.length !== 0 &&
       fetchDataPost(`/student/giveExam?id=${subId}`, getToken, queAns);
   }, [queAns]);

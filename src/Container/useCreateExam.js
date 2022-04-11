@@ -61,6 +61,7 @@ const useCreateExam = ({
           break;
       }
     });
+
     if (typeof clonedExam.notes[index] === "undefined") {
       clonedExam.note = "";
     } else {
@@ -73,7 +74,6 @@ const useCreateExam = ({
       ? setSkpBtn("skip")
       : setSkpBtn("update");
   };
-
   useEffect(() => {
     con1 && setValueInField(questionNo - 1);
   }, [con1]);

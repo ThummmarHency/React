@@ -10,7 +10,6 @@ const CustomTable = ({api,Header,editPfl}) => {
       setResultData([]);
     };
   }, []);
-  console.log('resultData :>> ', resultData);
   const tbl=(data)=>{ 
     return (
       data && Array.isArray(data)?data.map((dt,i)=>(
@@ -21,7 +20,7 @@ const CustomTable = ({api,Header,editPfl}) => {
       data && Object.entries(data).map(([key, value], index)=>(
         <React.Fragment key={index}>
         <tr><th>{key}</th>
-        {Array.isArray(value)?tbl(value):
+        {Array.isArray(value)? <td><table><tbody><tr>{tbl(value)}</tr></tbody></table></td> :
         <td>{value}</td>}</tr>
         </React.Fragment>)
         )

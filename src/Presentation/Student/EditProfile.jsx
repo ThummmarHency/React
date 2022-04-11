@@ -8,7 +8,7 @@ const EditProfile = () => {
   return (
     <div className="renderData">
         <h2>Edit Profile</h2>
-        <label>Name</label>: <input type="text" onChange={(e)=>setName({name: e.target.value})}/>
+        <label>Name</label>: <input type="text" onChange={(e)=>setName({name: e.target.value})} placeholder="Enter Name"/>
         <button onClick={ChangeProfile}>Change</button>
     </div>
   )

@@ -7,7 +7,7 @@ const SDashBoard = () => {
       <div className="sidebar">
         <ul>
           <li>
-            <Link to="all-exam">All exam for student</Link>
+            <Link to="all-exam">All exam</Link>
           </li>
           <li>
             <Link to="profile">Profile</Link>

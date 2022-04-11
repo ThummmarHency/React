@@ -7,7 +7,7 @@ const Navbar = () => {
   let naviGate = useNavigate();
 
   useEffect(() => {
-    // localStorage.getItem("isAuthenticated") && naviGate("../teacher-dashboard")
+    // localStorage.getItem("isAuthenticated") && naviGate("../")
 
   }, []);
 
