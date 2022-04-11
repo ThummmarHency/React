@@ -22,6 +22,8 @@ import EditExam from "./Presentation/Teacher/EditExam";
 import AllExam from "./Presentation/Student/AllExam";
 import ExamPaper from "./Presentation/Student/ExamPaper";
 import PendingExam from "./Presentation/Student/PendingExam";
+import Profile from "./Presentation/Student/Profile"
+import EditProfile from "./Presentation/Student/EditProfile"
 import Sample from "./Presentation/Teacher/Sample";
 
 function App() {
@@ -108,7 +110,14 @@ function App() {
                 path="pending-exam"
                 element={<ProtectedRoute Com={PendingExam} />}
               />
-              
+              <Route
+                path="profile"
+                element={<ProtectedRoute Com={Profile} />}
+              />
+               <Route
+                path="edit-profile"
+                element={<ProtectedRoute Com={EditProfile} />}
+              />
             </Route>
           </Route>
           

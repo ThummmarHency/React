@@ -10,42 +10,42 @@ const CreateExam = () => {
   const [rows, setRows] = useState([]);
   const [rows1, setRows1] = useState({});
   const [questionNo1, setQuestionNo1] = useState(1);
-  const [nxtBtn1,setNxtBtn1]=useState(false);
+  const [nxtBtn1, setNxtBtn1] = useState(false);
   const [idArray, setIdArray] = useState([]);
   let index = localStorage.getItem("ques");
-  let ids=localStorage.getItem("id")
-  const lNote=localStorage.getItem("notes")
-  const note = lNote==='undefined' ? null :JSON.parse(lNote) 
-  const subjectName=localStorage.getItem("subjectName")
-  const pendingExamQues=localStorage.getItem("pendingExam-Question")
-  let data = localStorage.getItem("pendingExam");
-  let pendingExamData = JSON.parse(data);
+  let ids = localStorage.getItem("id");
+  const lNote = localStorage.getItem("notes");
+  const note = lNote === "undefined" ? null : JSON.parse(lNote);
+  const subjectName = localStorage.getItem("subjectName");
   const location = useLocation();
-  const currentLoc=location.pathname;
-  const examPaperLoc="/student-dashboard/exam-paper";
-  const CreateExamLoc="/teacher-dashboard/create-exam";
-  const loading="Loading..."
-  const con1= currentLoc===examPaperLoc && questionNo1===8
+  const currentLoc = location.pathname;
+  const examPaperLoc = "/student-dashboard/exam-paper";
+  const CreateExamLoc = "/teacher-dashboard/create-exam";
+  const con1 = currentLoc === examPaperLoc && questionNo1 === 8;
 
   useEffect(() => {
     fetchDataGet(
-     location.pathname===examPaperLoc?`/student/examPaper?id=${ids}`: `/dashboard/Teachers/examDetail?id=${ids}`,
+      location.pathname === examPaperLoc
+        ? `/student/examPaper?id=${ids}`
+        : `/dashboard/Teachers/examDetail?id=${ids}`,
       undefined,
       setRows
     );
     return () => {
       setRows([]);
-      localStorage.removeItem("ques")
+      localStorage.removeItem("ques");
     };
-  }, []);  
+  }, []);
   useEffect(() => {
-    con1 && localStorage.setItem('idArray',JSON.stringify(idArray))
-  },[con1])
+    con1 && localStorage.setItem("idArray", JSON.stringify(idArray));
+  }, [con1]);
   useEffect(() => {
-      if(currentLoc===CreateExamLoc){localStorage.removeItem("id")
-      localStorage.removeItem("subjectName")
-      localStorage.removeItem("notes") }
-  },[])
+    if (currentLoc === CreateExamLoc) {
+      localStorage.removeItem("id");
+      localStorage.removeItem("subjectName");
+      localStorage.removeItem("notes");
+    }
+  }, []);
   const [exam1, setExam1] = useState({
     subjectName: "",
     questions: [],
@@ -59,31 +59,36 @@ const CreateExam = () => {
     opt4: "",
   });
   useEffect(() => {
-   rows && 
-          setRows1({
-            subjectName:subjectName,
-            questions:currentLoc===examPaperLoc
-            ?pendingExamData!==null  
-            ?pendingExamData:rows:rows.questions,
-            notes:note,
-            note: "",
-            question: "",
-            selectOpt: "Answer...",
-            opt1: "",
-            opt2: "",
-            opt3: "",
-            opt4: "",
-          })
-        if(rows && ids!==null)
-        { if(currentLoc==="/teacher-dashboard/edit-exam"){
-          setQuestionNo1((Object.values(rows)[0]?.map((e)=>{return Object.values(e)[1]}).indexOf(index))+1)}
-          if(currentLoc===examPaperLoc){
-            pendingExamQues!==null? setQuestionNo1((Object.values(pendingExamData).map((e)=>e.question).indexOf(pendingExamQues))+1):setQuestionNo1(1) 
-          }
-        }
-       else{setQuestionNo1(1)}
-     rows && Object.values(rows).map((value)=>setIdArray(old=>[...old,value._id]))
-    
+    rows &&
+      setRows1({
+        subjectName: subjectName,
+        questions: currentLoc === examPaperLoc ? rows : rows.questions,
+        notes: note,
+        note: "",
+        question: "",
+        selectOpt: "Answer...",
+        opt1: "",
+        opt2: "",
+        opt3: "",
+        opt4: "",
+      });
+    if (rows && ids !== null) {
+      if (currentLoc === "/teacher-dashboard/edit-exam") {
+        setQuestionNo1(
+          Object.values(rows)[0]
+            ?.map((e) => {
+              return Object.values(e)[1];
+            })
+            .indexOf(index) + 1
+        );
+      }
+    } else {
+      setQuestionNo1(1);
+    }
+    rows &&
+      Object.values(rows).map((value) =>
+        setIdArray((old) => [...old, value._id])
+      );
   }, [rows]);
 
   const [
@@ -92,7 +97,8 @@ const CreateExam = () => {
       selectValue,
       QuestionSet,
       SubjectList,
-      radioBtnAttribute,skpBtn,
+      radioBtnAttribute,
+      skpBtn,
       fieldRequire,
       prevQuestion,
       nextQuestion,
@@ -100,29 +106,43 @@ const CreateExam = () => {
       getQuestion,
       AddQuestion,
       exam,
-      notes
+      notes,
     },
   ] = useCreateExam({
-    exam: ids!==null ? (rows1.questions === undefined ? exam1 : rows1) : exam1,
+    exam:
+      ids !== null ? (rows1.questions === undefined ? exam1 : rows1) : exam1,
     setExam: ids
-    ? rows1.questions === undefined
-    ? setExam1
-    : setRows1
-    : setExam1,
-    questionNo:ids!==null ?(rows1.questions === undefined ? questionNo1 : questionNo1):questionNo1,
-    setQuestionNo: ids!==null ?rows1.questions === undefined ? setQuestionNo1:setQuestionNo1:setQuestionNo1,
-    setNxtBtn:setNxtBtn1,
-    ids:ids,
-    subjectName:subjectName===null?"":subjectName,
-  
+      ? rows1.questions === undefined
+        ? setExam1
+        : setRows1
+      : setExam1,
+    questionNo:
+      ids !== null
+        ? rows1.questions === undefined
+          ? questionNo1
+          : questionNo1
+        : questionNo1,
+    setQuestionNo:
+      ids !== null
+        ? rows1.questions === undefined
+          ? setQuestionNo1
+          : setQuestionNo1
+        : setQuestionNo1,
+    setNxtBtn: setNxtBtn1,
+    ids: ids,
+    subjectName: subjectName === null ? "" : subjectName,
   });
   return (
     <>
       <div className="renderData">
-      {currentLoc===examPaperLoc && rows.length===0?<div className="loading"></div> : questionNo1 <= 15 ? (
+        {currentLoc === examPaperLoc && rows.length === 0 ? (
+          <div className="loading"></div>
+        ) : questionNo1 <= 15 ? (
           <>
             <h2>Question No : {questionNo1}</h2>
-            {ids!==undefined && currentLoc!==CreateExamLoc ? <label>Subject : {subjectName} </label> : (
+            {ids !== undefined && currentLoc !== CreateExamLoc ? (
+              <label>Subject : {subjectName} </label>
+            ) : (
               <>
                 <label>Select Subject : </label>
                 <select
@@ -148,23 +168,30 @@ const CreateExam = () => {
             <br />
             {QuestionSet && (
               <>
-              <FormView
-                attribute={QuestionSet}
-                error={error}
-                values={exam}
-                rdonly={currentLoc!==examPaperLoc?false:true}
-                onChange={getQuestion}
-              />
-          {currentLoc!==examPaperLoc && <> <label>Notes:</label> <input type="text" 
-            placeholder= "Enter Notes"
-            label= "Notes : "
-            name= "note"
-            value={notes}
-            readOnly={currentLoc!==examPaperLoc?false:true}
-            pattern= {/[^ ][A-Za-z0-9_ ]{0,}$/}
-            onChange={getQuestion}
-            /></>  }
-            </>
+                <FormView
+                  attribute={QuestionSet}
+                  error={error}
+                  values={exam}
+                  rdonly={currentLoc !== examPaperLoc ? false : true}
+                  onChange={getQuestion}
+                />
+                {currentLoc !== examPaperLoc && (
+                  <>
+                    {" "}
+                    <label>Notes:</label>{" "}
+                    <input
+                      type="text"
+                      placeholder="Enter Notes"
+                      label="Notes : "
+                      name="note"
+                      value={notes}
+                      readOnly={currentLoc !== examPaperLoc ? false : true}
+                      pattern={/[^ ][A-Za-z0-9_ ]{0,}$/}
+                      onChange={getQuestion}
+                    />
+                  </>
+                )}
+              </>
             )}
             {radioBtnAttribute.map((e, index) => {
               return (
@@ -184,7 +211,7 @@ const CreateExam = () => {
                       pattern={/[^ ][A-Za-z0-9_ ]{0,}$/}
                       errorMsg="White space not allow"
                       value={e.value}
-                      readOnly={currentLoc!==examPaperLoc?false:true}
+                      readOnly={currentLoc !== examPaperLoc ? false : true}
                       onChange={getQuestion}
                       placeholder={`Option${index + 1}`}
                       name={`opt${index + 1}`}
@@ -206,8 +233,14 @@ const CreateExam = () => {
             <br />
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <CustomButton
-                value= "Pre"
-                isDisabled={questionNo1 !== 1 ? questionNo1-1===exam.questions.length?false: nxtBtn1 : true}
+                value="Pre"
+                isDisabled={
+                  questionNo1 !== 1
+                    ? questionNo1 - 1 === exam.questions.length
+                      ? false
+                      : nxtBtn1
+                    : true
+                }
                 onClick={() => {
                   fieldRequire(prevQuestion);
                 }}
@@ -215,7 +248,7 @@ const CreateExam = () => {
               <CustomButton
                 value="next"
                 isDisabled={
-                questionNo1 !== 15 && questionNo1 <= exam.questions.length
+                  questionNo1 !== 15 && questionNo1 <= exam.questions.length
                     ? nxtBtn1
                     : true
                 }
@@ -228,16 +261,26 @@ const CreateExam = () => {
                 value={
                   questionNo1 < 15
                     ? questionNo1 <= exam.questions.length
-                      ?currentLoc===examPaperLoc? questionNo1===7 ? "Preview": skpBtn: "update"
+                      ? currentLoc === examPaperLoc
+                        ? questionNo1 === 7
+                          ? "Preview"
+                          : skpBtn
+                        : "update"
                       : "add"
-                    : ids ? "Update exam" :"create exam"
+                    : ids
+                    ? "Update exam"
+                    : "create exam"
                 }
                 onClick={AddQuestion}
               />
             </div>
           </>
+        ) : ids !== null ? (
+          ""
+        ) : questionNo1 <= 15 && currentLoc === CreateExamLoc ? (
+          <div className="loading"></div>
         ) : (
-          ids!==null ? "" : questionNo1 <= 15 && currentLoc===CreateExamLoc ? <div className="loading"></div> :<h1>Exam Created </h1> 
+          <h1>Exam Created </h1>
         )}
       </div>
     </>

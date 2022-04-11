@@ -14,8 +14,8 @@ const [{rows,columns,cancelSearch,searched,requestSearch}]=useShowData(api,h1,a1
   return (
       <div className="renderData">
         <br />
-        <h2>{Header}</h2> 
-         {rows ?  <>
+         {rows ? rows.length===0? <div className="loading"></div>: <>
+            <h2>{Header}</h2> 
             <SearchBar
               value={searched}
               onChange={(searchVal) => requestSearch(searchVal)}

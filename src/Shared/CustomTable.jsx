@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchDataGet } from "../Container/DataLogic";
 
-const CustomTable = ({api,Header,data}) => {
+const CustomTable = ({api,Header,editPfl}) => {
   const [resultData, setResultData] = useState();
   const id=localStorage.getItem("id")
   useEffect(() => {
@@ -10,6 +10,7 @@ const CustomTable = ({api,Header,data}) => {
       setResultData([]);
     };
   }, []);
+  console.log('resultData :>> ', resultData);
   const tbl=(data)=>{ 
     return (
       data && Array.isArray(data)?data.map((dt,i)=>(
@@ -28,10 +29,14 @@ const CustomTable = ({api,Header,data}) => {
   }
   return (
     <div className="renderData">
+      {resultData===undefined? <div className="loading"></div>: 
+      <>
       <h2>{Header}</h2>
       <table className="tbl">
-       { <tbody>{resultData && tbl(resultData[0])}</tbody> }
+       { <tbody>{resultData && Array.isArray(resultData)?tbl(resultData[0]):tbl(resultData)}</tbody> }
       </table>
+      {editPfl && <button onClick={()=>window.location="/student-dashboard/edit-profile"}>{editPfl}</button> }
+      </>}
     </div>
   );
 };

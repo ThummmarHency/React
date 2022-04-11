@@ -9,9 +9,12 @@ const SDashBoard = () => {
           <li>
             <Link to="all-exam">All exam for student</Link>
           </li>
+          <li>
+            <Link to="profile">Profile</Link>
+          </li>
         </ul>
       </div>
-        <Outlet />
+      <Outlet />
     </div>
   );
 };
