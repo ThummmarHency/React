@@ -56,7 +56,7 @@ const PendingExam = () => {
   }, [queAns]);
   const btnCell = (ind, i) => {
     return (
-      <button
+      <label
         disabled={ind === selected ? isDisable : true}
         style={i === answer && ind === selected ? rwClr : null}
         onClick={() => {
@@ -64,7 +64,7 @@ const PendingExam = () => {
         }}
       >
         {i}
-      </button>
+      </label>
     );
   };
 

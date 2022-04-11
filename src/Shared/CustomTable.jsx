@@ -14,13 +14,13 @@ const CustomTable = ({api,Header,editPfl}) => {
     return (
       data && Array.isArray(data)?data.map((dt,i)=>(
         <React.Fragment key={i}>
-        <tr>{tbl(dt)}</tr>
+        {tbl(dt)}
         </React.Fragment>
       )):
       data && Object.entries(data).map(([key, value], index)=>(
         <React.Fragment key={index}>
         <tr><th>{key}</th>
-        {Array.isArray(value)? <td><table><tbody><tr>{tbl(value)}</tr></tbody></table></td> :
+        {Array.isArray(value)?tbl(value):
         <td>{value}</td>}</tr>
         </React.Fragment>)
         )
