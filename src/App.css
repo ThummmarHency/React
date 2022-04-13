@@ -6,16 +6,11 @@
 
 .errorMsg{
   color:red;
-  /* display: none; */
 }
-
-/* input:invalid[focused="true"] ~ .errorMsg{
-  display:block;
-} */
 
 .sidebar{
   border: 1px solid black;
-  width: 20%;
+  width: 18%;
   height: 100vh;
   background-color: white;
 }
@@ -26,7 +21,7 @@
 
 .renderData{
   margin-left: 20.5%;
-  margin-top: -64%;
+  margin-top: -44%;
 }
 button{
   margin: 2px;
@@ -49,7 +44,7 @@ h1 {
 }
 
 .loading {
-  margin: 32% 40%;
+  margin: 20% 40%;
   display: inline-block;
   width: 50px;
   height: 50px;
@@ -66,4 +61,8 @@ h1 {
 @-webkit-keyframes spin {
   to { -webkit-transform: rotate(360deg); }
 }
-label.disabled { color: rgb(173, 35, 35); }
+.btn{
+  border:none;
+  background: none;
+  
+}

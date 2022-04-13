@@ -3,7 +3,6 @@ import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
 
 const FormView = ({ handleSubmit, attribute, error,rdonly, values, onChange, text,isError }) => {
-  console.log('iserror', isError)
   return (
     <div>
       <form onSubmit={handleSubmit}>

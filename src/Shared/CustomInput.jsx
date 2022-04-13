@@ -1,7 +1,6 @@
-import React, { useState,useEffect } from "react";
+import React, { useState} from "react";
 const CustomInput = (props) => {
   const [focused, setFocused] = useState(false);
-  const [isError,setIsError]=useState(false)
   const {
     label,
     onChange,
@@ -12,9 +11,7 @@ const CustomInput = (props) => {
     errorMsg,
     ...inputProps
   } = props;
-//  useEffect(() => {
-//   setIsError((pattern.test(value)===false && value!=="" && focused===true)?true:false)
-//  },[focused])
+
   return (
     <>
       <label>{label}</label>
@@ -32,7 +29,6 @@ const CustomInput = (props) => {
         <span className="requireMsg"> {requireField}</span>
        ) : null} 
       {pattern && (pattern.test(value)===false && value!=="" && focused===true) && <span className="errorMsg">{errorMsg}</span>}
-      {/* { isError } */}
     </>
   );
 };

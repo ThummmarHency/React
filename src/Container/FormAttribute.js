@@ -5,7 +5,7 @@ export const FormAttribute =[
       type: "text",
       name: "email",
       placeholder: "Enter Your email",
-      errorMsg: "it should be a valid email address",  
+      errorMsg: "It should be a valid email address",  
       pattern: /^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/
     },
     {
@@ -13,7 +13,7 @@ export const FormAttribute =[
       type: "password",
       name: "password",
       placeholder: "Enter password",
-      errorMsg: "password should be 7-16 characters long",
+      errorMsg: "Password should be 7-16 characters long",
       pattern:/^[A-Za-z0-9]{7,15}$/
     },
     {
