@@ -1,6 +1,8 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClientProvider,QueryClient } from "react-query";
+import {ReactQueryDevtools} from 'react-query/devtools'
 import SignupUi from "./Presentation/User/SignupUi";
 import LoginUi from "./Presentation/User/LoginUi";
 import ForgotPwd from "./Presentation/User/ForgotPwd";
@@ -24,11 +26,15 @@ import ExamPaper from "./Presentation/Student/ExamPaper";
 import PendingExam from "./Presentation/Student/PendingExam";
 import Profile from "./Presentation/Student/Profile"
 import EditProfile from "./Presentation/Student/EditProfile"
-import Sample from "./Presentation/Teacher/Sample";
+import RQStudentData from "./Presentation/Teacher/RQStudentData";
+// import Sample from "./Presentation/Teacher/Sample";
+
+const queryClient= new QueryClient()
 
 function App() {
   return (
     <>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<ProtectedRoute Com={Navbar} />}>
@@ -68,6 +74,10 @@ function App() {
               <Route
                 path="student-data"
                 element={<ProtectedRoute Com={ShowStudentData} />}
+              />
+               <Route
+                path="RQ-student-data"
+                element={<ProtectedRoute Com={RQStudentData} />}
               />
               <Route
                 path="verified-data"
@@ -120,12 +130,12 @@ function App() {
               />
             </Route>
           </Route>
-          
-
           <Route exact path="newPassword" element={<NewPwd />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right"/>
+      </QueryClientProvider>
     </>
   );
 }

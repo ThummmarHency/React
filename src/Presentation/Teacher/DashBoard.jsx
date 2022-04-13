@@ -10,6 +10,9 @@ const DashBoard = () => {
                 <Link to="student-data">Student Data</Link>
             </li>
             <li>
+                <Link to="RQ-student-data">RQ-Student Data</Link>
+            </li>
+            <li>
                 <Link to="verified-data">Verify student data</Link>
             </li>
             <li>
