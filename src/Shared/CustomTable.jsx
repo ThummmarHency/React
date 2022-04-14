@@ -10,6 +10,7 @@ const CustomTable = ({api,Header,editPfl}) => {
       setResultData([]);
     };
   }, []);
+  
   const tbl=(data)=>{ 
     return (
       data && Array.isArray(data)?data.map((dt,i)=>(

@@ -11,6 +11,7 @@ const ShowData = ({api,h1,a1,h2,a2,h3,a3,h4,a4,h5,c5, navigate,Header,btnText,bt
     
   },[])
 const [{rows,columns,cancelSearch,searched,requestSearch}]=useShowData(api,h1,a1,h2,a2,h3,a3,h4,a4,h5,c5,navigate,btnText,btnText1);
+
   return (
       <div className="renderData">
         <br />

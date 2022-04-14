@@ -26,7 +26,8 @@ import ExamPaper from "./Presentation/Student/ExamPaper";
 import PendingExam from "./Presentation/Student/PendingExam";
 import Profile from "./Presentation/Student/Profile"
 import EditProfile from "./Presentation/Student/EditProfile"
-import RQStudentData from "./Presentation/Teacher/RQStudentData";
+import RQStudentData from "./Presentation/React Query/RQStudentData";
+import RQindData from "./Presentation/React Query/RQindData";
 // import Sample from "./Presentation/Teacher/Sample";
 
 const queryClient= new QueryClient()
@@ -75,9 +76,13 @@ function App() {
                 path="student-data"
                 element={<ProtectedRoute Com={ShowStudentData} />}
               />
-               <Route
+              <Route
                 path="RQ-student-data"
                 element={<ProtectedRoute Com={RQStudentData} />}
+              />
+              <Route
+                path="RQ-student-data/:stuId"
+                element={<ProtectedRoute Com={RQindData} />}
               />
               <Route
                 path="verified-data"
