@@ -21,6 +21,15 @@ const DashBoard = () => {
             <li>
                 <Link to="RQ-student-data">RQ-Student Data</Link>
             </li>
+            <li>
+                <Link to="RQ-paginated">RQ-paginated</Link>
+            </li>
+            <li>
+                <Link to="RQ-infinite">RQ-Infinite</Link>
+            </li>
+            <li>
+                <Link to="RQ-mutation">RQ-Mutation</Link>
+            </li>
           </ul>
         </div>
         

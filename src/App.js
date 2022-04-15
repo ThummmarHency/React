@@ -28,6 +28,9 @@ import Profile from "./Presentation/Student/Profile"
 import EditProfile from "./Presentation/Student/EditProfile"
 import RQStudentData from "./Presentation/React Query/RQStudentData";
 import RQindData from "./Presentation/React Query/RQindData";
+import RQPaginated from "./Presentation/React Query/RQPaginated"
+import RQInfinite from "./Presentation/React Query/RQInfinite";
+import RQMutation from "./Presentation/React Query/RQMutation"
 // import Sample from "./Presentation/Teacher/Sample";
 
 const queryClient= new QueryClient()
@@ -83,6 +86,18 @@ function App() {
               <Route
                 path="RQ-student-data/:stuId"
                 element={<ProtectedRoute Com={RQindData} />}
+              />
+              <Route
+                path="RQ-paginated"
+                element={<ProtectedRoute Com={RQPaginated} />}
+              />
+              <Route
+                path="RQ-infinite"
+                element={<ProtectedRoute Com={RQInfinite} />}
+              />
+              <Route
+                path="RQ-mutation"
+                element={<ProtectedRoute Com={RQMutation} />}
               />
               <Route
                 path="verified-data"
