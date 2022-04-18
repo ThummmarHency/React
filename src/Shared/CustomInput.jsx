@@ -11,7 +11,6 @@ const CustomInput = (props) => {
     errorMsg,
     ...inputProps
   } = props;
-
   return (
     <>
       <label>{label}</label>

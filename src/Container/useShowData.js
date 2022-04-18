@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
-import { fetchDataGet,fetchDataDel,getToken } from "./DataLogic";
+import { fetchDataGet,fetchDataDel} from "./DataLogic";
 import { useLocation } from "react-router-dom";
 
 const useShowData = (api,h1,a1,h2,a2,h3,a3,h4,a4,h5,c5,navigate,btnText,btnText1) => {

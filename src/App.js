@@ -31,6 +31,10 @@ import RQindData from "./Presentation/React Query/RQindData";
 import RQPaginated from "./Presentation/React Query/RQPaginated"
 import RQInfinite from "./Presentation/React Query/RQInfinite";
 import RQMutation from "./Presentation/React Query/RQMutation"
+import AxiosFetch from "./Presentation/React Query/AxiosFetch";
+import RQDemo from "./Presentation/React Query/Demo/RQDemo";
+import DemoUpdate from "./Presentation/React Query/Demo/DemoUpdate";
+import DemoAdd from "./Presentation/React Query/Demo/DemoAdd";
 // import Sample from "./Presentation/Teacher/Sample";
 
 const queryClient= new QueryClient()
@@ -98,6 +102,22 @@ function App() {
               <Route
                 path="RQ-mutation"
                 element={<ProtectedRoute Com={RQMutation} />}
+              />
+               <Route
+                path="axios-fetch"
+                element={<ProtectedRoute Com={AxiosFetch} />}
+              />
+               <Route
+                path="RQ-demo"
+                element={<ProtectedRoute Com={RQDemo} />}
+              />
+              <Route
+                path="demo-update/:stuId"
+                element={<ProtectedRoute Com={DemoUpdate} />}
+              />
+               <Route
+                path="demo-add"
+                element={<ProtectedRoute Com={DemoAdd} />}
               />
               <Route
                 path="verified-data"

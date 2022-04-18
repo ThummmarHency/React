@@ -22,6 +22,9 @@ const DashBoard = () => {
                 <Link to="RQ-student-data">RQ-Student Data</Link>
             </li>
             <li>
+                <Link to="axios-fetch">Using Axios</Link>
+            </li>
+            <li>
                 <Link to="RQ-paginated">RQ-paginated</Link>
             </li>
             <li>
@@ -29,6 +32,9 @@ const DashBoard = () => {
             </li>
             <li>
                 <Link to="RQ-mutation">RQ-Mutation</Link>
+            </li>
+            <li>
+                <Link to="RQ-demo">RQ-Demo</Link>
             </li>
           </ul>
         </div>
