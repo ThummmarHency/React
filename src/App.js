@@ -112,7 +112,7 @@ function App() {
                 element={<ProtectedRoute Com={RQDemo} />}
               />
               <Route
-                path="demo-update/:stuId"
+                path="demo-update/:stuId/:index"
                 element={<ProtectedRoute Com={DemoUpdate} />}
               />
                <Route

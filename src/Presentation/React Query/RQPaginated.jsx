@@ -24,7 +24,6 @@ const RQPaginated = () => {
             <div>
             <button onClick={()=>setIndex(index-1)} disabled={index===1}>Prev page</button>
             <button onClick={()=>setIndex(index+1)} disabled={index===6}>Next page</button>
-
             </div>
 
             {isFetching && "loading..."}

@@ -7,7 +7,7 @@ export const RQHook = (api) => {
   return useQuery("get", () => fetchData(api), {
     // enabled: false,
     // cacheTime:3000
-    // staleTime:5000,
+    // staleTime:50000,
     // refetchInterval:2000
     // refetchOnWindowFocus:false
     // retry: 5,
@@ -20,7 +20,7 @@ const fetchDataId=(api,stuId)=>{
 }
 export const RQIndHook=(api,stuId)=>{
   const queryClient=useQueryClient()
-  return useQuery(['get',stuId],()=>fetchDataId(api,stuId),{cacheTime:3000},
+  return useQuery(['get',stuId],()=>fetchDataId(api,stuId),
   {initialData:()=>{
     const stu=queryClient.getQueryData('get')?.data?.data?.find(stu=>stu._id===parseInt(stuId))
     if(stu){
@@ -31,5 +31,6 @@ export const RQIndHook=(api,stuId)=>{
     else{
       return undefined
     }
-  } })
+  } ,staleTime:30000,cacheTime:3000}
+  )
 }

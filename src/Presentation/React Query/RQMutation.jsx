@@ -44,7 +44,6 @@ const RQMutation = () => {
     if(isError){
         return <h2 className="renderData">{error.message}</h2>
     }
-    console.log('data', data)
     const handleChange=()=>{
         const student={name,status}
         addStudent(student)
