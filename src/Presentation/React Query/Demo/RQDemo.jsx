@@ -81,7 +81,7 @@ const RQDemo = () => {
                 <button onClick={() => setId(trow.id)}>delete</button>
               </td>
             </tr>
-          ))}
+          ))} 
         </tbody>
       </table>
       <div style={{ display: "flex", justifyContent: "space-between" }}>

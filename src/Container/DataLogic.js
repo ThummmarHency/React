@@ -7,6 +7,7 @@ const token = "token";
 
 let getData = localStorage.getItem(token);
 const data1 = JSON.parse(getData);
+console.log("data1", data1);
 export const getToken = data1 && data1?.data?.token;
 
 export async function NewPwdToken(newToken) {
@@ -91,11 +92,14 @@ export async function fetchDataPut(api, user) {
   });
   localStorage.removeItem("subjectName");
   localStorage.removeItem("notes");
-  res.data.statusCode === 200 && window.location.pathname!=="/student-dashboard/edit-profile"
+  res.data.statusCode === 200 &&
+  window.location.pathname !== "/student-dashboard/edit-profile"
     ? (window.location = "./view-exam") && alert(res.data.message)
-    :  res.data.statusCode === 200 && window.location.pathname==="/student-dashboard/edit-profile"?
-    (window.location="/student-dashboard/profile") && alert(res.data.message):
-    alert(res.data.message);
+    : res.data.statusCode === 200 &&
+      window.location.pathname === "/student-dashboard/edit-profile"
+    ? (window.location = "/student-dashboard/profile") &&
+      alert(res.data.message)
+    : alert(res.data.message);
 
   return res;
 }
